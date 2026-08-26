@@ -86,10 +86,40 @@ export function AdminHeader() {
         { label: "Subcategories", href: "/categories/subcategory", isLast: true },
       ];
     }
+    if (pathname === "/products/attributes/sets") {
+      return [
+        { label: "Product Management", href: "/products/attributes", isLast: false },
+        { label: "Attribute Sets", href: "/products/attributes/sets", isLast: true },
+      ];
+    }
+    if (pathname === "/products/attributes/values") {
+      return [
+        { label: "Product Management", href: "/products/attributes", isLast: false },
+        { label: "Attribute Values", href: "/products/attributes/values", isLast: true },
+      ];
+    }
+    if (pathname === "/products/attributes/units") {
+      return [
+        { label: "Product Management", href: "/products/attributes", isLast: false },
+        { label: "Measurement Units", href: "/products/attributes/units", isLast: true },
+      ];
+    }
+    if (pathname === "/products/attributes") {
+      return [
+        { label: "Product Management", href: "/products/attributes", isLast: false },
+        { label: "Dynamic Attributes", href: "/products/attributes", isLast: true },
+      ];
+    }
     if (pathname === "/products/colors") {
       return [
-        { label: "Product Management", href: "/products", isLast: false },
+        { label: "Product Management", href: "/products/attributes", isLast: false },
         { label: "Colors & Swatches", href: "/products/colors", isLast: true },
+      ];
+    }
+    if (pathname === "/products/sizes") {
+      return [
+        { label: "Product Management", href: "/products/attributes", isLast: false },
+        { label: "Sizes & Scale Matrix", href: "/products/sizes", isLast: true },
       ];
     }
     if (pathname.startsWith("/products")) {
