@@ -44,7 +44,7 @@ export default function RootCategoriesPage() {
   } = useCategoryContext();
 
   const [searchQuery, setSearchQuery] = React.useState("");
-  const [viewMode, setViewMode] = React.useState<"grid" | "table">("grid");
+  const [viewMode, setViewMode] = React.useState<"table" | "grid">("table");
 
   // Form Sheet State
   const [sheetOpen, setSheetOpen] = React.useState(false);
@@ -236,20 +236,20 @@ export default function RootCategoriesPage() {
 
           <div className="flex items-center gap-1.5 border border-border p-0.5 rounded-xs bg-background">
             <Button
-              variant={viewMode === "grid" ? "default" : "ghost"}
-              size="xs"
-              onClick={() => setViewMode("grid")}
-              className="h-7 text-xs px-2.5 gap-1.5"
-            >
-              <LayoutGrid className="size-3.5" /> Grid Cards
-            </Button>
-            <Button
               variant={viewMode === "table" ? "default" : "ghost"}
               size="xs"
               onClick={() => setViewMode("table")}
               className="h-7 text-xs px-2.5 gap-1.5"
             >
               <ListFilter className="size-3.5" /> Data Table
+            </Button>
+            <Button
+              variant={viewMode === "grid" ? "default" : "ghost"}
+              size="xs"
+              onClick={() => setViewMode("grid")}
+              className="h-7 text-xs px-2.5 gap-1.5"
+            >
+              <LayoutGrid className="size-3.5" /> Grid Cards
             </Button>
           </div>
         </div>

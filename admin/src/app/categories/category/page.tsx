@@ -53,7 +53,7 @@ export default function ProductCategoriesPage() {
   const [searchQuery, setSearchQuery] = React.useState("");
   const [rootFilter, setRootFilter] = React.useState<string>("all");
   const [statusFilter, setStatusFilter] = React.useState<string>("all");
-  const [viewMode, setViewMode] = React.useState<"grid" | "table">("grid");
+  const [viewMode, setViewMode] = React.useState<"table" | "grid">("table");
 
   // Form Sheet State
   const [sheetOpen, setSheetOpen] = React.useState(false);
@@ -294,15 +294,6 @@ export default function ProductCategoriesPage() {
             {/* View Switcher */}
             <div className="flex items-center gap-1 border border-border p-0.5 rounded-xs bg-background">
               <Button
-                variant={viewMode === "grid" ? "default" : "ghost"}
-                size="xs"
-                onClick={() => setViewMode("grid")}
-                className="h-7 text-xs px-2"
-                title="Grid Cards"
-              >
-                <LayoutGrid className="size-3.5" />
-              </Button>
-              <Button
                 variant={viewMode === "table" ? "default" : "ghost"}
                 size="xs"
                 onClick={() => setViewMode("table")}
@@ -310,6 +301,15 @@ export default function ProductCategoriesPage() {
                 title="Data Table"
               >
                 <ListFilter className="size-3.5" />
+              </Button>
+              <Button
+                variant={viewMode === "grid" ? "default" : "ghost"}
+                size="xs"
+                onClick={() => setViewMode("grid")}
+                className="h-7 text-xs px-2"
+                title="Grid Cards"
+              >
+                <LayoutGrid className="size-3.5" />
               </Button>
             </div>
           </div>

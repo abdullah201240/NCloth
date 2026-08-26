@@ -57,7 +57,7 @@ export default function SuppliersPage() {
 
   const [searchQuery, setSearchQuery] = React.useState("");
   const [statusFilter, setStatusFilter] = React.useState<string>("all");
-  const [viewMode, setViewMode] = React.useState<"grid" | "table">("grid");
+  const [viewMode, setViewMode] = React.useState<"table" | "grid">("table");
 
   // Form Sheet State
   const [sheetOpen, setSheetOpen] = React.useState(false);
@@ -234,15 +234,6 @@ export default function SuppliersPage() {
             {/* View Switcher */}
             <div className="flex items-center gap-1 border border-border p-0.5 rounded-xs bg-background shrink-0">
               <Button
-                variant={viewMode === "grid" ? "default" : "ghost"}
-                size="xs"
-                onClick={() => setViewMode("grid")}
-                className="h-7 text-xs px-2.5 gap-1.5"
-                title="Grid Cards"
-              >
-                <LayoutGrid className="size-3.5" /> Grid
-              </Button>
-              <Button
                 variant={viewMode === "table" ? "default" : "ghost"}
                 size="xs"
                 onClick={() => setViewMode("table")}
@@ -250,6 +241,15 @@ export default function SuppliersPage() {
                 title="Data Table"
               >
                 <ListFilter className="size-3.5" /> Table
+              </Button>
+              <Button
+                variant={viewMode === "grid" ? "default" : "ghost"}
+                size="xs"
+                onClick={() => setViewMode("grid")}
+                className="h-7 text-xs px-2.5 gap-1.5"
+                title="Grid Cards"
+              >
+                <LayoutGrid className="size-3.5" /> Grid
               </Button>
             </div>
           </div>
