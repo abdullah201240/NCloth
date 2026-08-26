@@ -6,8 +6,10 @@ import { WarehouseProvider } from "@/lib/stores/warehouse-context";
 import { ShelfProvider } from "@/lib/stores/shelf-context";
 import { SupplierProvider } from "@/lib/stores/supplier-context";
 import { StoreProvider } from "@/lib/stores/store-context";
+import { StoreShelfProvider } from "@/lib/stores/store-shelf-context";
 import { AttributeProvider } from "@/lib/stores/attribute-context";
 import { BrandProvider } from "@/lib/stores/brand-context";
+import { ProfileProvider } from "@/lib/stores/profile-context";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { Toaster } from "@/components/ui/toast";
 import "./globals.css";
@@ -51,12 +53,16 @@ export default function RootLayout({
                 <ShelfProvider>
                   <SupplierProvider>
                     <StoreProvider>
-                      <AttributeProvider>
-                        <BrandProvider>
-                          {children}
-                          <Toaster />
-                        </BrandProvider>
-                      </AttributeProvider>
+                      <StoreShelfProvider>
+                        <AttributeProvider>
+                          <BrandProvider>
+                            <ProfileProvider>
+                              {children}
+                              <Toaster />
+                            </ProfileProvider>
+                          </BrandProvider>
+                        </AttributeProvider>
+                      </StoreShelfProvider>
                     </StoreProvider>
                   </SupplierProvider>
                 </ShelfProvider>

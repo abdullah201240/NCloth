@@ -146,10 +146,22 @@ export function AdminHeader() {
         { label: "All Suppliers", href: "/suppliers", isLast: true },
       ];
     }
+    if (pathname === "/stores/shelves") {
+      return [
+        { label: "Retail & Boutiques", href: "/stores", isLast: false },
+        { label: "Storage Shelves", href: "/stores/shelves", isLast: true },
+      ];
+    }
     if (pathname.startsWith("/stores")) {
       return [
         { label: "Retail & Boutiques", href: "/stores", isLast: false },
         { label: "All Stores", href: "/stores", isLast: true },
+      ];
+    }
+    if (pathname === "/profile") {
+      return [
+        { label: "Studio Admin", href: "/", isLast: false },
+        { label: "Administrator Profile", href: "/profile", isLast: true },
       ];
     }
     return [{ label: "Studio Admin", href: pathname, isLast: true }];
@@ -159,7 +171,7 @@ export function AdminHeader() {
 
   return (
     <>
-      <header className="sticky top-0 z-40 flex h-12 w-full items-center justify-between border-b border-border bg-background px-4">
+      <header className="sticky top-0 z-40 flex h-12 w-full shrink-0 items-center justify-between border-b border-border bg-background px-4">
         {/* Left: Sidebar Trigger & Breadcrumbs */}
         <div className="flex items-center gap-3">
           <SidebarTrigger className="size-8 text-foreground" />
@@ -225,7 +237,10 @@ export function AdminHeader() {
               <span className="sr-only">Admin menu</span>
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end" className="w-56">
-              <DropdownMenuLabel className="font-normal p-2">
+              <DropdownMenuLabel
+                onClick={() => router.push("/profile")}
+                className="font-normal p-2 cursor-pointer hover:bg-muted/40 transition-colors rounded-xs"
+              >
                 <div className="flex flex-col space-y-1">
                   <p className="text-sm font-medium leading-none text-foreground">Alexander S.</p>
                   <p className="text-xs font-mono leading-none text-muted-foreground">
@@ -234,17 +249,21 @@ export function AdminHeader() {
                 </div>
               </DropdownMenuLabel>
               <DropdownMenuSeparator />
+              <DropdownMenuItem onClick={() => router.push("/profile")} className="text-sm py-2">
+                <SlidersHorizontal className="size-4 mr-2 text-muted-foreground" />
+                <span>My Profile & Security</span>
+              </DropdownMenuItem>
               <DropdownMenuItem onClick={() => router.push("/categories")} className="text-sm py-2">
                 <FolderTree className="size-4 mr-2 text-muted-foreground" />
                 <span>Categories & Hierarchy</span>
               </DropdownMenuItem>
-              <DropdownMenuItem onClick={() => router.push("/products")} className="text-sm py-2">
-                <Package className="size-4 mr-2 text-muted-foreground" />
-                <span>Products & SKUs</span>
+              <DropdownMenuItem onClick={() => router.push("/products/attributes")} className="text-sm py-2">
+                <Layers className="size-4 mr-2 text-muted-foreground" />
+                <span>Dynamic Attributes</span>
               </DropdownMenuItem>
-              <DropdownMenuItem onClick={() => router.push("/orders")} className="text-sm py-2">
-                <ShoppingBag className="size-4 mr-2 text-muted-foreground" />
-                <span>Client Orders</span>
+              <DropdownMenuItem onClick={() => router.push("/products/brands")} className="text-sm py-2">
+                <Sparkles className="size-4 mr-2 text-muted-foreground" />
+                <span>Brand Houses</span>
               </DropdownMenuItem>
               <DropdownMenuSeparator />
               <DropdownMenuItem

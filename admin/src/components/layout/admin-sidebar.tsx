@@ -155,6 +155,12 @@ const navigationSections: NavSection[] = [
         icon: StoreIcon,
         badge: 6,
       },
+      {
+        title: "Storage Shelves",
+        url: "/stores/shelves",
+        icon: Grid,
+        badge: 8,
+      },
     ],
   },
 ];
@@ -175,12 +181,6 @@ export function AdminSidebar() {
               Studio Admin
             </span>
           </div>
-          <Badge
-            variant="outline"
-            className="text-xs uppercase font-mono tracking-wider px-1.5 py-0 border-border text-muted-foreground"
-          >
-            v1.0
-          </Badge>
         </Link>
       </SidebarHeader>
 
@@ -254,7 +254,11 @@ export function AdminSidebar() {
       {/* Footer Profile & Live Link */}
       <SidebarFooter className="border-t border-border p-3 px-4">
         <div className="flex items-center justify-between">
-          <div className="flex items-center gap-2.5 min-w-0">
+          <Link
+            href="/profile"
+            className="flex items-center gap-2.5 min-w-0 hover:opacity-80 transition-opacity"
+            title="View Administrator Profile"
+          >
             <Avatar className="size-6 rounded-xs border border-border">
               <AvatarFallback className="text-xs font-mono bg-background text-foreground">
                 NC
@@ -269,7 +273,7 @@ export function AdminSidebar() {
                 Active Admin
               </span>
             </div>
-          </div>
+          </Link>
           <Link
             href="https://ncloth.store"
             target="_blank"

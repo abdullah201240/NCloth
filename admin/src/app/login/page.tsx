@@ -131,9 +131,6 @@ export default function LoginPage() {
             <span className="text-xs text-muted-foreground font-mono">Studio</span>
           </div>
           <div className="ml-auto flex items-center gap-2">
-            <Badge variant="outline" className="text-xs font-mono border-border px-2 py-0.5 text-muted-foreground">
-              v1.0.4
-            </Badge>
             <ModeToggle />
           </div>
         </div>
