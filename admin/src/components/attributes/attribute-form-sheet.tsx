@@ -138,8 +138,8 @@ export function AttributeFormSheet({
         side="right"
         className="w-full sm:max-w-lg flex flex-col p-0 bg-background border-l border-border"
       >
-        <SheetHeader className="p-4 px-5 border-b border-border">
-          <div className="flex items-center justify-between">
+        <SheetHeader className="p-4 px-5 pr-12 border-b border-border">
+          <div className="flex items-center gap-2.5 flex-wrap">
             <SheetTitle className="text-base font-semibold tracking-tight text-foreground flex items-center gap-2">
               <Sliders className="size-4 text-muted-foreground" />
               <span>{isEditing ? "Edit Attribute Property" : "Create Attribute Property"}</span>
@@ -148,14 +148,14 @@ export function AttributeFormSheet({
               variant="outline"
               className={`text-xs font-mono uppercase tracking-wider px-2 py-0.5 ${
                 selectedStatus === "active"
-                  ? "border-emerald-500/40 text-emerald-500"
-                  : "border-zinc-500/40 text-zinc-500"
+                  ? "border-emerald-500/40 text-emerald-500 bg-emerald-500/10"
+                  : "border-zinc-500/40 text-zinc-500 bg-zinc-500/10"
               }`}
             >
               {selectedStatus}
             </Badge>
           </div>
-          <SheetDescription className="text-xs text-muted-foreground">
+          <SheetDescription className="text-xs text-muted-foreground mt-1">
             Configure dynamic property definition, data type, measurement binding, and storefront indexing rules.
           </SheetDescription>
         </SheetHeader>
@@ -233,14 +233,16 @@ export function AttributeFormSheet({
                   }
                 }}
               >
-                <SelectTrigger className="h-8.5 text-sm font-mono">
+                <SelectTrigger className="h-8.5 text-sm font-mono w-full">
                   <SelectValue placeholder="Select type..." />
                 </SelectTrigger>
-                <SelectContent className="max-h-64">
+                <SelectContent className="max-h-72 w-full">
                   {ATTRIBUTE_TYPES.map((t) => (
-                    <SelectItem key={t.value} value={t.value} className="text-xs py-1.5">
-                      <span className="font-semibold text-foreground font-mono">{t.value}</span>
-                      <span className="block text-[11px] text-muted-foreground">{t.description}</span>
+                    <SelectItem key={t.value} value={t.value} className="text-xs py-2 cursor-pointer">
+                      <div className="flex flex-col items-start gap-0.5 min-w-0 pr-2">
+                        <span className="font-semibold text-foreground font-mono text-xs">{t.value}</span>
+                        <span className="text-[11px] text-muted-foreground whitespace-normal leading-tight">{t.description}</span>
+                      </div>
                     </SelectItem>
                   ))}
                 </SelectContent>

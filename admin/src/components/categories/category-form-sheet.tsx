@@ -152,8 +152,8 @@ export function CategoryFormSheet({
   return (
     <Sheet open={open} onOpenChange={onOpenChange}>
       <SheetContent side="right" className="w-full sm:max-w-lg flex flex-col p-0 bg-background border-l border-border">
-        <SheetHeader className="p-4 px-5 border-b border-border">
-          <div className="flex items-center justify-between">
+        <SheetHeader className="p-4 px-5 pr-12 border-b border-border">
+          <div className="flex items-center gap-2.5 flex-wrap">
             <SheetTitle className="text-base font-semibold tracking-tight text-foreground flex items-center gap-2">
               {selectedLevel === "root" && <FolderTree className="size-4 text-muted-foreground" />}
               {selectedLevel === "category" && <Folder className="size-4 text-muted-foreground" />}

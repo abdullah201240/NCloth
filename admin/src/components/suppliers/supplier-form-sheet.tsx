@@ -98,8 +98,8 @@ export function SupplierFormSheet({
         side="right"
         className="w-full sm:max-w-lg flex flex-col p-0 bg-background border-l border-border"
       >
-        <SheetHeader className="p-4 px-5 border-b border-border">
-          <div className="flex items-center justify-between">
+        <SheetHeader className="p-4 px-5 pr-12 border-b border-border">
+          <div className="flex items-center gap-2.5 flex-wrap">
             <SheetTitle className="text-base font-semibold tracking-tight text-foreground flex items-center gap-2">
               <Truck className="size-4 text-muted-foreground" />
               <span>{isEditing ? "Edit Supplier Partner" : "Create Supplier Partner"}</span>
@@ -108,14 +108,14 @@ export function SupplierFormSheet({
               variant="outline"
               className={`text-xs font-mono uppercase tracking-wider px-2 py-0.5 ${
                 selectedStatus === "active"
-                  ? "border-emerald-500/40 text-emerald-500"
-                  : "border-zinc-500/40 text-zinc-500"
+                  ? "border-emerald-500/40 text-emerald-500 bg-emerald-500/10"
+                  : "border-zinc-500/40 text-zinc-500 bg-zinc-500/10"
               }`}
             >
               {selectedStatus}
             </Badge>
           </div>
-          <SheetDescription className="text-xs text-muted-foreground">
+          <SheetDescription className="text-xs text-muted-foreground mt-1">
             Manage fabric mills, atelier partners, contact details, payment terms, and trade credentials.
           </SheetDescription>
         </SheetHeader>
