@@ -1,12 +1,11 @@
 "use client";
 
-import { useParams, useRouter } from "next/navigation";
+import { useParams } from "next/navigation";
 import { AdminShell } from "@/components/layout/admin-shell";
 import { useReceiving } from "@/lib/stores/receiving-context";
 import { ReceivingSessionView } from "@/components/receiving/receiving-session-view";
 export default function ReceivingSessionDetailPage() {
   const params = useParams<{ id: string }>();
-  const router = useRouter();
   const { getSessionById } = useReceiving();
 
   const session = getSessionById(params.id);
