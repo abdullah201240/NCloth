@@ -21,10 +21,6 @@ import {
   FolderTree,
   Folder,
   Tag,
-  ShoppingBag,
-  RotateCcw,
-  Users,
-  BarChart3,
   Sliders,
   LayoutDashboard,
   Layers,
@@ -33,6 +29,7 @@ import {
   Truck,
   Store as StoreIcon,
   Scale,
+  Award,
   ArrowUpRight,
 } from "lucide-react";
 
@@ -56,11 +53,6 @@ const navigationSections: NavSection[] = [
         title: "Studio Dashboard",
         url: "/",
         icon: LayoutDashboard,
-      },
-      {
-        title: "Brand Analytics",
-        url: "/analytics",
-        icon: BarChart3,
       },
     ],
   },
@@ -96,7 +88,13 @@ const navigationSections: NavSection[] = [
     label: "Product Management",
     items: [
       {
-        title: "Attributes",
+        title: "Brand Houses",
+        url: "/products/brands",
+        icon: Award,
+        badge: 8,
+      },
+      {
+        title: "Dynamic Attributes",
         url: "/products/attributes",
         icon: Sliders,
         badge: "Master",
@@ -156,38 +154,6 @@ const navigationSections: NavSection[] = [
         url: "/stores",
         icon: StoreIcon,
         badge: 6,
-      },
-    ],
-  },
-  {
-    label: "Operations & Sales",
-    items: [
-      {
-        title: "Client Orders",
-        url: "/orders",
-        icon: ShoppingBag,
-        badge: 12,
-      },
-      {
-        title: "Returns & Exchanges",
-        url: "/returns",
-        icon: RotateCcw,
-        badge: 3,
-      },
-      {
-        title: "Private Clients",
-        url: "/customers",
-        icon: Users,
-      },
-    ],
-  },
-  {
-    label: "System",
-    items: [
-      {
-        title: "Studio Settings",
-        url: "/settings",
-        icon: Sliders,
       },
     ],
   },

@@ -41,8 +41,6 @@ export function AdminFooter() {
           <span className="tabular-nums font-mono min-w-[100px] text-right">
             {time}
           </span>
-          <span className="text-border">|</span>
-          <span>NCLOTH • PARIS / NYC</span>
         </div>
       </div>
     </footer>

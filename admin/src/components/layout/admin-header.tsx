@@ -86,6 +86,12 @@ export function AdminHeader() {
         { label: "Subcategories", href: "/categories/subcategory", isLast: true },
       ];
     }
+    if (pathname === "/products/brands") {
+      return [
+        { label: "Product Management", href: "/products/brands", isLast: false },
+        { label: "Brand Houses", href: "/products/brands", isLast: true },
+      ];
+    }
     if (pathname === "/products/attributes/sets") {
       return [
         { label: "Product Management", href: "/products/attributes", isLast: false },
