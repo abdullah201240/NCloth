@@ -590,6 +590,7 @@ export default function SubcategoriesPage() {
         onOpenChange={setSheetOpen}
         rootCategories={rootCategories}
         initialData={editingItem}
+        lockLevel={true}
         onSubmit={handleFormSubmit}
       />
 

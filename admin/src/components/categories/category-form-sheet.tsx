@@ -29,7 +29,7 @@ import {
   type UnifiedCategoryFormValues,
 } from "@/lib/validations/category";
 import { RootCategory, HierarchyLevel, EntityStatus } from "@/lib/types/category";
-import { ImageIcon, X, Sparkles, ExternalLink } from "lucide-react";
+import { ImageIcon, X, Sparkles, ExternalLink, FolderTree, Folder, Tag } from "lucide-react";
 
 interface CategoryFormSheetProps {
   open: boolean;
@@ -49,6 +49,7 @@ interface CategoryFormSheetProps {
     displayOrder: number;
     status: EntityStatus;
   } | null;
+  lockLevel?: boolean;
   onSubmit: (data: UnifiedCategoryFormValues, editId?: string) => void;
 }
 
@@ -80,6 +81,7 @@ export function CategoryFormSheet({
   onOpenChange,
   rootCategories,
   initialData,
+  lockLevel = false,
   onSubmit,
 }: CategoryFormSheetProps) {
   const isEditing = !!initialData?.id;
@@ -149,23 +151,53 @@ export function CategoryFormSheet({
     onOpenChange(false);
   };
 
+  // Dynamic titles and descriptions per locked tier level
+  const getSheetTitle = () => {
+    if (selectedLevel === "root") {
+      return isEditing ? "Edit Root Category (Tier 1)" : "New Root Category (Tier 1)";
+    }
+    if (selectedLevel === "category") {
+      return isEditing ? "Edit Product Category (Tier 2)" : "New Product Category (Tier 2)";
+    }
+    return isEditing ? "Edit Subcategory (Tier 3)" : "New Subcategory (Tier 3)";
+  };
+
+  const getSheetDescription = () => {
+    if (selectedLevel === "root") {
+      return "Define high-level departmental classification (Ready-to-Wear, Footwear, Leather Goods) and hero imagery.";
+    }
+    if (selectedLevel === "category") {
+      return "Define product category group (Outerwear, Knitwear, Boots) attached to a parent Root department.";
+    }
+    return "Define granular subcategory (Overcoats, Chelsea Boots, Crewnecks) for direct SKU mapping.";
+  };
+
   return (
     <Sheet open={open} onOpenChange={onOpenChange}>
       <SheetContent side="right" className="w-full sm:max-w-lg flex flex-col p-0 bg-background border-l border-border">
         <SheetHeader className="p-4 px-5 border-b border-border">
           <div className="flex items-center justify-between">
-            <SheetTitle className="text-base font-semibold tracking-tight text-foreground">
-              {isEditing ? "Edit Hierarchy Node" : "New Hierarchy Node"}
+            <SheetTitle className="text-base font-semibold tracking-tight text-foreground flex items-center gap-2">
+              {selectedLevel === "root" && <FolderTree className="size-4 text-muted-foreground" />}
+              {selectedLevel === "category" && <Folder className="size-4 text-muted-foreground" />}
+              {selectedLevel === "subcategory" && <Tag className="size-4 text-muted-foreground" />}
+              <span>{getSheetTitle()}</span>
             </SheetTitle>
             <Badge
               variant="outline"
-              className="text-xs font-mono uppercase tracking-wider border-border px-2 py-0.5"
+              className={`text-xs font-mono uppercase tracking-wider px-2 py-0.5 border-border ${
+                selectedLevel === "root"
+                  ? "bg-foreground text-background font-medium"
+                  : selectedLevel === "category"
+                  ? "bg-muted text-foreground"
+                  : "bg-background text-muted-foreground"
+              }`}
             >
-              {selectedLevel}
+              Tier {selectedLevel === "root" ? "1 • Root" : selectedLevel === "category" ? "2 • Category" : "3 • Subcategory"}
             </Badge>
           </div>
           <SheetDescription className="text-xs text-muted-foreground">
-            Configure classification level, editorial photography, SKU prefix code, and active visibility state.
+            {getSheetDescription()}
           </SheetDescription>
         </SheetHeader>
 
@@ -174,46 +206,48 @@ export function CategoryFormSheet({
           className="flex flex-1 flex-col justify-between overflow-y-auto"
         >
           <div className="p-4 px-5 space-y-4">
-            {/* 1. Hierarchy Level Selection */}
-            <div className="space-y-1.5">
-              <Label className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">
-                Hierarchy Level *
-              </Label>
-              <Controller
-                name="level"
-                control={form.control}
-                render={({ field }) => (
-                  <Select
-                    disabled={isEditing}
-                    value={field.value}
-                    onValueChange={(val) => {
-                      if (val) {
-                        field.onChange(val as HierarchyLevel);
-                        if (val === "root") {
-                          form.setValue("rootCategoryId", "");
-                          form.setValue("categoryId", "");
+            {/* 1. Hierarchy Level Selection (Hidden or Disabled when lockLevel is true) */}
+            {!lockLevel ? (
+              <div className="space-y-1.5">
+                <Label className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">
+                  Hierarchy Level *
+                </Label>
+                <Controller
+                  name="level"
+                  control={form.control}
+                  render={({ field }) => (
+                    <Select
+                      disabled={isEditing}
+                      value={field.value}
+                      onValueChange={(val) => {
+                        if (val) {
+                          field.onChange(val as HierarchyLevel);
+                          if (val === "root") {
+                            form.setValue("rootCategoryId", "");
+                            form.setValue("categoryId", "");
+                          }
                         }
-                      }
-                    }}
-                  >
-                    <SelectTrigger className="w-full h-8.5 text-sm">
-                      <SelectValue placeholder="Select level" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="root" className="text-sm">Tier 1 • Root Category (e.g. Ready-to-Wear)</SelectItem>
-                      <SelectItem value="category" className="text-sm">Tier 2 • Category (e.g. Outerwear)</SelectItem>
-                      <SelectItem value="subcategory" className="text-sm">Tier 3 • Subcategory (e.g. Trench Coats)</SelectItem>
-                    </SelectContent>
-                  </Select>
-                )}
-              />
-            </div>
+                      }}
+                    >
+                      <SelectTrigger className="w-full h-8.5 text-sm">
+                        <SelectValue placeholder="Select level" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="root" className="text-sm">Tier 1 • Root Category (e.g. Ready-to-Wear)</SelectItem>
+                        <SelectItem value="category" className="text-sm">Tier 2 • Category (e.g. Outerwear)</SelectItem>
+                        <SelectItem value="subcategory" className="text-sm">Tier 3 • Subcategory (e.g. Trench Coats)</SelectItem>
+                      </SelectContent>
+                    </Select>
+                  )}
+                />
+              </div>
+            ) : null}
 
             {/* 2. Parent Root Category (for Category & Subcategory) */}
             {(selectedLevel === "category" || selectedLevel === "subcategory") && (
               <div className="space-y-1.5">
                 <Label className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">
-                  Parent Root Category *
+                  Parent Department (Root Category) *
                 </Label>
                 <Controller
                   name="rootCategoryId"
@@ -251,7 +285,7 @@ export function CategoryFormSheet({
             {selectedLevel === "subcategory" && (
               <div className="space-y-1.5">
                 <Label className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">
-                  Parent Category *
+                  Parent Category (Tier 2) *
                 </Label>
                 <Controller
                   name="categoryId"
@@ -291,13 +325,13 @@ export function CategoryFormSheet({
               </div>
             )}
 
-            {/* 4. Name */}
+            {/* 4. Display Name */}
             <div className="space-y-1.5">
               <Label className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">
-                Display Name *
+                {selectedLevel === "root" ? "Root Department Name *" : selectedLevel === "category" ? "Category Name *" : "Subcategory Name *"}
               </Label>
               <Input
-                placeholder="e.g. Cashmere Knitwear"
+                placeholder={selectedLevel === "root" ? "e.g. Ready-To-Wear" : selectedLevel === "category" ? "e.g. Outerwear" : "e.g. Overcoats & Trench"}
                 className="h-8.5 text-sm"
                 {...form.register("name")}
                 onChange={handleNameChange}
@@ -314,7 +348,7 @@ export function CategoryFormSheet({
                   URL Slug *
                 </Label>
                 <Input
-                  placeholder="cashmere-knitwear"
+                  placeholder={selectedLevel === "root" ? "ready-to-wear" : selectedLevel === "category" ? "outerwear" : "overcoats-trench"}
                   className="font-mono text-sm h-8.5"
                   {...form.register("slug")}
                 />
@@ -328,7 +362,7 @@ export function CategoryFormSheet({
                   SKU Code Prefix *
                 </Label>
                 <Input
-                  placeholder="KNT-CSH"
+                  placeholder={selectedLevel === "root" ? "RTW" : selectedLevel === "category" ? "OTR" : "OTR-OVC"}
                   className="font-mono text-sm uppercase h-8.5"
                   {...form.register("code")}
                   onChange={(e) => {
@@ -346,7 +380,7 @@ export function CategoryFormSheet({
               <div className="flex items-center justify-between">
                 <Label className="text-xs font-semibold uppercase tracking-wider text-foreground flex items-center gap-1.5">
                   <ImageIcon className="size-3.5 text-muted-foreground" />
-                  Category Editorial Image
+                  Editorial Photography
                 </Label>
                 <span className="text-xs text-muted-foreground font-mono">Storefront & Lookbook</span>
               </div>
@@ -422,7 +456,7 @@ export function CategoryFormSheet({
               <div className="pt-2 border-t border-border/60 space-y-1">
                 <div className="flex items-center justify-between">
                   <Label className="text-[11px] uppercase tracking-wider text-muted-foreground font-mono">
-                    Header Banner URL (Optional)
+                    Hero Banner URL (Optional)
                   </Label>
                   {form.watch("bannerUrl") && (
                     <a
@@ -506,7 +540,7 @@ export function CategoryFormSheet({
               Cancel
             </Button>
             <Button type="submit" size="sm" className="h-8 text-sm px-3">
-              {isEditing ? "Update Node" : "Create Node"}
+              {isEditing ? `Update ${selectedLevel === "root" ? "Root" : selectedLevel === "category" ? "Category" : "Subcategory"}` : `Create ${selectedLevel === "root" ? "Root" : selectedLevel === "category" ? "Category" : "Subcategory"}`}
             </Button>
           </SheetFooter>
         </form>
