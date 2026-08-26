@@ -9,15 +9,22 @@ import { XIcon, CircleCheckIcon, InfoIcon, TriangleAlertIcon, OctagonXIcon, Load
 
 const baseToastManager = ToastPrimitive.createToastManager()
 
+type ToastParam = string | { description?: string };
+function extractDesc(param?: ToastParam) {
+  if (!param) return undefined;
+  if (typeof param === "string") return param;
+  return param.description;
+}
+
 const toast = Object.assign(baseToastManager, {
-  success: (title: string, description?: string) =>
-    baseToastManager.add({ title, description, type: "success" }),
-  error: (title: string, description?: string) =>
-    baseToastManager.add({ title, description, type: "error" }),
-  info: (title: string, description?: string) =>
-    baseToastManager.add({ title, description, type: "info" }),
-  warning: (title: string, description?: string) =>
-    baseToastManager.add({ title, description, type: "warning" }),
+  success: (title: string, descOrOpts?: ToastParam) =>
+    baseToastManager.add({ title, description: extractDesc(descOrOpts), type: "success" }),
+  error: (title: string, descOrOpts?: ToastParam) =>
+    baseToastManager.add({ title, description: extractDesc(descOrOpts), type: "error" }),
+  info: (title: string, descOrOpts?: ToastParam) =>
+    baseToastManager.add({ title, description: extractDesc(descOrOpts), type: "info" }),
+  warning: (title: string, descOrOpts?: ToastParam) =>
+    baseToastManager.add({ title, description: extractDesc(descOrOpts), type: "warning" }),
 })
 
 function ToastProvider({ ...props }: ToastPrimitive.Provider.Props) {

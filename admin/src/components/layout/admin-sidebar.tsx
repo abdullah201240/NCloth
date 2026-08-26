@@ -34,6 +34,7 @@ import {
   Package,
   Plus,
   ShoppingCart,
+  Box,
 } from "lucide-react";
 
 interface NavItem {
@@ -130,6 +131,52 @@ const navigationSections: NavSection[] = [
         url: "/products/attributes/units",
         icon: Scale,
         badge: 15,
+      },
+    ],
+  },
+  {
+    label: "Inventory & Storage Engine",
+    items: [
+      {
+        title: "Global Stock Matrix",
+        url: "/inventory",
+        icon: Layers,
+        badge: "Ledger",
+      },
+      {
+        title: "Inbound Receiving",
+        url: "/receiving",
+        icon: Box,
+        badge: 2,
+      },
+      {
+        title: "Putaway Queue",
+        url: "/warehouse/putaway",
+        icon: Grid,
+        badge: "WMS",
+      },
+    ],
+  },
+  {
+    label: "Transfers & Logistics",
+    items: [
+      {
+        title: "Stock Transfers",
+        url: "/transfers",
+        icon: Truck,
+        badge: 3,
+      },
+      {
+        title: "New Transfer",
+        url: "/transfers/new",
+        icon: Plus,
+        badge: "New",
+      },
+      {
+        title: "Store Stock Requests",
+        url: "/stock-requests",
+        icon: StoreIcon,
+        badge: 2,
       },
     ],
   },

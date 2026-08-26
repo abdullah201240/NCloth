@@ -11,6 +11,9 @@ import { AttributeProvider } from "@/lib/stores/attribute-context";
 import { BrandProvider } from "@/lib/stores/brand-context";
 import { ProductProvider } from "@/lib/stores/product-context";
 import { PurchaseProvider } from "@/lib/stores/purchase-context";
+import { InventoryProvider } from "@/lib/stores/inventory-context";
+import { TransferProvider } from "@/lib/stores/transfer-context";
+import { ReceivingProvider } from "@/lib/stores/receiving-context";
 import { ProfileProvider } from "@/lib/stores/profile-context";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { Toaster } from "@/components/ui/toast";
@@ -65,10 +68,16 @@ export default function RootLayout({
                           <BrandProvider>
                             <ProductProvider>
                               <PurchaseProvider>
-                                <ProfileProvider>
-                                  {children}
-                                  <Toaster />
-                                </ProfileProvider>
+                                <InventoryProvider>
+                                  <TransferProvider>
+                                    <ReceivingProvider>
+                                      <ProfileProvider>
+                                        {children}
+                                        <Toaster />
+                                      </ProfileProvider>
+                                    </ReceivingProvider>
+                                  </TransferProvider>
+                                </InventoryProvider>
                               </PurchaseProvider>
                             </ProductProvider>
                           </BrandProvider>

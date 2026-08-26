@@ -196,6 +196,62 @@ export function AdminHeader() {
         { label: "All Stores", href: "/stores", isLast: true },
       ];
     }
+    if (pathname === "/inventory") {
+      return [
+        { label: "Inventory & Storage", href: "/inventory", isLast: false },
+        { label: "Global Stock Matrix", href: "/inventory", isLast: true },
+      ];
+    }
+    if (pathname === "/receiving") {
+      return [
+        { label: "Inbound Logistics", href: "/receiving", isLast: false },
+        { label: "Receiving Center", href: "/receiving", isLast: true },
+      ];
+    }
+    if (pathname.startsWith("/receiving/")) {
+      return [
+        { label: "Inbound Logistics", href: "/receiving", isLast: false },
+        { label: "Receiving Terminal", href: pathname, isLast: true },
+      ];
+    }
+    if (pathname === "/warehouse/putaway") {
+      return [
+        { label: "Warehouse Operations", href: "/warehouse/putaway", isLast: false },
+        { label: "Putaway Queue", href: "/warehouse/putaway", isLast: true },
+      ];
+    }
+    if (pathname === "/transfers/new") {
+      return [
+        { label: "Transfers & Logistics", href: "/transfers", isLast: false },
+        { label: "Stock Transfers", href: "/transfers", isLast: false },
+        { label: "Create Stock Transfer", href: "/transfers/new", isLast: true },
+      ];
+    }
+    if (pathname === "/transfers") {
+      return [
+        { label: "Transfers & Logistics", href: "/transfers", isLast: false },
+        { label: "Stock Transfers", href: "/transfers", isLast: true },
+      ];
+    }
+    if (pathname.startsWith("/transfers/")) {
+      return [
+        { label: "Transfers & Logistics", href: "/transfers", isLast: false },
+        { label: "Transfer Details", href: pathname, isLast: true },
+      ];
+    }
+    if (pathname === "/stock-requests/new") {
+      return [
+        { label: "Retail & Boutiques", href: "/stock-requests", isLast: false },
+        { label: "Store Stock Requests", href: "/stock-requests", isLast: false },
+        { label: "Create Request", href: "/stock-requests/new", isLast: true },
+      ];
+    }
+    if (pathname.startsWith("/stock-requests")) {
+      return [
+        { label: "Retail & Boutiques", href: "/stock-requests", isLast: false },
+        { label: "Store Stock Requests", href: "/stock-requests", isLast: true },
+      ];
+    }
     if (pathname === "/profile") {
       return [
         { label: "Studio Admin", href: "/", isLast: false },

@@ -111,3 +111,5 @@ export function useStoreContext() {
   }
   return context;
 }
+
+export const useStores = useStoreContext;
