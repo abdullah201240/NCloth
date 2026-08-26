@@ -19,6 +19,8 @@ import { Badge } from "@/components/ui/badge";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import {
   FolderTree,
+  Folder,
+  Tag,
   Package,
   ShoppingBag,
   RotateCcw,
@@ -60,14 +62,36 @@ const navigationSections: NavSection[] = [
     ],
   },
   {
-    label: "Catalog & Merchandising",
+    label: "Category Management",
     items: [
       {
-        title: "Category Hierarchy",
+        title: "Taxonomy Dashboard",
         url: "/categories",
-        icon: FolderTree,
-        badge: "3 Tiers",
+        icon: LayoutDashboard,
       },
+      {
+        title: "Root Categories",
+        url: "/categories/root",
+        icon: FolderTree,
+        badge: "Tier 1",
+      },
+      {
+        title: "Product Categories",
+        url: "/categories/category",
+        icon: Folder,
+        badge: "Tier 2",
+      },
+      {
+        title: "Subcategories",
+        url: "/categories/subcategory",
+        icon: Tag,
+        badge: "Tier 3",
+      },
+    ],
+  },
+  {
+    label: "Catalog & Merchandising",
+    items: [
       {
         title: "Products & SKUs",
         url: "/products",
@@ -159,6 +183,8 @@ export function AdminSidebar() {
                   const isActive =
                     item.url === "/"
                       ? pathname === "/"
+                      : item.url === "/categories"
+                      ? pathname === "/categories"
                       : pathname === item.url || pathname.startsWith(`${item.url}/`);
 
                   return (

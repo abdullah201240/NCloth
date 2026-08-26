@@ -68,10 +68,28 @@ export function AdminHeader({
 
   const getBreadcrumbs = () => {
     if (pathname === "/") return [{ label: "Dashboard", href: "/", isLast: true }];
-    if (pathname.startsWith("/categories")) {
+    if (pathname === "/categories") {
       return [
-        { label: "Catalog", href: "/categories", isLast: false },
-        { label: "Category Hierarchy", href: "/categories", isLast: true },
+        { label: "Category Management", href: "/categories", isLast: false },
+        { label: "Taxonomy Dashboard", href: "/categories", isLast: true },
+      ];
+    }
+    if (pathname === "/categories/root") {
+      return [
+        { label: "Category Management", href: "/categories", isLast: false },
+        { label: "Root Categories", href: "/categories/root", isLast: true },
+      ];
+    }
+    if (pathname === "/categories/category") {
+      return [
+        { label: "Category Management", href: "/categories", isLast: false },
+        { label: "Product Categories", href: "/categories/category", isLast: true },
+      ];
+    }
+    if (pathname === "/categories/subcategory") {
+      return [
+        { label: "Category Management", href: "/categories", isLast: false },
+        { label: "Subcategories", href: "/categories/subcategory", isLast: true },
       ];
     }
     if (pathname.startsWith("/products")) {
