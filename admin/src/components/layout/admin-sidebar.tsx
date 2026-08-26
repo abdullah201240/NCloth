@@ -32,6 +32,7 @@ import {
   Layers,
   Building2,
   Grid,
+  Truck,
   ArrowUpRight,
 } from "lucide-react";
 
@@ -127,6 +128,17 @@ const navigationSections: NavSection[] = [
         url: "/warehouses/shelves",
         icon: Grid,
         badge: 7,
+      },
+    ],
+  },
+  {
+    label: "Sourcing & Procurement",
+    items: [
+      {
+        title: "All Suppliers",
+        url: "/suppliers",
+        icon: Truck,
+        badge: 6,
       },
     ],
   },

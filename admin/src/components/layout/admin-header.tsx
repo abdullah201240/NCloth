@@ -110,6 +110,12 @@ export function AdminHeader() {
         { label: "All Warehouses", href: "/warehouses", isLast: true },
       ];
     }
+    if (pathname.startsWith("/suppliers")) {
+      return [
+        { label: "Sourcing & Procurement", href: "/suppliers", isLast: false },
+        { label: "All Suppliers", href: "/suppliers", isLast: true },
+      ];
+    }
     return [{ label: "Studio Admin", href: pathname, isLast: true }];
   };
 

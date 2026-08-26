@@ -4,6 +4,7 @@ import { ThemeProvider } from "@/components/theme-provider";
 import { CategoryProvider } from "@/lib/stores/category-context";
 import { WarehouseProvider } from "@/lib/stores/warehouse-context";
 import { ShelfProvider } from "@/lib/stores/shelf-context";
+import { SupplierProvider } from "@/lib/stores/supplier-context";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { Toaster } from "@/components/ui/toast";
 import "./globals.css";
@@ -45,8 +46,10 @@ export default function RootLayout({
             <CategoryProvider>
               <WarehouseProvider>
                 <ShelfProvider>
-                  {children}
-                  <Toaster />
+                  <SupplierProvider>
+                    {children}
+                    <Toaster />
+                  </SupplierProvider>
                 </ShelfProvider>
               </WarehouseProvider>
             </CategoryProvider>
