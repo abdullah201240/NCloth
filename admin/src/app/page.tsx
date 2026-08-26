@@ -4,7 +4,8 @@ import * as React from "react";
 import Link from "next/link";
 import { AdminShell } from "@/components/layout/admin-shell";
 import { Card, CardHeader, CardTitle, CardDescription, CardContent } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
+import { buttonVariants } from "@/components/ui/button";
+import { cn } from "@/lib/utils";
 import { Badge } from "@/components/ui/badge";
 import {
   Table,
@@ -82,12 +83,12 @@ export default function DashboardPage() {
           </div>
 
           <div className="flex items-center gap-2">
-            <Button
-              size="sm"
-              render={<Link href="/categories" className="text-sm h-8 px-3" />}
+            <Link
+              href="/categories"
+              className={cn(buttonVariants({ size: "sm" }), "text-sm h-8 px-3")}
             >
               <FolderTree className="size-4 mr-1.5" /> Manage Hierarchy
-            </Button>
+            </Link>
           </div>
         </div>
 
@@ -228,14 +229,15 @@ export default function DashboardPage() {
               </div>
 
               <div className="pt-1.5">
-                <Button
-                  variant="outline"
-                  size="sm"
-                  className="w-full text-sm h-8 border-border"
-                  render={<Link href="/categories" />}
+                <Link
+                  href="/categories"
+                  className={cn(
+                    buttonVariants({ variant: "outline", size: "sm" }),
+                    "w-full text-sm h-8 border-border"
+                  )}
                 >
                   <FolderTree className="size-3.5 mr-1.5" /> Open Full Hierarchy Tree
-                </Button>
+                </Link>
               </div>
             </CardContent>
           </Card>

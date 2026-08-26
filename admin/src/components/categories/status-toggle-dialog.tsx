@@ -44,60 +44,60 @@ export function StatusToggleDialog({
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="max-w-md p-5 bg-background">
-        <DialogHeader className="space-y-2">
-          <div className="flex items-center gap-2">
+      <DialogContent className="max-w-md p-5 bg-background border border-border">
+        <DialogHeader className="space-y-2.5">
+          <div className="flex items-center gap-2.5">
             <div
               className={`size-8 rounded-xs flex items-center justify-center border ${
                 isDeactivating
-                  ? "border-amber-500/30 text-amber-600 bg-amber-500/10"
-                  : "border-emerald-500/30 text-emerald-600 bg-emerald-500/10"
+                  ? "border-destructive/40 text-destructive bg-destructive/10"
+                  : "border-emerald-500/40 text-emerald-600 dark:text-emerald-400 bg-emerald-500/10"
               }`}
             >
-              {isDeactivating ? <Power className="size-4" /> : <CheckCircle2 className="size-4" />}
+              {isDeactivating ? <Power className="size-4 text-destructive" /> : <CheckCircle2 className="size-4" />}
             </div>
-            <DialogTitle className="text-base font-medium tracking-tight">
+            <DialogTitle className="text-base font-semibold tracking-tight text-foreground">
               {isDeactivating ? `Deactivate ${item.name}?` : `Activate ${item.name}?`}
             </DialogTitle>
           </div>
 
-          <DialogDescription className="text-xs text-muted-foreground leading-relaxed">
+          <DialogDescription className="text-sm text-muted-foreground leading-relaxed">
             {isDeactivating ? (
               <>
-                Setting this <strong className="text-foreground">{item.level}</strong> to{" "}
-                <span className="font-mono text-amber-600 font-medium">Inactive</span> will hide it and
+                Setting this <strong className="text-foreground font-semibold">{item.level}</strong> to{" "}
+                <span className="font-mono text-destructive font-medium">Inactive</span> will hide it and
                 its child items from the public storefront and disable new product assignments.
                 <br />
-                <span className="text-[11px] block mt-1.5 text-muted-foreground font-mono">
+                <span className="text-xs block mt-2 text-muted-foreground font-mono">
                   * Note: In accordance with studio zero-delete policy, historical data and products remain preserved.
                 </span>
               </>
             ) : (
               <>
-                Setting this <strong className="text-foreground">{item.level}</strong> to{" "}
-                <span className="font-mono text-emerald-600 font-medium">Active</span> will restore
+                Setting this <strong className="text-foreground font-semibold">{item.level}</strong> to{" "}
+                <span className="font-mono text-emerald-600 dark:text-emerald-400 font-medium">Active</span> will restore
                 visibility across all storefront navigation menus and merchandising channels.
               </>
             )}
           </DialogDescription>
         </DialogHeader>
 
-        <div className="border border-border p-3 rounded-xs my-2 flex items-center justify-between text-xs font-mono">
+        <div className="border border-border p-3 rounded-xs my-2 flex items-center justify-between text-xs font-mono bg-background">
           <div className="flex items-center gap-2">
             <span className="text-muted-foreground">Target:</span>
-            <span className="font-medium text-foreground">{item.name}</span>
+            <span className="font-medium text-foreground text-sm">{item.name}</span>
           </div>
-          <div className="flex items-center gap-1.5">
-            <Badge variant="outline" className="text-[10px] uppercase border-border">
+          <div className="flex items-center gap-2">
+            <Badge variant="outline" className="text-xs uppercase border-border px-1.5 py-0.5 text-foreground">
               {item.currentStatus}
             </Badge>
             <span className="text-muted-foreground">→</span>
             <Badge
               variant="outline"
-              className={`text-[10px] uppercase font-mono ${
+              className={`text-xs uppercase font-mono px-2 py-0.5 font-medium ${
                 isDeactivating
-                  ? "border-amber-500/30 text-amber-600 bg-amber-500/10"
-                  : "border-emerald-500/30 text-emerald-600 bg-emerald-500/10"
+                  ? "border-destructive/40 text-destructive bg-destructive/10"
+                  : "border-emerald-500/40 text-emerald-600 dark:text-emerald-400 bg-emerald-500/10"
               }`}
             >
               {nextStatus}
@@ -105,14 +105,15 @@ export function StatusToggleDialog({
           </div>
         </div>
 
-        <DialogFooter className="flex flex-row justify-end gap-2 pt-2 border-t border-border">
-          <Button variant="outline" size="sm" onClick={() => onOpenChange(false)}>
+        <DialogFooter className="flex flex-row justify-end gap-2 pt-2.5 border-t border-border">
+          <Button variant="outline" size="sm" onClick={() => onOpenChange(false)} className="h-8 text-sm px-3 border-border">
             Cancel
           </Button>
           <Button
             size="sm"
             variant={isDeactivating ? "destructive" : "default"}
             onClick={handleConfirm}
+            className="h-8 text-sm px-3 font-medium"
           >
             {isDeactivating ? "Confirm Deactivation" : "Confirm Activation"}
           </Button>
