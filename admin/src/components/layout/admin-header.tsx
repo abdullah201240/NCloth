@@ -116,6 +116,24 @@ export function AdminHeader() {
         { label: "Dynamic Attributes", href: "/products/attributes", isLast: true },
       ];
     }
+    if (pathname === "/products/new") {
+      return [
+        { label: "Product Management", href: "/products", isLast: false },
+        { label: "Create Product", href: "/products/new", isLast: true },
+      ];
+    }
+    if (pathname.startsWith("/products/") && pathname.endsWith("/edit")) {
+      return [
+        { label: "Product Management", href: "/products", isLast: false },
+        { label: "Edit Product Matrix", href: pathname, isLast: true },
+      ];
+    }
+    if (pathname === "/products") {
+      return [
+        { label: "Product Management", href: "/products", isLast: false },
+        { label: "All Products", href: "/products", isLast: true },
+      ];
+    }
     if (pathname.startsWith("/products")) {
       return [
         { label: "Product Management", href: "/products", isLast: false },

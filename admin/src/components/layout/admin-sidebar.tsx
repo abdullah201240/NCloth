@@ -31,6 +31,8 @@ import {
   Scale,
   Award,
   ArrowUpRight,
+  Package,
+  Plus,
 } from "lucide-react";
 
 interface NavItem {
@@ -87,6 +89,18 @@ const navigationSections: NavSection[] = [
   {
     label: "Product Management",
     items: [
+      {
+        title: "All Products",
+        url: "/products",
+        icon: Package,
+        badge: 3,
+      },
+      {
+        title: "Create Product",
+        url: "/products/new",
+        icon: Plus,
+        badge: "New",
+      },
       {
         title: "Brand Houses",
         url: "/products/brands",

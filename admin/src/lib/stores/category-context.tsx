@@ -17,6 +17,7 @@ import { createSyncedStore } from "./create-synced-store";
 interface CategoryContextType {
   rootCategories: RootCategory[];
   flatItems: CategoryFlatItem[];
+  flatCategories: CategoryFlatItem[];
   stats: {
     totalRoots: number;
     activeRoots: number;
@@ -277,6 +278,7 @@ export function CategoryProvider({ children }: { children: React.ReactNode }) {
       value={{
         rootCategories,
         flatItems,
+        flatCategories: flatItems,
         stats,
         addRootCategory,
         updateRootCategory,
@@ -299,3 +301,6 @@ export function useCategoryContext() {
   }
   return context;
 }
+
+export const useCategory = useCategoryContext;
+

@@ -379,3 +379,6 @@ export function useAttributeContext() {
   }
   return context;
 }
+
+export const useAttributes = useAttributeContext;
+
