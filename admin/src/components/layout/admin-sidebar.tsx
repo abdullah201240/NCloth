@@ -194,12 +194,31 @@ const navigationSections: NavSection[] = [
 
 export function AdminSidebar() {
   const pathname = usePathname();
+  const contentRef = React.useRef<HTMLDivElement>(null);
+  const activeItemRef = React.useRef<HTMLLIElement>(null);
+
+  // Restore scroll position or scroll active item into view across page transitions
+  React.useEffect(() => {
+    if (typeof window === "undefined") return;
+    const saved = sessionStorage.getItem("ncloth_sidebar_scroll_top");
+    if (contentRef.current && saved !== null) {
+      contentRef.current.scrollTop = Number(saved);
+    } else if (activeItemRef.current) {
+      activeItemRef.current.scrollIntoView({ block: "nearest", behavior: "instant" });
+    }
+  }, [pathname]);
+
+  const handleScroll = (e: React.UIEvent<HTMLDivElement>) => {
+    if (typeof window !== "undefined") {
+      sessionStorage.setItem("ncloth_sidebar_scroll_top", String(e.currentTarget.scrollTop));
+    }
+  };
 
   return (
     <Sidebar className="border-r border-border bg-background">
       {/* Brand Header */}
       <SidebarHeader className="border-b border-border p-3.5 px-4">
-        <Link href="/" className="flex items-center justify-between group">
+        <Link href="/" scroll={false} className="flex items-center justify-between group">
           <div className="flex flex-col">
             <span className="font-mono text-sm font-semibold tracking-widest text-foreground uppercase">
               N C L O T H
@@ -212,7 +231,11 @@ export function AdminSidebar() {
       </SidebarHeader>
 
       {/* Navigation Sections */}
-      <SidebarContent className="px-2 py-3 space-y-3">
+      <SidebarContent
+        ref={contentRef}
+        onScroll={handleScroll}
+        className="px-2 py-3 space-y-3"
+      >
         {navigationSections.map((section) => (
           <SidebarGroup key={section.label} className="p-0">
             <SidebarGroupLabel className="px-2.5 mb-1 text-xs uppercase tracking-wider font-semibold text-muted-foreground h-6">
@@ -235,11 +258,15 @@ export function AdminSidebar() {
                   const isActive = isExact || (isPrefix && !hasMoreSpecificItem);
 
                   return (
-                    <SidebarMenuItem key={item.title}>
+                    <SidebarMenuItem
+                      key={item.title}
+                      ref={isActive ? activeItemRef : undefined}
+                    >
                       <SidebarMenuButton
                         render={
                           <Link
                             href={item.url}
+                            scroll={false}
                             className={`flex items-center justify-between w-full h-8 px-2.5 rounded-xs text-sm transition-colors ${
                               isActive
                                 ? "bg-foreground text-background font-medium hover:bg-foreground/90 hover:text-background"
@@ -283,6 +310,7 @@ export function AdminSidebar() {
         <div className="flex items-center justify-between">
           <Link
             href="/profile"
+            scroll={false}
             className="flex items-center gap-2.5 min-w-0 hover:opacity-80 transition-opacity"
             title="View Administrator Profile"
           >

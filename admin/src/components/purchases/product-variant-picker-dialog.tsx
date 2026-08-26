@@ -30,7 +30,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { Search, Package, Plus, Check, Filter } from "lucide-react";
+import { Search, Package, Plus, Check, Barcode } from "lucide-react";
 
 export interface SelectedVariantPayload {
   productId: string;
@@ -63,67 +63,92 @@ export function ProductVariantPickerDialog({
   const [selectedCategory, setSelectedCategory] = React.useState<string>("all");
   const [selectedBrand, setSelectedBrand] = React.useState<string>("all");
 
-  // Flatten products into selectable variants
-  const availableVariants = React.useMemo(() => {
-    const list: {
-      product: Product;
-      variant: ProductVariant;
-    }[] = [];
-
-    products.forEach((prod) => {
-      // Category filter
-      if (selectedCategory !== "all" && prod.categoryId !== selectedCategory) {
-        return;
-      }
-      // Brand filter
-      if (selectedBrand !== "all" && prod.brandId !== selectedBrand) {
-        return;
-      }
-
-      // If product has variants, add each
-      if (prod.variants && prod.variants.length > 0) {
-        prod.variants.forEach((v) => {
-          list.push({ product: prod, variant: v });
-        });
-      } else {
-        // Single default variant
-        list.push({
-          product: prod,
-          variant: {
-            id: `var-${prod.id}-std`,
-            name: "Standard Edition",
-            sku: `${prod.code}-STD`,
-            barcode: "3700000000000",
-            combination: {},
-            costPrice: prod.defaultCostPrice,
-            sellingPrice: prod.defaultSellingPrice,
-            status: "active",
-          },
-        });
-      }
-    });
-
-    // Search query filter
-    if (searchQuery.trim()) {
-      const q = searchQuery.toLowerCase().trim();
-      return list.filter(
-        (item) =>
-          item.product.name.toLowerCase().includes(q) ||
-          item.product.code.toLowerCase().includes(q) ||
-          item.variant.name.toLowerCase().includes(q) ||
-          item.variant.sku.toLowerCase().includes(q) ||
-          (item.variant.barcode && item.variant.barcode.includes(q))
-      );
+  // Reset search and filters when modal is reopened
+  React.useEffect(() => {
+    if (open) {
+      setSearchQuery("");
+      setSelectedCategory("all");
+      setSelectedBrand("all");
     }
+  }, [open]);
 
-    return list;
+  // Flatten active products and their variants
+  const availableVariants = React.useMemo(() => {
+    const list: Array<{ product: Product; variant: ProductVariant }> = [];
+
+    products
+      .filter((p) => p.status === "active")
+      .forEach((product) => {
+        if (product.variants && product.variants.length > 0) {
+          product.variants
+            .filter((v) => v.status === "active")
+            .forEach((variant) => {
+              list.push({ product, variant });
+            });
+        } else {
+          // Virtual single variant fallback if product has no variant matrix
+          list.push({
+            product,
+            variant: {
+              id: `${product.id}-default`,
+              sku: `${product.code}-001`,
+              barcode: "",
+              name: "Standard",
+              costPrice: product.defaultCostPrice,
+              sellingPrice: product.defaultSellingPrice,
+              combination: {},
+              status: "active",
+            },
+          });
+        }
+      });
+
+    // Apply Filter & Search
+    return list.filter(({ product, variant }) => {
+      // Category filter
+      if (selectedCategory !== "all") {
+        if (product.categoryId !== selectedCategory) {
+          return false;
+        }
+      }
+
+      // Brand filter
+      if (selectedBrand !== "all" && product.brandId !== selectedBrand) {
+        return false;
+      }
+
+      // Search Query
+      if (searchQuery.trim()) {
+        const q = searchQuery.toLowerCase().trim();
+        const matchesName = product.name.toLowerCase().includes(q);
+        const matchesCode = product.code.toLowerCase().includes(q);
+        const matchesVariantName = variant.name.toLowerCase().includes(q);
+        const matchesSku = variant.sku.toLowerCase().includes(q);
+        const matchesBarcode = variant.barcode ? variant.barcode.toLowerCase().includes(q) : false;
+        const matchesBrand = product.brandName ? product.brandName.toLowerCase().includes(q) : false;
+        const matchesCategory = product.categoryName ? product.categoryName.toLowerCase().includes(q) : false;
+
+        return (
+          matchesName ||
+          matchesCode ||
+          matchesVariantName ||
+          matchesSku ||
+          matchesBarcode ||
+          matchesBrand ||
+          matchesCategory
+        );
+      }
+
+      return true;
+    });
   }, [products, searchQuery, selectedCategory, selectedBrand]);
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="max-w-3xl rounded-xs p-0 gap-0 overflow-hidden bg-background">
+      <DialogContent className="sm:max-w-5xl md:max-w-6xl w-[96vw] max-h-[90vh] rounded-xs p-0 gap-0 overflow-hidden bg-background border border-border">
+        {/* Modal Header */}
         <DialogHeader className="p-4 border-b border-border bg-background">
-          <div className="flex items-center justify-between">
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
             <div className="space-y-0.5">
               <DialogTitle className="text-base font-semibold text-foreground flex items-center gap-2">
                 <Package className="size-4 text-muted-foreground" />
@@ -133,41 +158,43 @@ export function ProductVariantPickerDialog({
                 Search the catalog to add exact sellable variant items to this purchase order.
               </DialogDescription>
             </div>
-            <Badge variant="outline" className="text-xs font-mono border-border">
-              {availableVariants.length} Variants Available
-            </Badge>
+            <div className="flex items-center gap-2">
+              <Badge variant="outline" className="text-xs font-mono border-border px-2 py-0.5">
+                {availableVariants.length} Variants Available
+              </Badge>
+            </div>
           </div>
         </DialogHeader>
 
-        {/* Toolbar with Search, Category & Brand Filters */}
-        <div className="p-3 border-b border-border bg-muted/10 flex flex-col sm:flex-row items-center gap-2">
+        {/* Expanded Toolbar with Search, Category & Brand Filters */}
+        <div className="p-3 border-b border-border bg-muted/10 flex flex-col md:flex-row items-center gap-2.5">
           <div className="relative flex-1 w-full">
-            <Search className="absolute left-2.5 top-1/2 -translate-y-1/2 size-3.5 text-muted-foreground" />
+            <Search className="absolute left-3 top-1/2 -translate-y-1/2 size-3.5 text-muted-foreground" />
             <Input
-              placeholder="Search by product name, code, SKU, or barcode..."
+              placeholder="Search by product name, code, SKU, barcode, brand, or category..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              className="pl-8 h-8 text-xs bg-background"
+              className="pl-9 h-8.5 text-xs bg-background rounded-xs"
             />
           </div>
 
-          <div className="flex items-center gap-2 w-full sm:w-auto">
+          <div className="flex items-center gap-2 w-full md:w-auto">
             <Select value={selectedCategory} onValueChange={(val) => setSelectedCategory(val || "all")}>
-              <SelectTrigger className="h-8 text-xs w-full sm:w-[150px] bg-background">
+              <SelectTrigger className="h-8.5 text-xs w-full md:w-[200px] bg-background rounded-xs">
                 <SelectValue placeholder="All Categories" />
               </SelectTrigger>
-              <SelectContent className="max-h-56">
+              <SelectContent className="max-h-64">
                 <SelectItem value="all" className="text-xs">All Categories</SelectItem>
                 {flatCategories.map((c) => (
                   <SelectItem key={c.id} value={c.id} className="text-xs">
-                    {c.name}
+                    {c.name} ({c.level})
                   </SelectItem>
                 ))}
               </SelectContent>
             </Select>
 
             <Select value={selectedBrand} onValueChange={(val) => setSelectedBrand(val || "all")}>
-              <SelectTrigger className="h-8 text-xs w-full sm:w-[130px] bg-background">
+              <SelectTrigger className="h-8.5 text-xs w-full md:w-[170px] bg-background rounded-xs">
                 <SelectValue placeholder="All Brands" />
               </SelectTrigger>
               <SelectContent>
@@ -179,60 +206,123 @@ export function ProductVariantPickerDialog({
                 ))}
               </SelectContent>
             </Select>
+
+            {(searchQuery || selectedCategory !== "all" || selectedBrand !== "all") && (
+              <Button
+                type="button"
+                variant="ghost"
+                size="sm"
+                onClick={() => {
+                  setSearchQuery("");
+                  setSelectedCategory("all");
+                  setSelectedBrand("all");
+                }}
+                className="h-8.5 text-xs px-2.5 rounded-xs text-muted-foreground hover:text-foreground"
+              >
+                Clear
+              </Button>
+            )}
           </div>
         </div>
 
-        {/* Variants List Table */}
-        <div className="max-h-[380px] overflow-y-auto">
+        {/* Expanded Variants List Table */}
+        <div className="max-h-[520px] overflow-y-auto overflow-x-auto">
           {availableVariants.length === 0 ? (
-            <div className="text-center py-12 space-y-1 text-muted-foreground">
-              <Package className="size-6 mx-auto mb-2 text-muted-foreground/60" />
-              <p className="text-xs font-mono">No matching variants found.</p>
-              <p className="text-[11px]">Try adjusting your search keywords or category filters.</p>
+            <div className="text-center py-16 space-y-1.5 text-muted-foreground">
+              <Package className="size-8 mx-auto mb-2 text-muted-foreground/40" />
+              <p className="text-sm font-medium text-foreground">No matching variants found</p>
+              <p className="text-xs">Try adjusting your search keywords, category, or brand filters.</p>
             </div>
           ) : (
             <Table>
               <TableHeader>
-                <TableRow className="border-b border-border bg-background">
-                  <TableHead className="h-8 text-xs">Product & Variant</TableHead>
-                  <TableHead className="h-8 text-xs w-[140px]">SKU</TableHead>
-                  <TableHead className="h-8 text-xs w-[120px]">Barcode</TableHead>
-                  <TableHead className="h-8 text-xs w-[110px]">Cost Price</TableHead>
-                  <TableHead className="h-8 text-xs w-[90px] text-right">Action</TableHead>
+                <TableRow className="border-b border-border bg-muted/20">
+                  <TableHead className="h-9 text-xs font-semibold">Product & Category</TableHead>
+                  <TableHead className="h-9 text-xs font-semibold w-[180px]">Variant</TableHead>
+                  <TableHead className="h-9 text-xs font-semibold w-[150px]">SKU</TableHead>
+                  <TableHead className="h-9 text-xs font-semibold w-[130px]">Barcode</TableHead>
+                  <TableHead className="h-9 text-xs font-semibold w-[120px] text-right">Cost Price</TableHead>
+                  <TableHead className="h-9 text-xs font-semibold w-[120px] text-right">Retail MSRP</TableHead>
+                  <TableHead className="h-9 text-xs font-semibold w-[100px] text-right">Action</TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>
                 {availableVariants.map(({ product, variant }) => {
                   const isSelected = alreadySelectedVariantIds.includes(variant.id);
+                  const costPrice = variant.costPrice || product.defaultCostPrice || 0;
+                  const retailPrice = variant.sellingPrice || product.defaultSellingPrice || 0;
 
                   return (
-                    <TableRow key={`${product.id}-${variant.id}`} className="border-b border-border/60 hover:bg-muted/20">
-                      <TableCell className="py-2">
+                    <TableRow
+                      key={`${product.id}-${variant.id}`}
+                      className={`border-b border-border/60 transition-colors ${
+                        isSelected ? "bg-muted/30" : "hover:bg-muted/20"
+                      }`}
+                    >
+                      {/* Product Name & Taxonomy */}
+                      <TableCell className="py-2.5">
                         <div className="space-y-0.5">
                           <p className="text-xs font-semibold text-foreground line-clamp-1">
                             {product.name}
                           </p>
-                          <div className="flex items-center gap-1.5 text-[11px] font-mono text-muted-foreground">
-                            <span className="text-foreground font-medium">{variant.name}</span>
-                            <span>•</span>
-                            <span>{product.code}</span>
+                          <div className="flex items-center gap-1.5 text-[11px] text-muted-foreground flex-wrap">
+                            <span className="font-mono text-foreground/80">{product.code}</span>
+                            {product.categoryName && (
+                              <>
+                                <span>•</span>
+                                <span className="text-muted-foreground">{product.categoryName}</span>
+                              </>
+                            )}
+                            {product.brandName && (
+                              <>
+                                <span>•</span>
+                                <span className="text-muted-foreground font-medium">{product.brandName}</span>
+                              </>
+                            )}
                           </div>
                         </div>
                       </TableCell>
 
-                      <TableCell className="py-2 font-mono text-xs text-foreground">
-                        {variant.sku}
+                      {/* Variant Name */}
+                      <TableCell className="py-2.5">
+                        <div className="space-y-1">
+                          <div className="flex items-center gap-1.5">
+                            <span className="text-xs font-medium text-foreground">{variant.name}</span>
+                          </div>
+                        </div>
                       </TableCell>
 
-                      <TableCell className="py-2 font-mono text-xs text-muted-foreground">
-                        {variant.barcode || "—"}
+                      {/* SKU */}
+                      <TableCell className="py-2.5 font-mono text-xs text-foreground">
+                        <span className="bg-muted/40 px-1.5 py-0.5 rounded-xs border border-border/40">
+                          {variant.sku}
+                        </span>
                       </TableCell>
 
-                      <TableCell className="py-2 font-mono text-xs text-foreground font-medium">
-                        ৳{(variant.costPrice || product.defaultCostPrice).toLocaleString()}
+                      {/* Barcode */}
+                      <TableCell className="py-2.5 font-mono text-xs text-muted-foreground">
+                        {variant.barcode ? (
+                          <div className="flex items-center gap-1">
+                            <Barcode className="size-3 text-muted-foreground/70" />
+                            <span>{variant.barcode}</span>
+                          </div>
+                        ) : (
+                          <span className="text-muted-foreground/40">—</span>
+                        )}
                       </TableCell>
 
-                      <TableCell className="text-right py-2">
+                      {/* Unit Cost Price in BDT */}
+                      <TableCell className="py-2.5 font-mono text-xs text-foreground font-semibold text-right">
+                        ৳{costPrice.toLocaleString("en-BD", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
+                      </TableCell>
+
+                      {/* Retail Price in BDT */}
+                      <TableCell className="py-2.5 font-mono text-xs text-muted-foreground text-right">
+                        ৳{retailPrice.toLocaleString("en-BD", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
+                      </TableCell>
+
+                      {/* Select Action Button */}
+                      <TableCell className="text-right py-2.5">
                         <Button
                           type="button"
                           variant={isSelected ? "secondary" : "outline"}
@@ -245,11 +335,13 @@ export function ProductVariantPickerDialog({
                               variantName: variant.name,
                               sku: variant.sku,
                               barcode: variant.barcode,
-                              unitCost: variant.costPrice || product.defaultCostPrice,
+                              unitCost: costPrice,
                             });
                           }}
-                          className={`h-6.5 text-[11px] px-2.5 rounded-xs gap-1 ${
-                            isSelected ? "bg-muted text-muted-foreground border-border" : "border-border"
+                          className={`h-7 text-xs px-2.5 rounded-xs gap-1 transition-all ${
+                            isSelected
+                              ? "bg-muted text-muted-foreground border-border hover:bg-muted"
+                              : "bg-background text-foreground hover:bg-foreground hover:text-background border-border"
                           }`}
                         >
                           {isSelected ? (
@@ -269,6 +361,22 @@ export function ProductVariantPickerDialog({
               </TableBody>
             </Table>
           )}
+        </div>
+
+        {/* Modal Footer Bar */}
+        <div className="p-3 px-4 border-t border-border bg-background flex items-center justify-between">
+          <p className="text-xs text-muted-foreground font-mono">
+            {availableVariants.length} variants available • {alreadySelectedVariantIds.length} already added
+          </p>
+          <Button
+            type="button"
+            variant="outline"
+            size="sm"
+            onClick={() => onOpenChange(false)}
+            className="h-8 text-xs px-3 rounded-xs border-border"
+          >
+            Done
+          </Button>
         </div>
       </DialogContent>
     </Dialog>

@@ -694,7 +694,7 @@ export function PurchaseForm({ initialData, mode = "create" }: PurchaseFormProps
       </Card>
 
       {/* Sticky Bottom Action Bar */}
-      <div className="fixed bottom-0 left-0 right-0 z-20 border-t border-border bg-background/95 backdrop-blur-sm p-3 px-4 flex items-center justify-between">
+      <div className="sticky bottom-0 z-20 -mx-3 md:-mx-4 -mb-3 md:-mb-4 p-3 px-4 bg-background/98 backdrop-blur-sm border-t border-border flex items-center justify-between shadow-xs">
         <div className="flex items-center gap-3">
           <Button
             type="button"

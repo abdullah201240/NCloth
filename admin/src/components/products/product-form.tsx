@@ -1427,8 +1427,7 @@ export function ProductForm({ initialData, mode = "create" }: ProductFormProps) 
 
       {/* ========================================================================= */}
       {/* 7. STICKY BOTTOM ACTION BAR */}
-      {/* ========================================================================= */}
-      <div className="fixed bottom-8 left-0 right-0 z-30 px-4 py-2.5 bg-background/95 backdrop-blur-xs border-t border-border flex items-center justify-between">
+      <div className="sticky bottom-0 z-20 -mx-3 md:-mx-4 -mb-3 md:-mb-4 px-4 py-2.5 bg-background/98 backdrop-blur-xs border-t border-border flex items-center justify-between shadow-xs">
         <div className="flex items-center gap-3">
           <Badge variant="outline" className="text-xs font-mono border-border px-2 py-0.5">
             {variantFields.length} Variants Configured
