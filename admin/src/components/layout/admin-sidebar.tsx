@@ -30,6 +30,8 @@ import {
   Sparkles,
   LayoutDashboard,
   Layers,
+  Building2,
+  Grid,
   ArrowUpRight,
 } from "lucide-react";
 
@@ -112,6 +114,23 @@ const navigationSections: NavSection[] = [
     ],
   },
   {
+    label: "Warehouse Management",
+    items: [
+      {
+        title: "All Warehouses",
+        url: "/warehouses",
+        icon: Building2,
+        badge: 5,
+      },
+      {
+        title: "Storage Shelves",
+        url: "/warehouses/shelves",
+        icon: Grid,
+        badge: 7,
+      },
+    ],
+  },
+  {
     label: "Operations & Sales",
     items: [
       {
@@ -180,12 +199,18 @@ export function AdminSidebar() {
             <SidebarGroupContent>
               <SidebarMenu className="gap-1">
                 {section.items.map((item) => {
-                  const isActive =
-                    item.url === "/"
-                      ? pathname === "/"
-                      : item.url === "/categories"
-                      ? pathname === "/categories"
-                      : pathname === item.url || pathname.startsWith(`${item.url}/`);
+                  const isExact = pathname === item.url;
+                  const isPrefix = item.url !== "/" && pathname.startsWith(`${item.url}/`);
+                  const hasMoreSpecificItem = navigationSections.some((sec) =>
+                    sec.items.some(
+                      (other) =>
+                        other.url !== item.url &&
+                        (pathname === other.url ||
+                          (other.url.startsWith(item.url) && pathname.startsWith(`${other.url}/`)))
+                    )
+                  );
+
+                  const isActive = isExact || (isPrefix && !hasMoreSpecificItem);
 
                   return (
                     <SidebarMenuItem key={item.title}>

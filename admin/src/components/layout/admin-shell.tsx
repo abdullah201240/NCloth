@@ -8,24 +8,15 @@ import { AdminFooter } from "@/components/layout/admin-footer";
 
 interface AdminShellProps {
   children: React.ReactNode;
-  onQuickAction?: () => void;
-  quickActionLabel?: string;
 }
 
-export function AdminShell({
-  children,
-  onQuickAction,
-  quickActionLabel,
-}: AdminShellProps) {
+export function AdminShell({ children }: AdminShellProps) {
   return (
     <SidebarProvider defaultOpen={true}>
       <div className="relative flex min-h-screen w-full bg-background text-foreground">
         <AdminSidebar />
         <SidebarInset className="flex min-h-screen flex-1 flex-col bg-background">
-          <AdminHeader
-            onQuickAction={onQuickAction}
-            quickActionLabel={quickActionLabel}
-          />
+          <AdminHeader />
           <main className="flex-1 p-3 md:p-4 w-full">
             {children}
           </main>

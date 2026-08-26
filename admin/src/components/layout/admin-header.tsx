@@ -43,13 +43,7 @@ import {
 } from "lucide-react";
 import { useRouter } from "next/navigation";
 
-export function AdminHeader({
-  onQuickAction,
-  quickActionLabel,
-}: {
-  onQuickAction?: () => void;
-  quickActionLabel?: string;
-}) {
+export function AdminHeader() {
   const pathname = usePathname();
   const router = useRouter();
   const [openCommand, setOpenCommand] = React.useState(false);
@@ -104,6 +98,18 @@ export function AdminHeader({
         { label: "Client Orders", href: "/orders", isLast: true },
       ];
     }
+    if (pathname === "/warehouses/shelves") {
+      return [
+        { label: "Warehouse Management", href: "/warehouses", isLast: false },
+        { label: "Storage Shelves", href: "/warehouses/shelves", isLast: true },
+      ];
+    }
+    if (pathname.startsWith("/warehouses")) {
+      return [
+        { label: "Warehouse Management", href: "/warehouses", isLast: false },
+        { label: "All Warehouses", href: "/warehouses", isLast: true },
+      ];
+    }
     return [{ label: "Studio Admin", href: pathname, isLast: true }];
   };
 
@@ -111,30 +117,30 @@ export function AdminHeader({
 
   return (
     <>
-      <header className="sticky top-0 z-40 flex h-11 w-full items-center justify-between border-b border-border bg-background px-4">
+      <header className="sticky top-0 z-40 flex h-12 w-full items-center justify-between border-b border-border bg-background px-4">
         {/* Left: Sidebar Trigger & Breadcrumbs */}
         <div className="flex items-center gap-3">
-          <SidebarTrigger className="size-7" />
+          <SidebarTrigger className="size-8 text-foreground" />
 
-          <div className="h-4 w-px bg-border hidden sm:block" />
+          <div className="h-5 w-px bg-border hidden sm:block" />
 
           <Breadcrumb className="hidden sm:block">
-            <BreadcrumbList className="text-xs">
+            <BreadcrumbList className="text-sm font-medium">
               <BreadcrumbItem>
-                <BreadcrumbLink href="/" className="text-muted-foreground hover:text-foreground">
+                <BreadcrumbLink href="/" className="text-muted-foreground hover:text-foreground text-sm">
                   Studio
                 </BreadcrumbLink>
               </BreadcrumbItem>
               {breadcrumbs.map((crumb, idx) => (
                 <React.Fragment key={crumb.label + idx}>
-                  <BreadcrumbSeparator className="text-muted-foreground/60">/</BreadcrumbSeparator>
+                  <BreadcrumbSeparator className="text-muted-foreground/60 text-sm">/</BreadcrumbSeparator>
                   <BreadcrumbItem>
                     {crumb.isLast ? (
-                      <BreadcrumbPage className="font-medium text-foreground text-xs">
+                      <BreadcrumbPage className="font-semibold text-foreground text-sm">
                         {crumb.label}
                       </BreadcrumbPage>
                     ) : (
-                      <BreadcrumbLink href={crumb.href} className="text-muted-foreground hover:text-foreground text-xs">
+                      <BreadcrumbLink href={crumb.href} className="text-muted-foreground hover:text-foreground text-sm font-medium">
                         {crumb.label}
                       </BreadcrumbLink>
                     )}
@@ -145,29 +151,22 @@ export function AdminHeader({
           </Breadcrumb>
         </div>
 
-        {/* Right: Search, Theme Toggle, Environment Badge, Quick Action & User Menu */}
+        {/* Right: Search, Theme Toggle & User Menu */}
         <div className="flex items-center gap-2">
           {/* Quick Search Button */}
           <Button
             variant="outline"
             size="sm"
             onClick={() => setOpenCommand(true)}
-            className="hidden md:flex items-center gap-2 h-7 px-2.5 text-xs text-muted-foreground hover:text-foreground border-border bg-background"
+            className="hidden md:flex items-center gap-2.5 h-8 px-3 text-sm text-muted-foreground hover:text-foreground border-border bg-background"
           >
-            <Search className="size-3.5 text-muted-foreground" />
-            <span>Search studio catalog...</span>
-            <Kbd className="text-[10px] ml-1.5 bg-muted border border-border/60">⌘K</Kbd>
+            <Search className="size-4 text-muted-foreground" />
+            <span className="text-sm">Search studio catalog...</span>
+            <Kbd className="text-xs ml-1.5 bg-muted border border-border/60 px-1.5">⌘K</Kbd>
           </Button>
 
           {/* Theme Toggle (Dark / Light / System) */}
           <ModeToggle />
-
-          {/* Optional Page Quick Action */}
-          {onQuickAction && quickActionLabel && (
-            <Button size="xs" onClick={onQuickAction} className="h-7 text-xs px-2.5">
-              {quickActionLabel}
-            </Button>
-          )}
 
           {/* Admin Profile Dropdown */}
           <DropdownMenu>
@@ -176,11 +175,11 @@ export function AdminHeader({
                 <Button
                   variant="outline"
                   size="icon-xs"
-                  className="size-7 border-border bg-background text-foreground"
+                  className="size-8 border-border bg-background text-foreground"
                 />
               }
             >
-              <SlidersHorizontal className="size-3.5" />
+              <SlidersHorizontal className="size-4" />
               <span className="sr-only">Admin menu</span>
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end" className="w-56">

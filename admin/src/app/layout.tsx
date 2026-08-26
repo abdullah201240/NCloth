@@ -2,6 +2,8 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import { ThemeProvider } from "@/components/theme-provider";
 import { CategoryProvider } from "@/lib/stores/category-context";
+import { WarehouseProvider } from "@/lib/stores/warehouse-context";
+import { ShelfProvider } from "@/lib/stores/shelf-context";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { Toaster } from "@/components/ui/toast";
 import "./globals.css";
@@ -41,8 +43,12 @@ export default function RootLayout({
         >
           <TooltipProvider delay={100}>
             <CategoryProvider>
-              {children}
-              <Toaster />
+              <WarehouseProvider>
+                <ShelfProvider>
+                  {children}
+                  <Toaster />
+                </ShelfProvider>
+              </WarehouseProvider>
             </CategoryProvider>
           </TooltipProvider>
         </ThemeProvider>

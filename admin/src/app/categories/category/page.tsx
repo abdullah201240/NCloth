@@ -164,10 +164,7 @@ export default function ProductCategoriesPage() {
   );
 
   return (
-    <AdminShell
-      onQuickAction={handleOpenCreate}
-      quickActionLabel="+ New Category"
-    >
+    <AdminShell>
       <div className="space-y-4">
         {/* Page Header */}
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-border pb-3">
