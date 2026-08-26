@@ -110,18 +110,6 @@ export function AdminHeader() {
         { label: "Dynamic Attributes", href: "/products/attributes", isLast: true },
       ];
     }
-    if (pathname === "/products/colors") {
-      return [
-        { label: "Product Management", href: "/products/attributes", isLast: false },
-        { label: "Colors & Swatches", href: "/products/colors", isLast: true },
-      ];
-    }
-    if (pathname === "/products/sizes") {
-      return [
-        { label: "Product Management", href: "/products/attributes", isLast: false },
-        { label: "Sizes & Scale Matrix", href: "/products/sizes", isLast: true },
-      ];
-    }
     if (pathname.startsWith("/products")) {
       return [
         { label: "Product Management", href: "/products", isLast: false },
