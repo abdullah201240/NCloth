@@ -28,7 +28,6 @@ import {
   CommandList,
 } from "@/components/ui/command";
 import { Button } from "@/components/ui/button";
-import { Badge } from "@/components/ui/badge";
 import { toast } from "@/components/ui/toast";
 import { Kbd } from "@/components/ui/kbd";
 import { ModeToggle } from "@/components/mode-toggle";
@@ -159,15 +158,6 @@ export function AdminHeader({
             <span>Search studio catalog...</span>
             <Kbd className="text-[10px] ml-1.5 bg-muted border border-border/60">⌘K</Kbd>
           </Button>
-
-          {/* Environment Status Badge */}
-          <Badge
-            variant="outline"
-            className="hidden lg:inline-flex items-center gap-1.5 text-xs font-mono border-border bg-background text-muted-foreground px-2 py-0.5"
-          >
-            <span className="size-1.5 rounded-full bg-emerald-500" />
-            SS26 Live
-          </Badge>
 
           {/* Theme Toggle (Dark / Light / System) */}
           <ModeToggle />
