@@ -12,14 +12,14 @@ interface AdminShellProps {
 
 export function AdminShell({ children }: AdminShellProps) {
   return (
-    <SidebarProvider defaultOpen={true}>
-      <div className="relative flex min-h-screen w-full bg-background text-foreground overflow-x-hidden">
+    <SidebarProvider defaultOpen={true} className="h-screen max-h-screen overflow-hidden">
+      <div className="relative flex h-screen max-h-screen w-full overflow-hidden bg-background text-foreground">
         <AdminSidebar />
-        <SidebarInset className="flex min-h-screen flex-1 min-w-0 flex-col bg-background overflow-x-hidden">
+        <SidebarInset className="flex h-screen max-h-screen flex-1 min-w-0 flex-col overflow-hidden bg-background">
           <AdminHeader />
-          <div className="flex-1 w-full min-w-0 overflow-x-hidden">
+          <main className="flex-1 w-full min-w-0 overflow-y-auto overflow-x-hidden p-3 md:p-4">
             {children}
-          </div>
+          </main>
           <AdminFooter />
         </SidebarInset>
       </div>

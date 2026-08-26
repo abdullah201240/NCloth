@@ -302,12 +302,12 @@ function SidebarRail({ className, ...props }: React.ComponentProps<"button">) {
   )
 }
 
-function SidebarInset({ className, ...props }: React.ComponentProps<"main">) {
+function SidebarInset({ className, ...props }: React.ComponentProps<"div">) {
   return (
-    <main
+    <div
       data-slot="sidebar-inset"
       className={cn(
-        "relative flex w-full min-w-0 flex-1 flex-col bg-background overflow-x-hidden md:peer-data-[variant=inset]:m-0 md:peer-data-[variant=inset]:border-l md:peer-data-[variant=inset]:border-border",
+        "relative flex w-full min-w-0 flex-1 flex-col bg-background overflow-hidden md:peer-data-[variant=inset]:m-0 md:peer-data-[variant=inset]:border-l md:peer-data-[variant=inset]:border-border",
         className
       )}
       {...props}
