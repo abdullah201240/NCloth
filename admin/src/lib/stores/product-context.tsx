@@ -4,6 +4,7 @@ import * as React from "react";
 import { Product, ProductStats } from "@/lib/types/product";
 import { ProductFormValues } from "@/lib/validations/product";
 import { initialProducts } from "@/lib/stores/product-store";
+import { createSyncedStore } from "./create-synced-store";
 import { toast } from "@/components/ui/toast";
 
 interface ProductContextType {
@@ -18,30 +19,15 @@ interface ProductContextType {
   isBarcodeAvailable: (barcode: string, excludeProductId?: string, excludeVariantId?: string) => boolean;
 }
 
-const STORAGE_KEY = "ncloth_products_catalog_v1";
+const productStore = createSyncedStore<Product[]>(
+  "ncloth_products_catalog_v1",
+  initialProducts
+);
 
 const ProductContext = React.createContext<ProductContextType | undefined>(undefined);
 
 export function ProductProvider({ children }: { children: React.ReactNode }) {
-  const [products, setProducts] = React.useState<Product[]>(() => {
-    if (typeof window !== "undefined") {
-      const saved = localStorage.getItem(STORAGE_KEY);
-      if (saved) {
-        try {
-          return JSON.parse(saved);
-        } catch {
-          return initialProducts;
-        }
-      }
-    }
-    return initialProducts;
-  });
-
-  React.useEffect(() => {
-    if (typeof window !== "undefined") {
-      localStorage.setItem(STORAGE_KEY, JSON.stringify(products));
-    }
-  }, [products]);
+  const [products, setProducts] = productStore.useStore();
 
   // Reactive Stats Calculation
   const stats = React.useMemo<ProductStats>(() => {
@@ -138,7 +124,7 @@ export function ProductProvider({ children }: { children: React.ReactNode }) {
         defaultCostPrice: values.defaultCostPrice,
         defaultSellingPrice: values.defaultSellingPrice,
         compareAtPrice: values.compareAtPrice,
-        currency: values.currency || "EUR",
+        currency: values.currency || "BDT",
         hasVariants: values.hasVariants,
         variantAttributeIds: values.variantAttributeIds || [],
         attributes: values.attributes || [],
@@ -189,7 +175,7 @@ export function ProductProvider({ children }: { children: React.ReactNode }) {
               defaultCostPrice: values.defaultCostPrice,
               defaultSellingPrice: values.defaultSellingPrice,
               compareAtPrice: values.compareAtPrice,
-              currency: values.currency || "EUR",
+              currency: values.currency || "BDT",
               hasVariants: values.hasVariants,
               variantAttributeIds: values.variantAttributeIds || [],
               attributes: values.attributes || [],

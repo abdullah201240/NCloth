@@ -117,3 +117,6 @@ export function useSupplierContext() {
   }
   return context;
 }
+
+export const useSuppliers = useSupplierContext;
+

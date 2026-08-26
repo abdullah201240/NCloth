@@ -4,6 +4,7 @@ import * as React from "react";
 import { StoreShelf, StoreShelfStats } from "@/lib/types/store-shelf";
 import { StoreShelfFormValues } from "@/lib/validations/store-shelf";
 import { initialStoreShelves } from "@/lib/stores/store-shelf-store";
+import { createSyncedStore } from "./create-synced-store";
 import { toast } from "@/components/ui/toast";
 
 interface StoreShelfContextType {
@@ -16,30 +17,15 @@ interface StoreShelfContextType {
   getShelvesByStoreId: (storeId: string) => StoreShelf[];
 }
 
-const STORAGE_KEY = "ncloth_store_shelves_v1";
+const storeShelfStore = createSyncedStore<StoreShelf[]>(
+  "ncloth_store_shelves_v1",
+  initialStoreShelves
+);
 
 const StoreShelfContext = React.createContext<StoreShelfContextType | undefined>(undefined);
 
 export function StoreShelfProvider({ children }: { children: React.ReactNode }) {
-  const [shelves, setShelves] = React.useState<StoreShelf[]>(() => {
-    if (typeof window !== "undefined") {
-      const saved = localStorage.getItem(STORAGE_KEY);
-      if (saved) {
-        try {
-          return JSON.parse(saved);
-        } catch {
-          return initialStoreShelves;
-        }
-      }
-    }
-    return initialStoreShelves;
-  });
-
-  React.useEffect(() => {
-    if (typeof window !== "undefined") {
-      localStorage.setItem(STORAGE_KEY, JSON.stringify(shelves));
-    }
-  }, [shelves]);
+  const [shelves, setShelves] = storeShelfStore.useStore();
 
   const stats = React.useMemo<StoreShelfStats>(() => {
     const totalShelves = shelves.length;

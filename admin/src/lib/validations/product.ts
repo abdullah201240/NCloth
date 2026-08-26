@@ -79,7 +79,7 @@ export const productFormSchema = z
     defaultCostPrice: z.number().min(0, "Default cost price cannot be negative"),
     defaultSellingPrice: z.number().min(0, "Default selling price cannot be negative"),
     compareAtPrice: z.number().min(0).optional(),
-    currency: z.string().default("EUR"),
+    currency: z.string().default("BDT"),
 
     // Dynamic Attributes & Variants
     hasVariants: z.boolean().default(false),

@@ -1,6 +1,4 @@
 import * as React from "react"
-import { mergeProps } from "@base-ui/react/merge-props"
-import { useRender } from "@base-ui/react/use-render"
 import { cva, type VariantProps } from "class-variance-authority"
 
 import { cn } from "@/lib/utils"
@@ -22,23 +20,16 @@ const markerVariants = cva(
 function Marker({
   className,
   variant = "default",
-  render,
   ...props
-}: useRender.ComponentProps<"div"> & VariantProps<typeof markerVariants>) {
-  return useRender({
-    defaultTagName: "div",
-    props: mergeProps<"div">(
-      {
-        className: cn(markerVariants({ variant, className })),
-      },
-      props
-    ),
-    render,
-    state: {
-      slot: "marker",
-      variant,
-    },
-  })
+}: React.ComponentProps<"div"> & VariantProps<typeof markerVariants>) {
+  return (
+    <div
+      data-slot="marker"
+      data-variant={variant}
+      className={cn(markerVariants({ variant, className }))}
+      {...props}
+    />
+  )
 }
 
 function MarkerIcon({ className, ...props }: React.ComponentProps<"span">) {

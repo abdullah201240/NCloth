@@ -10,6 +10,7 @@ import { StoreShelfProvider } from "@/lib/stores/store-shelf-context";
 import { AttributeProvider } from "@/lib/stores/attribute-context";
 import { BrandProvider } from "@/lib/stores/brand-context";
 import { ProductProvider } from "@/lib/stores/product-context";
+import { PurchaseProvider } from "@/lib/stores/purchase-context";
 import { ProfileProvider } from "@/lib/stores/profile-context";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { Toaster } from "@/components/ui/toast";
@@ -41,12 +42,17 @@ export default function RootLayout({
       suppressHydrationWarning
       className={`${geistSans.variable} ${geistMono.variable} dark h-full antialiased`}
     >
-      <body className="min-h-full flex flex-col bg-background text-foreground selection:bg-foreground selection:text-background">
+      <head />
+      <body
+        suppressHydrationWarning
+        className="min-h-full flex flex-col bg-background text-foreground selection:bg-foreground selection:text-background"
+      >
         <ThemeProvider
           attribute="class"
           defaultTheme="dark"
-          enableSystem={false}
+          enableSystem
           disableTransitionOnChange
+          scriptProps={{ async: true }}
         >
           <TooltipProvider delay={100}>
             <CategoryProvider>
@@ -58,10 +64,12 @@ export default function RootLayout({
                         <AttributeProvider>
                           <BrandProvider>
                             <ProductProvider>
-                              <ProfileProvider>
-                                {children}
-                                <Toaster />
-                              </ProfileProvider>
+                              <PurchaseProvider>
+                                <ProfileProvider>
+                                  {children}
+                                  <Toaster />
+                                </ProfileProvider>
+                              </PurchaseProvider>
                             </ProductProvider>
                           </BrandProvider>
                         </AttributeProvider>

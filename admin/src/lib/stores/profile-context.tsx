@@ -75,68 +75,27 @@ const initialNotifications: NotificationSettings = {
   securityAudits: true,
 };
 
+import { createSyncedStore } from "./create-synced-store";
+
+const profileStore = createSyncedStore<UserProfile>(
+  PROFILE_STORAGE_KEY,
+  initialProfile
+);
+const sessionsStore = createSyncedStore<UserSession[]>(
+  SESSIONS_STORAGE_KEY,
+  initialSessions
+);
+const notificationsStore = createSyncedStore<NotificationSettings>(
+  NOTIFICATIONS_STORAGE_KEY,
+  initialNotifications
+);
+
 const ProfileContext = React.createContext<ProfileContextType | undefined>(undefined);
 
 export function ProfileProvider({ children }: { children: React.ReactNode }) {
-  const [profile, setProfile] = React.useState<UserProfile>(() => {
-    if (typeof window !== "undefined") {
-      const saved = localStorage.getItem(PROFILE_STORAGE_KEY);
-      if (saved) {
-        try {
-          return JSON.parse(saved);
-        } catch {
-          return initialProfile;
-        }
-      }
-    }
-    return initialProfile;
-  });
-
-  const [sessions, setSessions] = React.useState<UserSession[]>(() => {
-    if (typeof window !== "undefined") {
-      const saved = localStorage.getItem(SESSIONS_STORAGE_KEY);
-      if (saved) {
-        try {
-          return JSON.parse(saved);
-        } catch {
-          return initialSessions;
-        }
-      }
-    }
-    return initialSessions;
-  });
-
-  const [notifications, setNotifications] = React.useState<NotificationSettings>(() => {
-    if (typeof window !== "undefined") {
-      const saved = localStorage.getItem(NOTIFICATIONS_STORAGE_KEY);
-      if (saved) {
-        try {
-          return JSON.parse(saved);
-        } catch {
-          return initialNotifications;
-        }
-      }
-    }
-    return initialNotifications;
-  });
-
-  React.useEffect(() => {
-    if (typeof window !== "undefined") {
-      localStorage.setItem(PROFILE_STORAGE_KEY, JSON.stringify(profile));
-    }
-  }, [profile]);
-
-  React.useEffect(() => {
-    if (typeof window !== "undefined") {
-      localStorage.setItem(SESSIONS_STORAGE_KEY, JSON.stringify(sessions));
-    }
-  }, [sessions]);
-
-  React.useEffect(() => {
-    if (typeof window !== "undefined") {
-      localStorage.setItem(NOTIFICATIONS_STORAGE_KEY, JSON.stringify(notifications));
-    }
-  }, [notifications]);
+  const [profile, setProfile] = profileStore.useStore();
+  const [sessions, setSessions] = sessionsStore.useStore();
+  const [notifications, setNotifications] = notificationsStore.useStore();
 
   const updateProfile = React.useCallback((data: ProfileDetailsFormValues) => {
     setProfile((prev) => ({

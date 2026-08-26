@@ -111,3 +111,6 @@ export function useWarehouseContext() {
   }
   return context;
 }
+
+export const useWarehouses = useWarehouseContext;
+

@@ -203,7 +203,7 @@ export default function ProductsPage() {
             </div>
             <div className="mt-2.5 flex items-baseline justify-between">
               <span className="text-2xl font-light font-mono tabular-nums text-foreground">
-                €{stats.totalInventoryValuation.toLocaleString()}
+                ৳{stats.totalInventoryValuation.toLocaleString()}
               </span>
               <span className="text-xs font-mono text-muted-foreground">
                 MSRP Base
@@ -397,12 +397,12 @@ export default function ProductsPage() {
 
                         {/* Cost Price */}
                         <TableCell className="py-2.5 font-mono text-xs text-muted-foreground">
-                          €{p.defaultCostPrice.toFixed(2)}
+                          ৳{p.defaultCostPrice.toFixed(2)}
                         </TableCell>
 
                         {/* Selling Price */}
                         <TableCell className="py-2.5 font-mono text-xs text-foreground font-semibold">
-                          €{p.defaultSellingPrice.toFixed(2)}
+                          ৳{p.defaultSellingPrice.toFixed(2)}
                         </TableCell>
 
                         {/* Status */}
@@ -509,7 +509,7 @@ export default function ProductsPage() {
 
                     <div className="pt-2 border-t border-border/60 flex items-center justify-between text-xs font-mono">
                       <span className="text-muted-foreground">{p.variants?.length || 1} SKUs</span>
-                      <span className="text-sm font-semibold text-foreground">€{p.defaultSellingPrice.toFixed(2)}</span>
+                      <span className="text-sm font-semibold text-foreground">৳{p.defaultSellingPrice.toFixed(2)}</span>
                     </div>
                   </div>
 

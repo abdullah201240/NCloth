@@ -29,7 +29,7 @@ const recentVipOrders = [
     client: "Charlotte de Bourbon",
     tier: "VIP Tier 1",
     items: "Oversized Cashmere Blazer (M) + Wide Trousers (38)",
-    total: "$2,450.00",
+    total: "৳24,500",
     status: "processing",
     date: "10 mins ago",
   },
@@ -38,7 +38,7 @@ const recentVipOrders = [
     client: "Julian Vance",
     tier: "Private Client",
     items: "Italian Calfskin Chelsea Boots (43)",
-    total: "$890.00",
+    total: "৳8,900",
     status: "packed",
     date: "42 mins ago",
   },
@@ -47,7 +47,7 @@ const recentVipOrders = [
     client: "Elena Rostova",
     tier: "VIP Tier 1",
     items: "Double-Breasted Wool Trench (S)",
-    total: "$1,850.00",
+    total: "৳18,500",
     status: "dispatched",
     date: "2 hrs ago",
   },
@@ -56,7 +56,7 @@ const recentVipOrders = [
     client: "Marcus Sterling",
     tier: "Regular",
     items: "13.5oz Japanese Selvedge Denim (32)",
-    total: "$420.00",
+    total: "৳4,200",
     status: "delivered",
     date: "5 hrs ago",
   },
@@ -101,7 +101,7 @@ export default function DashboardPage() {
             </div>
             <div className="mt-2.5 flex items-baseline justify-between">
               <span className="text-2xl font-light font-mono tabular-nums text-foreground">
-                $148,200
+                ৳1,482,000
               </span>
               <span className="text-xs font-mono text-emerald-600 font-medium">
                 +18.4%

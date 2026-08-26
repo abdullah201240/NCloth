@@ -158,6 +158,26 @@ export function AdminHeader() {
         { label: "All Warehouses", href: "/warehouses", isLast: true },
       ];
     }
+    if (pathname === "/purchases/new") {
+      return [
+        { label: "Sourcing & Procurement", href: "/purchases", isLast: false },
+        { label: "Purchase Orders", href: "/purchases", isLast: false },
+        { label: "Create Purchase Order", href: "/purchases/new", isLast: true },
+      ];
+    }
+    if (pathname === "/purchases") {
+      return [
+        { label: "Sourcing & Procurement", href: "/purchases", isLast: false },
+        { label: "Purchase Orders", href: "/purchases", isLast: true },
+      ];
+    }
+    if (pathname.startsWith("/purchases/")) {
+      return [
+        { label: "Sourcing & Procurement", href: "/purchases", isLast: false },
+        { label: "Purchase Orders", href: "/purchases", isLast: false },
+        { label: "Order Details & GRN", href: pathname, isLast: true },
+      ];
+    }
     if (pathname.startsWith("/suppliers")) {
       return [
         { label: "Sourcing & Procurement", href: "/suppliers", isLast: false },

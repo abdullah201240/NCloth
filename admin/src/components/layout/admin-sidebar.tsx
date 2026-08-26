@@ -33,6 +33,7 @@ import {
   ArrowUpRight,
   Package,
   Plus,
+  ShoppingCart,
 } from "lucide-react";
 
 interface NavItem {
@@ -152,6 +153,18 @@ const navigationSections: NavSection[] = [
   {
     label: "Sourcing & Procurement",
     items: [
+      {
+        title: "Purchase Orders",
+        url: "/purchases",
+        icon: ShoppingCart,
+        badge: 3,
+      },
+      {
+        title: "New Purchase",
+        url: "/purchases/new",
+        icon: Plus,
+        badge: "New",
+      },
       {
         title: "All Suppliers",
         url: "/suppliers",

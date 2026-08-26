@@ -111,7 +111,7 @@ export function ProductForm({ initialData, mode = "create" }: ProductFormProps) 
           defaultCostPrice: initialData.defaultCostPrice,
           defaultSellingPrice: initialData.defaultSellingPrice,
           compareAtPrice: initialData.compareAtPrice,
-          currency: initialData.currency || "EUR",
+          currency: initialData.currency || "BDT",
           hasVariants: initialData.hasVariants,
           variantAttributeIds: initialData.variantAttributeIds || [],
           attributes: initialData.attributes || [],
@@ -136,10 +136,10 @@ export function ProductForm({ initialData, mode = "create" }: ProductFormProps) 
           productType: "STOCKABLE",
           description: "",
           status: "active",
-          defaultCostPrice: 100,
-          defaultSellingPrice: 250,
+          defaultCostPrice: 1000,
+          defaultSellingPrice: 2500,
           compareAtPrice: undefined,
-          currency: "EUR",
+          currency: "BDT",
           hasVariants: true,
           variantAttributeIds: ["attr-color", "attr-size"],
           attributes: [],
@@ -1144,7 +1144,7 @@ export function ProductForm({ initialData, mode = "create" }: ProductFormProps) 
               <div className="md:col-span-2 grid grid-cols-1 sm:grid-cols-2 gap-3">
                 <div className="space-y-1.5">
                   <Label className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">
-                    Master Cost Price (€ / ৳) *
+                    Master Cost Price (৳) *
                   </Label>
                   <Input
                     type="number"
@@ -1160,7 +1160,7 @@ export function ProductForm({ initialData, mode = "create" }: ProductFormProps) 
 
                 <div className="space-y-1.5">
                   <Label className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">
-                    Master Selling Price (€ / ৳) *
+                    Master Selling Price (৳) *
                   </Label>
                   <Input
                     type="number"
@@ -1195,18 +1195,18 @@ export function ProductForm({ initialData, mode = "create" }: ProductFormProps) 
             <div className="border border-border p-3.5 rounded-xs bg-muted/10 grid grid-cols-2 sm:grid-cols-4 gap-3 text-xs font-mono">
               <div className="space-y-0.5">
                 <span className="text-muted-foreground text-[11px]">Cost Base</span>
-                <p className="text-sm font-semibold text-foreground">€{defaultCostPrice.toFixed(2)}</p>
+                <p className="text-sm font-semibold text-foreground">৳{defaultCostPrice.toFixed(2)}</p>
               </div>
 
               <div className="space-y-0.5">
                 <span className="text-muted-foreground text-[11px]">Selling MSRP</span>
-                <p className="text-sm font-semibold text-foreground">€{defaultSellingPrice.toFixed(2)}</p>
+                <p className="text-sm font-semibold text-foreground">৳{defaultSellingPrice.toFixed(2)}</p>
               </div>
 
               <div className="space-y-0.5">
                 <span className="text-muted-foreground text-[11px]">Gross Profit</span>
                 <p className={`text-sm font-semibold ${grossProfit >= 0 ? "text-emerald-500" : "text-destructive"}`}>
-                  {grossProfit >= 0 ? `+€${grossProfit.toFixed(2)}` : `-€${Math.abs(grossProfit).toFixed(2)}`}
+                  {grossProfit >= 0 ? `+৳${grossProfit.toFixed(2)}` : `-৳${Math.abs(grossProfit).toFixed(2)}`}
                 </p>
               </div>
 

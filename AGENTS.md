@@ -71,3 +71,9 @@
 - **100% Mobile Optimized:** Every view must seamlessly adapt to mobile screens.
 - Tables must have horizontal overflow wrappers (`overflow-x-auto`).
 - Touch-friendly tap targets and collapsible mobile navigation with sheet drawers.
+
+## 13. 🇧🇩 Universal Bangladeshi Taka (৳ / BDT) Currency Standard
+- **100% BDT Currency Standard:** ALWAYS and EXCLUSIVELY use **Bangladeshi Taka (`৳` / BDT)** as the universal currency symbol and standard across the entire application (prices, pricing tables, KPI valuation cards, cost inputs, retail MSRP, invoices, dashboards).
+- **NO EUR (€), USD ($), GBP (£), or other foreign currency symbols:** Never use or hardcode `€`, `$`, `EUR`, `USD` in any page, component, type default, seed data, or placeholder.
+- **Format Standard:** Format currency with `৳` prefix followed immediately by the formatted number (e.g., `৳1,850.00`, `৳500`, `৳25,400`).
+

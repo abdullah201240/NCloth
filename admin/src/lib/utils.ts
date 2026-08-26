@@ -18,3 +18,17 @@ export function formatStudioDate(dateString?: string): string {
     return "—";
   }
 }
+
+/**
+ * Standard Bangladeshi Taka (৳ / BDT) Currency Formatter
+ */
+export function formatBDT(amount: number | string | undefined | null, showDecimals: boolean = true): string {
+  if (amount === undefined || amount === null || amount === "") return "৳0";
+  const num = typeof amount === "string" ? parseFloat(amount) : amount;
+  if (isNaN(num)) return "৳0";
+  if (!showDecimals || Number.isInteger(num)) {
+    return `৳${num.toLocaleString("en-US")}`;
+  }
+  return `৳${num.toLocaleString("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
+}
+
