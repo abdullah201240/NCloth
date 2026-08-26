@@ -29,6 +29,7 @@ import {
 } from "@/components/ui/command";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
+import { toast } from "@/components/ui/toast";
 import { Kbd } from "@/components/ui/kbd";
 import { ModeToggle } from "@/components/mode-toggle";
 import {
@@ -111,7 +112,7 @@ export function AdminHeader({
 
   return (
     <>
-      <header className="sticky top-0 z-40 flex h-11 w-full items-center justify-between border-b border-border bg-background px-4 select-none">
+      <header className="sticky top-0 z-40 flex h-11 w-full items-center justify-between border-b border-border bg-background px-4">
         {/* Left: Sidebar Trigger & Breadcrumbs */}
         <div className="flex items-center gap-3">
           <SidebarTrigger className="size-7" />
@@ -215,7 +216,13 @@ export function AdminHeader({
                 <span>Client Orders</span>
               </DropdownMenuItem>
               <DropdownMenuSeparator />
-              <DropdownMenuItem className="text-destructive focus:text-destructive text-sm py-2">
+              <DropdownMenuItem
+                onClick={() => {
+                  toast.info("Signed Out", "You have been logged out of the studio session.");
+                  router.push("/login");
+                }}
+                className="text-destructive focus:text-destructive text-sm py-2 cursor-pointer"
+              >
                 <LogOut className="size-4 mr-2" />
                 <span>Sign Out</span>
               </DropdownMenuItem>

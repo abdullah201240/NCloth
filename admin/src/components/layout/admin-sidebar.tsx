@@ -149,7 +149,7 @@ export function AdminSidebar() {
   const pathname = usePathname();
 
   return (
-    <Sidebar className="border-r border-border bg-background select-none">
+    <Sidebar className="border-r border-border bg-background">
       {/* Brand Header */}
       <SidebarHeader className="border-b border-border p-3.5 px-4">
         <Link href="/" className="flex items-center justify-between group">

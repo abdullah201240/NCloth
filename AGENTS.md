@@ -44,20 +44,30 @@
 - **Zero Hardcoded Secrets:** All credentials, private API keys, and auth secrets must reside in `.env.local` and be validated with a Zod environment schema.
 - **RBAC & Action Authorization:** Always verify user roles/permissions before executing any mutation.
 
-## 8. 🚫 Zero Extra Backgrounds (No Gray Shading / No Background Clutter)
+## 8. 🔔 Mandatory Toast Notifications on All Actions & Mutations
+- **100% Action Feedback:** Every user mutation or state change MUST trigger an instant toast notification via `@/components/ui/toast` (`toast.success`, `toast.error`, `toast.info`, `toast.warning`).
+- **Required Scenarios:**
+  - Entity Creation (Root Categories, Categories, Subcategories, Products, Orders, Customers).
+  - Entity Updates & Edits.
+  - Active $\leftrightarrow$ Inactive Status transitions.
+  - File / Photo uploads and removals.
+  - Authentication events (Sign in, Sign out, Password reset requests).
+  - Validation errors or network failures.
+
+## 9. 🚫 Zero Extra Backgrounds (No Gray Shading / No Background Clutter)
 - **No extra background fills:** Do NOT add shaded gray block backgrounds, nested card backgrounds, or tinted footer/header containers (avoid `bg-muted`, `bg-zinc-100`, `bg-zinc-800` as block fills).
 - **Pure & Clean Surfaces:** Base surfaces must be pure white (`#ffffff`) in light mode and deep jet black (`#09090b`) in dark mode.
 - Use **crisp 1px borders** (`border border-border/80`) to define sections and structure, never bulky colored or gray background fills.
 
-## 9. 📐 Sharp Geometry & No Bulky Shadows (Architectural Minimalist)
+## 10. 📐 Sharp Geometry & No Bulky Shadows (Architectural Minimalist)
 - **Zero Heavy Shadows:** Never use `shadow-md`, `shadow-lg`, `shadow-xl`, `shadow-2xl`, or bulky ring halos. Everything is flat and defined by clean hairline borders (`shadow-none border border-border`).
 - **Sharp Corners (No Rounded Pills):** Border radius is strictly minimal (`0.125rem` / `rounded-xs` or `rounded-none`). No `rounded-xl`, `rounded-2xl`, or `rounded-full` pills on cards, buttons, badges, tabs, or dialogs.
 
-## 10. 🏁 Achromatic & Monochromatic Aesthetic
+## 11. 🏁 Achromatic & Monochromatic Aesthetic
 - **No colorful or neon elements:** Strictly high-contrast monochrome (pure blacks, crisp whites, slate/zinc hairlines).
 - Reserve subtle, desaturated tints strictly for semantic status indicators (e.g., active/in-stock, inactive/draft, pending) without overpowering the interface.
 
-## 11. 📱 Mandatory Full Responsiveness & Mobile-Friendliness
+## 12. 📱 Mandatory Full Responsiveness & Mobile-Friendliness
 - **100% Mobile Optimized:** Every view must seamlessly adapt to mobile screens.
 - Tables must have horizontal overflow wrappers (`overflow-x-auto`).
 - Touch-friendly tap targets and collapsible mobile navigation with sheet drawers.

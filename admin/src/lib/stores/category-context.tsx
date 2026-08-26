@@ -11,6 +11,7 @@ import {
 } from "@/lib/types/category";
 import { initialRootCategories, flattenHierarchy } from "./category-store";
 import { UnifiedCategoryFormValues } from "@/lib/validations/category";
+import { toast } from "@/components/ui/toast";
 
 interface CategoryContextType {
   rootCategories: RootCategory[];
@@ -111,6 +112,7 @@ export function CategoryProvider({ children }: { children: React.ReactNode }) {
       updatedAt: now,
     };
     setRootCategories((prev) => [...prev, newRoot]);
+    toast.success("Root Category Created", `${data.name} (${data.code}) is now active.`);
   };
 
   const updateRootCategory = (id: string, data: UnifiedCategoryFormValues) => {
@@ -133,6 +135,7 @@ export function CategoryProvider({ children }: { children: React.ReactNode }) {
           : root
       )
     );
+    toast.success("Root Category Updated", `${data.name} (${data.code}) has been updated.`);
   };
 
   const addCategory = (data: UnifiedCategoryFormValues) => {
@@ -159,6 +162,7 @@ export function CategoryProvider({ children }: { children: React.ReactNode }) {
           : root
       )
     );
+    toast.success("Product Category Created", `${data.name} (${data.code}) is now active.`);
   };
 
   const updateCategory = (id: string, data: UnifiedCategoryFormValues) => {
@@ -184,6 +188,7 @@ export function CategoryProvider({ children }: { children: React.ReactNode }) {
         ),
       }))
     );
+    toast.success("Product Category Updated", `${data.name} (${data.code}) has been updated.`);
   };
 
   const addSubcategory = (data: UnifiedCategoryFormValues) => {
@@ -214,6 +219,7 @@ export function CategoryProvider({ children }: { children: React.ReactNode }) {
         ),
       }))
     );
+    toast.success("Subcategory Created", `${data.name} (${data.code}) is now active.`);
   };
 
   const updateSubcategory = (id: string, data: UnifiedCategoryFormValues) => {
@@ -242,6 +248,7 @@ export function CategoryProvider({ children }: { children: React.ReactNode }) {
         })),
       }))
     );
+    toast.success("Subcategory Updated", `${data.name} (${data.code}) has been updated.`);
   };
 
   const toggleStatus = (id: string, newStatus: EntityStatus, level: HierarchyLevel) => {
@@ -273,6 +280,9 @@ export function CategoryProvider({ children }: { children: React.ReactNode }) {
       }
       return prev;
     });
+
+    const statusLabel = newStatus === "active" ? "Active" : "Inactive";
+    toast.info("Status Changed", `Entity status successfully set to ${statusLabel}.`);
   };
 
   return (

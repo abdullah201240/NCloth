@@ -24,12 +24,13 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Badge } from "@/components/ui/badge";
+import { ImageUploader } from "@/components/ui/image-uploader";
 import {
   unifiedCategoryFormSchema,
   type UnifiedCategoryFormValues,
 } from "@/lib/validations/category";
 import { RootCategory, HierarchyLevel, EntityStatus } from "@/lib/types/category";
-import { ImageIcon, X, Sparkles, ExternalLink, FolderTree, Folder, Tag } from "lucide-react";
+import { ImageIcon, FolderTree, Folder, Tag } from "lucide-react";
 
 interface CategoryFormSheetProps {
   open: boolean;
@@ -52,29 +53,6 @@ interface CategoryFormSheetProps {
   lockLevel?: boolean;
   onSubmit: (data: UnifiedCategoryFormValues, editId?: string) => void;
 }
-
-const sampleFashionImages = [
-  {
-    label: "Editorial Trench",
-    url: "https://images.unsplash.com/photo-1548883354-7622d03aca27?q=80&w=600&auto=format&fit=crop",
-  },
-  {
-    label: "Cashmere Sweater",
-    url: "https://images.unsplash.com/photo-1576566588028-4147f3842f27?q=80&w=600&auto=format&fit=crop",
-  },
-  {
-    label: "Calfskin Boots",
-    url: "https://images.unsplash.com/photo-1608256246200-53e635b5b65f?q=80&w=600&auto=format&fit=crop",
-  },
-  {
-    label: "Leather Tote",
-    url: "https://images.unsplash.com/photo-1584917865442-de89df76afd3?q=80&w=600&auto=format&fit=crop",
-  },
-  {
-    label: "Runway Silhouette",
-    url: "https://images.unsplash.com/photo-1509631179647-0177331693ae?q=80&w=600&auto=format&fit=crop",
-  },
-];
 
 export function CategoryFormSheet({
   open,
@@ -106,7 +84,6 @@ export function CategoryFormSheet({
   const selectedLevel = form.watch("level");
   const selectedRootId = form.watch("rootCategoryId");
   const selectedStatus = form.watch("status");
-  const currentImageUrl = form.watch("imageUrl");
 
   // Reset form on open/data change
   React.useEffect(() => {
@@ -375,106 +352,54 @@ export function CategoryFormSheet({
               </div>
             </div>
 
-            {/* 6. Image Management Section */}
-            <div className="space-y-2 border border-border p-3 rounded-xs bg-background">
+            {/* 6. Editorial Photography Upload Section */}
+            <div className="space-y-2 border border-border p-3.5 rounded-xs bg-background">
               <div className="flex items-center justify-between">
                 <Label className="text-xs font-semibold uppercase tracking-wider text-foreground flex items-center gap-1.5">
                   <ImageIcon className="size-3.5 text-muted-foreground" />
-                  Editorial Photography
+                  Editorial Photography (Upload)
                 </Label>
-                <span className="text-xs text-muted-foreground font-mono">Storefront & Lookbook</span>
               </div>
 
-              <div className="flex gap-3 items-start">
-                {/* Thumbnail Preview Box */}
-                <div className="relative size-20 rounded-xs border border-border overflow-hidden bg-muted/20 shrink-0 flex items-center justify-center">
-                  {currentImageUrl ? (
-                    // eslint-disable-next-line @next/next/no-img-element
-                    <img
-                      src={currentImageUrl}
-                      alt="Category Preview"
-                      className="size-full object-cover"
-                      onError={(e) => {
-                        (e.target as HTMLImageElement).src =
-                          "https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?q=80&w=200&auto=format&fit=crop";
-                      }}
-                    />
-                  ) : (
-                    <div className="flex flex-col items-center justify-center text-muted-foreground p-1 text-center">
-                      <ImageIcon className="size-5 stroke-1 mb-1" />
-                      <span className="text-[10px] font-mono leading-tight">No image</span>
-                    </div>
-                  )}
-
-                  {currentImageUrl && (
-                    <button
-                      type="button"
-                      onClick={() => form.setValue("imageUrl", "", { shouldValidate: true })}
-                      title="Clear image URL"
-                      className="absolute top-1 right-1 size-4 rounded-xs bg-background/90 text-foreground border border-border flex items-center justify-center hover:bg-destructive hover:text-white transition-colors"
-                    >
-                      <X className="size-2.5" />
-                    </button>
-                  )}
-                </div>
-
-                {/* URL Input & Quick Fill */}
-                <div className="flex-1 space-y-2 min-w-0">
-                  <Input
-                    placeholder="https://images.unsplash.com/photo-..."
-                    className="font-mono text-xs h-8"
-                    {...form.register("imageUrl")}
+              <Controller
+                name="imageUrl"
+                control={form.control}
+                render={({ field }) => (
+                  <ImageUploader
+                    value={field.value || ""}
+                    onChange={field.onChange}
+                    label="Upload Editorial Image"
+                    description="PNG, JPG, WEBP, or AVIF up to 10MB"
                   />
-                  {form.formState.errors.imageUrl && (
-                    <p className="text-xs text-destructive font-medium">
-                      {form.formState.errors.imageUrl.message}
-                    </p>
-                  )}
+                )}
+              />
+              {form.formState.errors.imageUrl && (
+                <p className="text-xs text-destructive font-medium">
+                  {form.formState.errors.imageUrl.message}
+                </p>
+              )}
 
-                  {/* Preset Quick Chooser */}
-                  <div className="space-y-1">
-                    <span className="text-[11px] text-muted-foreground font-mono flex items-center gap-1">
-                      <Sparkles className="size-2.5" /> Quick Fashion Presets:
-                    </span>
-                    <div className="flex flex-wrap gap-1">
-                      {sampleFashionImages.map((img) => (
-                        <button
-                          key={img.label}
-                          type="button"
-                          onClick={() => form.setValue("imageUrl", img.url, { shouldValidate: true })}
-                          className="text-[11px] font-mono px-1.5 py-0.5 border border-border rounded-xs text-muted-foreground hover:text-foreground hover:border-foreground/40 transition-colors"
-                        >
-                          {img.label}
-                        </button>
-                      ))}
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              {/* Optional Banner URL */}
-              <div className="pt-2 border-t border-border/60 space-y-1">
-                <div className="flex items-center justify-between">
-                  <Label className="text-[11px] uppercase tracking-wider text-muted-foreground font-mono">
-                    Hero Banner URL (Optional)
+              {/* Optional Banner Upload for Root Classifications */}
+              {selectedLevel === "root" && (
+                <div className="pt-3 border-t border-border space-y-2 mt-3">
+                  <Label className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">
+                    Lookbook Hero Banner (Upload)
                   </Label>
-                  {form.watch("bannerUrl") && (
-                    <a
-                      href={form.watch("bannerUrl")}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="text-[10px] text-muted-foreground hover:text-foreground inline-flex items-center gap-0.5"
-                    >
-                      View <ExternalLink className="size-2.5" />
-                    </a>
-                  )}
+                  <Controller
+                    name="bannerUrl"
+                    control={form.control}
+                    render={({ field }) => (
+                      <ImageUploader
+                        value={field.value || ""}
+                        onChange={field.onChange}
+                        label="Upload Hero Banner"
+                        description="Widescreen banner for department lookbooks"
+                        aspectRatio="wide"
+                      />
+                    )}
+                  />
                 </div>
-                <Input
-                  placeholder="https://images.unsplash.com/banner-photo-..."
-                  className="font-mono text-xs h-7.5"
-                  {...form.register("bannerUrl")}
-                />
-              </div>
+              )}
             </div>
 
             {/* 7. Display Order */}

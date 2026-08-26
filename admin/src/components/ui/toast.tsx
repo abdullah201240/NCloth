@@ -7,7 +7,18 @@ import { cn } from "@/lib/utils"
 import { Button } from "@/components/ui/button"
 import { XIcon, CircleCheckIcon, InfoIcon, TriangleAlertIcon, OctagonXIcon, Loader2Icon } from "lucide-react"
 
-const toast = ToastPrimitive.createToastManager()
+const baseToastManager = ToastPrimitive.createToastManager()
+
+const toast = Object.assign(baseToastManager, {
+  success: (title: string, description?: string) =>
+    baseToastManager.add({ title, description, type: "success" }),
+  error: (title: string, description?: string) =>
+    baseToastManager.add({ title, description, type: "error" }),
+  info: (title: string, description?: string) =>
+    baseToastManager.add({ title, description, type: "info" }),
+  warning: (title: string, description?: string) =>
+    baseToastManager.add({ title, description, type: "warning" }),
+})
 
 function ToastProvider({ ...props }: ToastPrimitive.Provider.Props) {
   return <ToastPrimitive.Provider {...props} />
@@ -35,7 +46,7 @@ function Toast({ className, ...props }: ToastPrimitive.Root.Props) {
     <ToastPrimitive.Root
       data-slot="toast"
       className={cn(
-        "group/toast pointer-events-auto absolute right-0 bottom-0 z-[calc(1000-var(--toast-index))] w-full origin-bottom rounded-xs border border-border bg-popover text-popover-foreground will-change-transform outline-none select-none focus-visible:border-ring focus-visible:ring-1 focus-visible:ring-ring/40",
+        "group/toast pointer-events-auto absolute right-0 bottom-0 z-[calc(1000-var(--toast-index))] w-full origin-bottom rounded-xs border border-border bg-popover text-popover-foreground will-change-transform outline-none focus-visible:border-ring focus-visible:ring-1 focus-visible:ring-ring/40",
         "[--gap:0.75rem] [--height:var(--toast-frontmost-height,var(--toast-height))] [--offset-y:calc(var(--toast-offset-y)*-1+calc(var(--toast-index)*var(--gap)*-1)+var(--toast-swipe-movement-y))] [--peek:0.75rem] [--scale:calc(max(0,1-(var(--toast-index)*0.1)))] [--shrink:calc(1-var(--scale))]",
         "h-(--height) [transform:translateX(var(--toast-swipe-movement-x))_translateY(calc(var(--toast-swipe-movement-y)-(var(--toast-index)*var(--peek))-(var(--shrink)*var(--height))))_scale(var(--scale))] [transition:transform_500ms_cubic-bezier(0.22,1,0.36,1),opacity_500ms,height_150ms]",
         "after:absolute after:top-full after:left-0 after:h-[calc(var(--gap)+1px)] after:w-full after:content-['']",
@@ -74,7 +85,7 @@ function ToastTitle({ className, ...props }: ToastPrimitive.Title.Props) {
   return (
     <ToastPrimitive.Title
       data-slot="toast-title"
-      className={cn("text-xs font-medium tracking-tight text-foreground", className)}
+      className={cn("text-xs font-semibold tracking-tight text-foreground", className)}
       {...props}
     />
   )
@@ -136,7 +147,7 @@ function ToastIcon({ type }: { type: string | undefined }) {
   let icon: React.ReactNode = null
 
   if (type === "success") {
-    icon = <CircleCheckIcon aria-hidden="true" className="text-foreground" />
+    icon = <CircleCheckIcon aria-hidden="true" className="text-emerald-500" />
   }
 
   if (type === "info") {
@@ -144,7 +155,7 @@ function ToastIcon({ type }: { type: string | undefined }) {
   }
 
   if (type === "warning") {
-    icon = <TriangleAlertIcon aria-hidden="true" className="text-muted-foreground" />
+    icon = <TriangleAlertIcon aria-hidden="true" className="text-amber-500" />
   }
 
   if (type === "error") {
@@ -152,7 +163,7 @@ function ToastIcon({ type }: { type: string | undefined }) {
   }
 
   if (type === "loading") {
-    icon = <Loader2Icon className="animate-spin" aria-hidden="true" />
+    icon = <Loader2Icon className="animate-spin text-muted-foreground" aria-hidden="true" />
   }
 
   if (!icon) {

@@ -26,7 +26,7 @@ export function AdminShell({
             onQuickAction={onQuickAction}
             quickActionLabel={quickActionLabel}
           />
-          <main className="flex-1 p-2.5 sm:p-3.5 w-full">
+          <main className="flex-1 p-3 md:p-4 w-full">
             {children}
           </main>
           <AdminFooter />
