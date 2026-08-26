@@ -116,6 +116,12 @@ export function AdminHeader() {
         { label: "All Suppliers", href: "/suppliers", isLast: true },
       ];
     }
+    if (pathname.startsWith("/stores")) {
+      return [
+        { label: "Retail & Boutiques", href: "/stores", isLast: false },
+        { label: "All Stores", href: "/stores", isLast: true },
+      ];
+    }
     return [{ label: "Studio Admin", href: pathname, isLast: true }];
   };
 

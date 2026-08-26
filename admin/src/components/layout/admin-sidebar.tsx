@@ -33,6 +33,7 @@ import {
   Building2,
   Grid,
   Truck,
+  Store as StoreIcon,
   ArrowUpRight,
 } from "lucide-react";
 
@@ -138,6 +139,17 @@ const navigationSections: NavSection[] = [
         title: "All Suppliers",
         url: "/suppliers",
         icon: Truck,
+        badge: 6,
+      },
+    ],
+  },
+  {
+    label: "Retail & Boutiques",
+    items: [
+      {
+        title: "All Stores",
+        url: "/stores",
+        icon: StoreIcon,
         badge: 6,
       },
     ],
