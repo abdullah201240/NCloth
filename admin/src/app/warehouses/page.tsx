@@ -355,7 +355,8 @@ export default function WarehousesPage() {
           </div>
         ) : (
           <div className="border border-border rounded-xs overflow-hidden bg-background">
-            <Table>
+            <div className="overflow-x-auto">
+              <Table>
               <TableHeader>
                 <TableRow className="border-b border-border bg-background">
                   <TableHead className="h-9 text-xs">Warehouse Facility</TableHead>
@@ -463,6 +464,7 @@ export default function WarehousesPage() {
                 )}
               </TableBody>
             </Table>
+            </div>
           </div>
         )}
       </div>

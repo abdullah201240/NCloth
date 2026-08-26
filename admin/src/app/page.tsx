@@ -256,7 +256,8 @@ export default function DashboardPage() {
               </CardDescription>
             </CardHeader>
             <CardContent className="p-0">
-              <Table>
+              <div className="overflow-x-auto">
+                <Table>
                 <TableHeader>
                   <TableRow className="border-b border-border bg-background">
                     <TableHead className="w-[100px] h-9 text-xs">Order</TableHead>
@@ -304,6 +305,7 @@ export default function DashboardPage() {
                   ))}
                 </TableBody>
               </Table>
+              </div>
             </CardContent>
           </Card>
         </div>

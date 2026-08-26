@@ -367,7 +367,8 @@ export default function ShelvesPage() {
           </div>
         ) : (
           <div className="border border-border rounded-xs overflow-hidden bg-background">
-            <Table>
+            <div className="overflow-x-auto">
+              <Table>
               <TableHeader>
                 <TableRow className="border-b border-border bg-background">
                   <TableHead className="h-9 text-xs">Shelf Name</TableHead>
@@ -458,6 +459,7 @@ export default function ShelvesPage() {
                 )}
               </TableBody>
             </Table>
+            </div>
           </div>
         )}
       </div>

@@ -257,7 +257,8 @@ export default function AttributeSetsPage() {
         {/* Content: Data Table (Default) or Grid Cards */}
         {viewMode === "table" ? (
           <div className="border border-border rounded-xs overflow-hidden bg-background">
-            <Table>
+            <div className="overflow-x-auto">
+              <Table>
               <TableHeader>
                 <TableRow className="border-b border-border bg-background">
                   <TableHead className="h-9 text-xs">Attribute Set</TableHead>
@@ -380,6 +381,7 @@ export default function AttributeSetsPage() {
                 )}
               </TableBody>
             </Table>
+            </div>
           </div>
         ) : (
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">

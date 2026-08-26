@@ -33,8 +33,6 @@ export function AdminFooter() {
             <span className="size-1.5 rounded-full bg-emerald-500 inline-block" />
             Studio Services Active
           </span>
-          <span className="text-border">|</span>
-          <span>Zero-Delete Enforced</span>
         </div>
 
         <div className="flex items-center gap-2.5">

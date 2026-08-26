@@ -436,7 +436,8 @@ export default function ProductCategoriesPage() {
           </div>
         ) : (
           <div className="border border-border rounded-xs overflow-hidden bg-background">
-            <Table>
+            <div className="overflow-x-auto">
+              <Table>
               <TableHeader>
                 <TableRow className="border-b border-border bg-background">
                   <TableHead className="h-9 text-xs">Product Category</TableHead>
@@ -537,6 +538,7 @@ export default function ProductCategoriesPage() {
                 })}
               </TableBody>
             </Table>
+            </div>
           </div>
         )}
       </div>

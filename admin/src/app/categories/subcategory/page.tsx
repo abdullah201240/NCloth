@@ -367,7 +367,8 @@ export default function SubcategoriesPage() {
         {/* Content: Table or Grid */}
         {viewMode === "table" ? (
           <div className="border border-border rounded-xs overflow-hidden bg-background">
-            <Table>
+            <div className="overflow-x-auto">
+              <Table>
               <TableHeader>
                 <TableRow className="border-b border-border bg-background">
                   <TableHead className="h-9 text-xs">Subcategory & Image</TableHead>
@@ -481,6 +482,7 @@ export default function SubcategoriesPage() {
                 )}
               </TableBody>
             </Table>
+            </div>
           </div>
         ) : (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
