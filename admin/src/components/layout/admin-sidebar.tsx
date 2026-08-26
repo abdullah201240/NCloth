@@ -34,6 +34,7 @@ import {
   Grid,
   Truck,
   Store as StoreIcon,
+  Palette,
   ArrowUpRight,
 } from "lucide-react";
 
@@ -94,13 +95,19 @@ const navigationSections: NavSection[] = [
     ],
   },
   {
-    label: "Catalog & Merchandising",
+    label: "Product Management",
     items: [
       {
-        title: "Products & SKUs",
+        title: "All Products",
         url: "/products",
         icon: Package,
         badge: 87,
+      },
+      {
+        title: "Colors & Swatches",
+        url: "/products/colors",
+        icon: Palette,
+        badge: 10,
       },
       {
         title: "Collections & Runway",

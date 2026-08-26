@@ -86,9 +86,15 @@ export function AdminHeader() {
         { label: "Subcategories", href: "/categories/subcategory", isLast: true },
       ];
     }
+    if (pathname === "/products/colors") {
+      return [
+        { label: "Product Management", href: "/products", isLast: false },
+        { label: "Colors & Swatches", href: "/products/colors", isLast: true },
+      ];
+    }
     if (pathname.startsWith("/products")) {
       return [
-        { label: "Catalog", href: "/products", isLast: false },
+        { label: "Product Management", href: "/products", isLast: false },
         { label: "Products & SKUs", href: "/products", isLast: true },
       ];
     }

@@ -288,6 +288,7 @@ export default function StoresPage() {
                                   alt={store.name}
                                   fill
                                   sizes="32px"
+                                  unoptimized
                                   className="object-cover"
                                 />
                               </div>
@@ -408,6 +409,7 @@ export default function StoresPage() {
                           alt={store.name}
                           fill
                           sizes="(max-width: 768px) 100vw, 33vw"
+                          unoptimized
                           className="object-cover"
                         />
                       </div>

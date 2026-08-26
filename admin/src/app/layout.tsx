@@ -6,6 +6,7 @@ import { WarehouseProvider } from "@/lib/stores/warehouse-context";
 import { ShelfProvider } from "@/lib/stores/shelf-context";
 import { SupplierProvider } from "@/lib/stores/supplier-context";
 import { StoreProvider } from "@/lib/stores/store-context";
+import { ColorProvider } from "@/lib/stores/color-context";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { Toaster } from "@/components/ui/toast";
 import "./globals.css";
@@ -34,13 +35,13 @@ export default function RootLayout({
     <html
       lang="en"
       suppressHydrationWarning
-      className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
+      className={`${geistSans.variable} ${geistMono.variable} dark h-full antialiased`}
     >
       <body className="min-h-full flex flex-col bg-background text-foreground selection:bg-foreground selection:text-background">
         <ThemeProvider
           attribute="class"
           defaultTheme="dark"
-          enableSystem
+          enableSystem={false}
           disableTransitionOnChange
         >
           <TooltipProvider delay={100}>
@@ -49,8 +50,10 @@ export default function RootLayout({
                 <ShelfProvider>
                   <SupplierProvider>
                     <StoreProvider>
-                      {children}
-                      <Toaster />
+                      <ColorProvider>
+                        {children}
+                        <Toaster />
+                      </ColorProvider>
                     </StoreProvider>
                   </SupplierProvider>
                 </ShelfProvider>
