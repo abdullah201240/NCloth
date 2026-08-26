@@ -12,6 +12,7 @@ import {
 import { initialRootCategories, flattenHierarchy } from "./category-store";
 import { UnifiedCategoryFormValues } from "@/lib/validations/category";
 import { toast } from "@/components/ui/toast";
+import { createSyncedStore } from "./create-synced-store";
 
 interface CategoryContextType {
   rootCategories: RootCategory[];
@@ -36,27 +37,13 @@ interface CategoryContextType {
 
 const CategoryContext = React.createContext<CategoryContextType | null>(null);
 
-export function CategoryProvider({ children }: { children: React.ReactNode }) {
-  const [rootCategories, setRootCategories] = React.useState<RootCategory[]>(() => {
-    if (typeof window !== "undefined") {
-      const saved = localStorage.getItem("ncloth_category_store_v2");
-      if (saved) {
-        try {
-          return JSON.parse(saved);
-        } catch {
-          // fallback
-        }
-      }
-    }
-    return initialRootCategories;
-  });
+const categoryStore = createSyncedStore<RootCategory[]>(
+  "ncloth_category_store_v4",
+  initialRootCategories
+);
 
-  // Save to local storage for persistent experience across separate pages
-  React.useEffect(() => {
-    if (typeof window !== "undefined") {
-      localStorage.setItem("ncloth_category_store_v2", JSON.stringify(rootCategories));
-    }
-  }, [rootCategories]);
+export function CategoryProvider({ children }: { children: React.ReactNode }) {
+  const [rootCategories, setRootCategories] = categoryStore.useStore();
 
   const flatItems = React.useMemo(() => {
     return flattenHierarchy(rootCategories);

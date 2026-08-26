@@ -5,6 +5,7 @@ import { Warehouse, WarehouseStatus, WarehouseStats } from "@/lib/types/warehous
 import { initialWarehouses } from "./warehouse-store";
 import { WarehouseFormValues } from "@/lib/validations/warehouse";
 import { toast } from "@/components/ui/toast";
+import { createSyncedStore } from "./create-synced-store";
 
 interface WarehouseContextType {
   warehouses: Warehouse[];
@@ -14,29 +15,15 @@ interface WarehouseContextType {
   toggleStatus: (id: string, newStatus: WarehouseStatus) => void;
 }
 
+const warehouseStore = createSyncedStore<Warehouse[]>(
+  "ncloth_warehouse_store_v4",
+  initialWarehouses
+);
+
 const WarehouseContext = React.createContext<WarehouseContextType | null>(null);
 
 export function WarehouseProvider({ children }: { children: React.ReactNode }) {
-  const [warehouses, setWarehouses] = React.useState<Warehouse[]>(() => {
-    if (typeof window !== "undefined") {
-      const saved = localStorage.getItem("ncloth_warehouse_store_v2");
-      if (saved) {
-        try {
-          return JSON.parse(saved);
-        } catch {
-          // fallback
-        }
-      }
-    }
-    return initialWarehouses;
-  });
-
-  // Local storage persistence
-  React.useEffect(() => {
-    if (typeof window !== "undefined") {
-      localStorage.setItem("ncloth_warehouse_store_v2", JSON.stringify(warehouses));
-    }
-  }, [warehouses]);
+  const [warehouses, setWarehouses] = warehouseStore.useStore();
 
   const stats = React.useMemo<WarehouseStats>(() => {
     const totalWarehouses = warehouses.length;

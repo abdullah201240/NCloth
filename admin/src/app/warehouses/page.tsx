@@ -5,6 +5,7 @@ import { AdminShell } from "@/components/layout/admin-shell";
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
+import { formatStudioDate } from "@/lib/utils";
 import { Input } from "@/components/ui/input";
 import { Switch } from "@/components/ui/switch";
 import {
@@ -337,7 +338,7 @@ export default function WarehousesPage() {
 
                   <div className="p-3 px-3.5 border-t border-border/80 flex items-center justify-between gap-2">
                     <span className="text-xs font-mono text-muted-foreground">
-                      Updated {new Date(wh.updatedAt).toLocaleDateString()}
+                      Updated {formatStudioDate(wh.updatedAt)}
                     </span>
                     <Button
                       variant="outline"
