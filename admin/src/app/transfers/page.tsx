@@ -3,6 +3,7 @@
 import * as React from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
+import { AdminShell } from "@/components/layout/admin-shell";
 import { useTransfers } from "@/lib/stores/transfer-context";
 import { StockTransfer } from "@/lib/types/transfer";
 import { LocationBadge } from "@/components/inventory/location-badge";
@@ -62,7 +63,8 @@ export default function StockTransfersPage() {
   }, [transfers, searchQuery, statusFilter]);
 
   return (
-    <div className="space-y-4 pb-16 w-full min-w-0">
+    <AdminShell>
+      <div className="space-y-4 pb-16 w-full min-w-0">
       {/* 1. Header Banner */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-border pb-3">
         <div className="space-y-1">
@@ -95,49 +97,49 @@ export default function StockTransfersPage() {
       {/* 2. KPI Summary Bar */}
       <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
         <Card className="border border-border rounded-xs bg-background p-3">
-          <p className="text-[11px] font-mono uppercase tracking-wider text-muted-foreground">
+          <p className="text-xs font-mono uppercase tracking-wider text-muted-foreground">
             Total Transfers
           </p>
           <p className="text-lg font-bold font-mono text-foreground mt-1">
             {stats.totalTransfers}
           </p>
-          <span className="text-[10px] text-muted-foreground font-mono">All-time transfer orders</span>
+          <span className="text-xs text-muted-foreground font-mono">All-time transfer orders</span>
         </Card>
 
         <Card className="border border-border rounded-xs bg-background p-3">
-          <p className="text-[11px] font-mono uppercase tracking-wider text-muted-foreground">
+          <p className="text-xs font-mono uppercase tracking-wider text-muted-foreground">
             Awaiting Dispatch
           </p>
           <p className="text-lg font-bold font-mono text-foreground mt-1">
             {stats.approvedCount}
           </p>
-          <span className="text-[10px] text-muted-foreground font-mono">Approved in staging</span>
+          <span className="text-xs text-muted-foreground font-mono">Approved in staging</span>
         </Card>
 
         <Card className="border border-border rounded-xs bg-background p-3">
-          <p className="text-[11px] font-mono uppercase tracking-wider text-muted-foreground">
+          <p className="text-xs font-mono uppercase tracking-wider text-muted-foreground">
             In-Transit Pipeline
           </p>
           <p className="text-lg font-bold font-mono text-amber-400 mt-1">
             {stats.inTransitCount}
           </p>
-          <span className="text-[10px] text-amber-500/80 font-mono">En route between facilities</span>
+          <span className="text-xs text-amber-500/80 font-mono">En route between facilities</span>
         </Card>
 
         <Card className="border border-border rounded-xs bg-background p-3">
-          <p className="text-[11px] font-mono uppercase tracking-wider text-muted-foreground">
+          <p className="text-xs font-mono uppercase tracking-wider text-muted-foreground">
             Completed Receipts
           </p>
           <p className="text-lg font-bold font-mono text-emerald-400 mt-1">
             {stats.completedCount}
           </p>
-          <span className="text-[10px] text-emerald-500/80 font-mono">Successfully delivered</span>
+          <span className="text-xs text-emerald-500/80 font-mono">Successfully delivered</span>
         </Card>
       </div>
 
       {/* 3. Transfers Master Table */}
       <Card className="border border-border rounded-xs bg-background">
-        <CardHeader className="p-3 border-b border-border/60 flex flex-col sm:flex-row sm:items-center justify-between gap-3 bg-muted/10">
+        <CardHeader className="p-3 border-b border-border/60 flex flex-col sm:flex-row sm:items-center justify-between gap-3 bg-background">
           <div className="relative flex-1 max-w-sm">
             <Search className="absolute left-2.5 top-1/2 -translate-y-1/2 size-3.5 text-muted-foreground" />
             <Input
@@ -186,7 +188,7 @@ export default function StockTransfersPage() {
                 </TableRow>
               ) : (
                 filteredTransfers.map((t) => (
-                  <TableRow key={t.id} className="border-b border-border/60 hover:bg-muted/10">
+                  <TableRow key={t.id} className="border-b border-border/60 hover:bg-background">
                     <TableCell className="py-2.5 font-mono text-xs">
                       <Link
                         href={`/transfers/${t.id}`}
@@ -194,7 +196,7 @@ export default function StockTransfersPage() {
                       >
                         {t.transferNumber}
                       </Link>
-                      <div className="text-[10px] text-muted-foreground">
+                      <div className="text-xs text-muted-foreground">
                         {new Date(t.requestedDate).toLocaleDateString()}
                       </div>
                     </TableCell>
@@ -218,7 +220,7 @@ export default function StockTransfersPage() {
                     <TableCell className="py-2.5 text-center">
                       <Badge
                         variant="outline"
-                        className={`text-[10px] font-mono px-2 py-0.5 rounded-xs ${
+                        className={`text-xs font-mono px-2 py-0.5 rounded-xs ${
                           t.status === "COMPLETED"
                             ? "border-emerald-500/40 text-emerald-400 bg-emerald-500/10"
                             : t.status === "IN_TRANSIT"
@@ -236,7 +238,7 @@ export default function StockTransfersPage() {
                       {t.driverName ? (
                         <div>
                           <p className="font-medium text-foreground">{t.driverName}</p>
-                          <p className="text-[10px] font-mono text-muted-foreground">
+                          <p className="text-xs font-mono text-muted-foreground">
                             {t.vehicleNumber || t.courierTrackingNo || "Fleet vehicle"}
                           </p>
                         </div>
@@ -309,5 +311,6 @@ export default function StockTransfersPage() {
         />
       )}
     </div>
+    </AdminShell>
   );
 }

@@ -1,12 +1,9 @@
 "use client";
 
-import * as React from "react";
 import { useParams, useRouter } from "next/navigation";
+import { AdminShell } from "@/components/layout/admin-shell";
 import { useReceiving } from "@/lib/stores/receiving-context";
 import { ReceivingSessionView } from "@/components/receiving/receiving-session-view";
-import { Button } from "@/components/ui/button";
-import { Box } from "lucide-react";
-
 export default function ReceivingSessionDetailPage() {
   const params = useParams<{ id: string }>();
   const router = useRouter();
@@ -16,14 +13,20 @@ export default function ReceivingSessionDetailPage() {
 
   if (!session) {
     return (
-      <div className="text-center py-20 space-y-3">
-        <h2 className="text-lg font-semibold text-foreground">Receiving Session Not Found</h2>
-        <p className="text-xs text-muted-foreground font-mono">
-          The requested receiving session ID [{params.id}] does not exist.
-        </p>
-      </div>
+      <AdminShell>
+        <div className="text-center py-20 space-y-3">
+          <h2 className="text-lg font-semibold text-foreground">Receiving Session Not Found</h2>
+          <p className="text-xs text-muted-foreground font-mono">
+            The requested receiving session ID [{params.id}] does not exist.
+          </p>
+        </div>
+      </AdminShell>
     );
   }
 
-  return <ReceivingSessionView session={session} />;
+  return (
+    <AdminShell>
+      <ReceivingSessionView session={session} />
+    </AdminShell>
+  );
 }

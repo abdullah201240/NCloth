@@ -42,10 +42,190 @@ import {
   Layers,
 } from "lucide-react";
 import { useRouter } from "next/navigation";
+import { useProfile } from "@/lib/stores/profile-context";
+
+interface BreadcrumbEntry {
+  label: string;
+  href: string;
+  isLast?: boolean;
+}
+
+const STATIC_ROUTE_MAP: Record<string, BreadcrumbEntry[]> = {
+  "/": [{ label: "Dashboard", href: "/", isLast: true }],
+  "/categories": [
+    { label: "Category Management", href: "/categories" },
+    { label: "Taxonomy Dashboard", href: "/categories", isLast: true },
+  ],
+  "/categories/root": [
+    { label: "Category Management", href: "/categories" },
+    { label: "Root Categories", href: "/categories/root", isLast: true },
+  ],
+  "/categories/category": [
+    { label: "Category Management", href: "/categories" },
+    { label: "Product Categories", href: "/categories/category", isLast: true },
+  ],
+  "/categories/subcategory": [
+    { label: "Category Management", href: "/categories" },
+    { label: "Subcategories", href: "/categories/subcategory", isLast: true },
+  ],
+  "/products": [
+    { label: "Product Management", href: "/products" },
+    { label: "All Products & SKUs", href: "/products", isLast: true },
+  ],
+  "/products/new": [
+    { label: "Product Management", href: "/products" },
+    { label: "Create Product Matrix", href: "/products/new", isLast: true },
+  ],
+  "/products/brands": [
+    { label: "Product Management", href: "/products" },
+    { label: "Brand Houses", href: "/products/brands", isLast: true },
+  ],
+  "/products/attributes": [
+    { label: "Product Management", href: "/products" },
+    { label: "Dynamic Attributes", href: "/products/attributes", isLast: true },
+  ],
+  "/products/attributes/sets": [
+    { label: "Product Management", href: "/products/attributes" },
+    { label: "Attribute Sets", href: "/products/attributes/sets", isLast: true },
+  ],
+  "/products/attributes/values": [
+    { label: "Product Management", href: "/products/attributes" },
+    { label: "Attribute Values", href: "/products/attributes/values", isLast: true },
+  ],
+  "/products/attributes/units": [
+    { label: "Product Management", href: "/products/attributes" },
+    { label: "Measurement Units", href: "/products/attributes/units", isLast: true },
+  ],
+  "/purchases": [
+    { label: "Sourcing & Procurement", href: "/purchases" },
+    { label: "Purchase Orders", href: "/purchases", isLast: true },
+  ],
+  "/purchases/new": [
+    { label: "Sourcing & Procurement", href: "/purchases" },
+    { label: "Create Purchase Order", href: "/purchases/new", isLast: true },
+  ],
+  "/suppliers": [
+    { label: "Sourcing & Procurement", href: "/suppliers" },
+    { label: "All Suppliers", href: "/suppliers", isLast: true },
+  ],
+  "/inventory": [
+    { label: "Inventory & Storage", href: "/inventory" },
+    { label: "Global Stock Matrix", href: "/inventory", isLast: true },
+  ],
+  "/receiving": [
+    { label: "Inbound Logistics", href: "/receiving" },
+    { label: "Inward Receiving Center", href: "/receiving", isLast: true },
+  ],
+  "/warehouse/putaway": [
+    { label: "Warehouse Operations", href: "/warehouses" },
+    { label: "Putaway Execution Queue", href: "/warehouse/putaway", isLast: true },
+  ],
+  "/transfers": [
+    { label: "Transfers & Logistics", href: "/transfers" },
+    { label: "Stock Transfers Pipeline", href: "/transfers", isLast: true },
+  ],
+  "/transfers/new": [
+    { label: "Transfers & Logistics", href: "/transfers" },
+    { label: "New Stock Transfer", href: "/transfers/new", isLast: true },
+  ],
+  "/stock-requests": [
+    { label: "Retail & Boutiques", href: "/stores" },
+    { label: "Store Stock Requests", href: "/stock-requests", isLast: true },
+  ],
+  "/stock-requests/new": [
+    { label: "Retail & Boutiques", href: "/stores" },
+    { label: "New Stock Request", href: "/stock-requests/new", isLast: true },
+  ],
+  "/warehouses": [
+    { label: "Storage & Facilities", href: "/warehouses" },
+    { label: "Central Warehouses", href: "/warehouses", isLast: true },
+  ],
+  "/warehouses/shelves": [
+    { label: "Storage & Facilities", href: "/warehouses" },
+    { label: "Storage Shelves & Bins", href: "/warehouses/shelves", isLast: true },
+  ],
+  "/stores": [
+    { label: "Retail & Boutiques", href: "/stores" },
+    { label: "Retail Stores", href: "/stores", isLast: true },
+  ],
+  "/stores/shelves": [
+    { label: "Retail & Boutiques", href: "/stores" },
+    { label: "Store Floor Shelves", href: "/stores/shelves", isLast: true },
+  ],
+  "/profile": [
+    { label: "Studio Admin", href: "/" },
+    { label: "Administrator Profile", href: "/profile", isLast: true },
+  ],
+};
+
+function resolveDynamicBreadcrumbs(pathname: string): BreadcrumbEntry[] {
+  if (STATIC_ROUTE_MAP[pathname]) {
+    return STATIC_ROUTE_MAP[pathname];
+  }
+
+  // Handle dynamic routes
+  if (pathname.startsWith("/products/") && pathname.endsWith("/edit")) {
+    return [
+      { label: "Product Management", href: "/products" },
+      { label: "Edit Product Matrix", href: pathname, isLast: true },
+    ];
+  }
+  if (pathname.startsWith("/purchases/")) {
+    return [
+      { label: "Sourcing & Procurement", href: "/purchases" },
+      { label: "Purchase Order Details", href: pathname, isLast: true },
+    ];
+  }
+  if (pathname.startsWith("/transfers/")) {
+    return [
+      { label: "Transfers & Logistics", href: "/transfers" },
+      { label: "Transfer Manifest & Timeline", href: pathname, isLast: true },
+    ];
+  }
+  if (pathname.startsWith("/receiving/")) {
+    return [
+      { label: "Inbound Logistics", href: "/receiving" },
+      { label: "Receiving Scan Terminal", href: pathname, isLast: true },
+    ];
+  }
+  if (pathname.startsWith("/warehouses/") && pathname.endsWith("/inventory")) {
+    return [
+      { label: "Storage & Facilities", href: "/warehouses" },
+      { label: "Warehouse Inventory Drilldown", href: pathname, isLast: true },
+    ];
+  }
+  if (pathname.startsWith("/stores/") && pathname.endsWith("/inventory")) {
+    return [
+      { label: "Retail & Boutiques", href: "/stores" },
+      { label: "Store Boutique Inventory", href: pathname, isLast: true },
+    ];
+  }
+
+  // Fallback: segment-based parsing
+  const segments = pathname.split("/").filter(Boolean);
+  const crumbs: BreadcrumbEntry[] = [];
+  let currentPath = "";
+
+  for (let i = 0; i < segments.length; i++) {
+    const seg = segments[i];
+    currentPath += `/${seg}`;
+    const formatted = seg
+      .replace(/-/g, " ")
+      .replace(/\b\w/g, (c) => c.toUpperCase());
+    crumbs.push({
+      label: formatted,
+      href: currentPath,
+      isLast: i === segments.length - 1,
+    });
+  }
+
+  return crumbs.length > 0 ? crumbs : [{ label: "Dashboard", href: "/", isLast: true }];
+}
 
 export function AdminHeader() {
   const pathname = usePathname();
   const router = useRouter();
+  const { profile, logout } = useProfile();
   const [openCommand, setOpenCommand] = React.useState(false);
 
   // Keyboard shortcut Cmd+K or Ctrl+K
@@ -60,208 +240,7 @@ export function AdminHeader() {
     return () => document.removeEventListener("keydown", down);
   }, []);
 
-  const getBreadcrumbs = () => {
-    if (pathname === "/") return [{ label: "Dashboard", href: "/", isLast: true }];
-    if (pathname === "/categories") {
-      return [
-        { label: "Category Management", href: "/categories", isLast: false },
-        { label: "Taxonomy Dashboard", href: "/categories", isLast: true },
-      ];
-    }
-    if (pathname === "/categories/root") {
-      return [
-        { label: "Category Management", href: "/categories", isLast: false },
-        { label: "Root Categories", href: "/categories/root", isLast: true },
-      ];
-    }
-    if (pathname === "/categories/category") {
-      return [
-        { label: "Category Management", href: "/categories", isLast: false },
-        { label: "Product Categories", href: "/categories/category", isLast: true },
-      ];
-    }
-    if (pathname === "/categories/subcategory") {
-      return [
-        { label: "Category Management", href: "/categories", isLast: false },
-        { label: "Subcategories", href: "/categories/subcategory", isLast: true },
-      ];
-    }
-    if (pathname === "/products/brands") {
-      return [
-        { label: "Product Management", href: "/products/brands", isLast: false },
-        { label: "Brand Houses", href: "/products/brands", isLast: true },
-      ];
-    }
-    if (pathname === "/products/attributes/sets") {
-      return [
-        { label: "Product Management", href: "/products/attributes", isLast: false },
-        { label: "Attribute Sets", href: "/products/attributes/sets", isLast: true },
-      ];
-    }
-    if (pathname === "/products/attributes/values") {
-      return [
-        { label: "Product Management", href: "/products/attributes", isLast: false },
-        { label: "Attribute Values", href: "/products/attributes/values", isLast: true },
-      ];
-    }
-    if (pathname === "/products/attributes/units") {
-      return [
-        { label: "Product Management", href: "/products/attributes", isLast: false },
-        { label: "Measurement Units", href: "/products/attributes/units", isLast: true },
-      ];
-    }
-    if (pathname === "/products/attributes") {
-      return [
-        { label: "Product Management", href: "/products/attributes", isLast: false },
-        { label: "Dynamic Attributes", href: "/products/attributes", isLast: true },
-      ];
-    }
-    if (pathname === "/products/new") {
-      return [
-        { label: "Product Management", href: "/products", isLast: false },
-        { label: "Create Product", href: "/products/new", isLast: true },
-      ];
-    }
-    if (pathname.startsWith("/products/") && pathname.endsWith("/edit")) {
-      return [
-        { label: "Product Management", href: "/products", isLast: false },
-        { label: "Edit Product Matrix", href: pathname, isLast: true },
-      ];
-    }
-    if (pathname === "/products") {
-      return [
-        { label: "Product Management", href: "/products", isLast: false },
-        { label: "All Products", href: "/products", isLast: true },
-      ];
-    }
-    if (pathname.startsWith("/products")) {
-      return [
-        { label: "Product Management", href: "/products", isLast: false },
-        { label: "Products & SKUs", href: "/products", isLast: true },
-      ];
-    }
-    if (pathname.startsWith("/orders")) {
-      return [
-        { label: "Operations", href: "/orders", isLast: false },
-        { label: "Client Orders", href: "/orders", isLast: true },
-      ];
-    }
-    if (pathname === "/warehouses/shelves") {
-      return [
-        { label: "Warehouse Management", href: "/warehouses", isLast: false },
-        { label: "Storage Shelves", href: "/warehouses/shelves", isLast: true },
-      ];
-    }
-    if (pathname.startsWith("/warehouses")) {
-      return [
-        { label: "Warehouse Management", href: "/warehouses", isLast: false },
-        { label: "All Warehouses", href: "/warehouses", isLast: true },
-      ];
-    }
-    if (pathname === "/purchases/new") {
-      return [
-        { label: "Sourcing & Procurement", href: "/purchases", isLast: false },
-        { label: "Purchase Orders", href: "/purchases", isLast: false },
-        { label: "Create Purchase Order", href: "/purchases/new", isLast: true },
-      ];
-    }
-    if (pathname === "/purchases") {
-      return [
-        { label: "Sourcing & Procurement", href: "/purchases", isLast: false },
-        { label: "Purchase Orders", href: "/purchases", isLast: true },
-      ];
-    }
-    if (pathname.startsWith("/purchases/")) {
-      return [
-        { label: "Sourcing & Procurement", href: "/purchases", isLast: false },
-        { label: "Purchase Orders", href: "/purchases", isLast: false },
-        { label: "Order Details & GRN", href: pathname, isLast: true },
-      ];
-    }
-    if (pathname.startsWith("/suppliers")) {
-      return [
-        { label: "Sourcing & Procurement", href: "/suppliers", isLast: false },
-        { label: "All Suppliers", href: "/suppliers", isLast: true },
-      ];
-    }
-    if (pathname === "/stores/shelves") {
-      return [
-        { label: "Retail & Boutiques", href: "/stores", isLast: false },
-        { label: "Storage Shelves", href: "/stores/shelves", isLast: true },
-      ];
-    }
-    if (pathname.startsWith("/stores")) {
-      return [
-        { label: "Retail & Boutiques", href: "/stores", isLast: false },
-        { label: "All Stores", href: "/stores", isLast: true },
-      ];
-    }
-    if (pathname === "/inventory") {
-      return [
-        { label: "Inventory & Storage", href: "/inventory", isLast: false },
-        { label: "Global Stock Matrix", href: "/inventory", isLast: true },
-      ];
-    }
-    if (pathname === "/receiving") {
-      return [
-        { label: "Inbound Logistics", href: "/receiving", isLast: false },
-        { label: "Receiving Center", href: "/receiving", isLast: true },
-      ];
-    }
-    if (pathname.startsWith("/receiving/")) {
-      return [
-        { label: "Inbound Logistics", href: "/receiving", isLast: false },
-        { label: "Receiving Terminal", href: pathname, isLast: true },
-      ];
-    }
-    if (pathname === "/warehouse/putaway") {
-      return [
-        { label: "Warehouse Operations", href: "/warehouse/putaway", isLast: false },
-        { label: "Putaway Queue", href: "/warehouse/putaway", isLast: true },
-      ];
-    }
-    if (pathname === "/transfers/new") {
-      return [
-        { label: "Transfers & Logistics", href: "/transfers", isLast: false },
-        { label: "Stock Transfers", href: "/transfers", isLast: false },
-        { label: "Create Stock Transfer", href: "/transfers/new", isLast: true },
-      ];
-    }
-    if (pathname === "/transfers") {
-      return [
-        { label: "Transfers & Logistics", href: "/transfers", isLast: false },
-        { label: "Stock Transfers", href: "/transfers", isLast: true },
-      ];
-    }
-    if (pathname.startsWith("/transfers/")) {
-      return [
-        { label: "Transfers & Logistics", href: "/transfers", isLast: false },
-        { label: "Transfer Details", href: pathname, isLast: true },
-      ];
-    }
-    if (pathname === "/stock-requests/new") {
-      return [
-        { label: "Retail & Boutiques", href: "/stock-requests", isLast: false },
-        { label: "Store Stock Requests", href: "/stock-requests", isLast: false },
-        { label: "Create Request", href: "/stock-requests/new", isLast: true },
-      ];
-    }
-    if (pathname.startsWith("/stock-requests")) {
-      return [
-        { label: "Retail & Boutiques", href: "/stock-requests", isLast: false },
-        { label: "Store Stock Requests", href: "/stock-requests", isLast: true },
-      ];
-    }
-    if (pathname === "/profile") {
-      return [
-        { label: "Studio Admin", href: "/", isLast: false },
-        { label: "Administrator Profile", href: "/profile", isLast: true },
-      ];
-    }
-    return [{ label: "Studio Admin", href: pathname, isLast: true }];
-  };
-
-  const breadcrumbs = getBreadcrumbs();
+  const breadcrumbs = React.useMemo(() => resolveDynamicBreadcrumbs(pathname), [pathname]);
 
   return (
     <>
@@ -299,24 +278,33 @@ export function AdminHeader() {
           </Breadcrumb>
         </div>
 
-        {/* Right: Search, Theme Toggle & User Menu */}
+        {/* Right: Quick actions, Command Palette & Profile */}
         <div className="flex items-center gap-2">
-          {/* Quick Search Button */}
           <Button
             variant="outline"
             size="sm"
             onClick={() => setOpenCommand(true)}
-            className="hidden md:flex items-center gap-2.5 h-8 px-3 text-sm text-muted-foreground hover:text-foreground border-border bg-background"
+            className="hidden md:flex h-8 w-60 items-center justify-between px-2.5 text-xs text-muted-foreground border-border bg-background hover:bg-background hover:border-foreground/40 font-normal"
           >
-            <Search className="size-4 text-muted-foreground" />
-            <span className="text-sm">Search studio catalog...</span>
-            <Kbd className="text-xs ml-1.5 bg-muted border border-border/60 px-1.5">⌘K</Kbd>
+            <span className="flex items-center gap-2">
+              <Search className="size-3.5 text-muted-foreground" />
+              <span>Search studio or commands...</span>
+            </span>
+            <Kbd className="text-[10px] uppercase font-mono px-1.5 py-0.5">⌘K</Kbd>
           </Button>
 
-          {/* Theme Toggle (Dark / Light / System) */}
+          <Button
+            variant="outline"
+            size="icon-xs"
+            onClick={() => setOpenCommand(true)}
+            className="flex md:hidden size-8 border-border bg-background text-foreground"
+          >
+            <Search className="size-4" />
+            <span className="sr-only">Search</span>
+          </Button>
+
           <ModeToggle />
 
-          {/* Admin Profile Dropdown */}
           <DropdownMenu>
             <DropdownMenuTrigger
               render={
@@ -330,39 +318,38 @@ export function AdminHeader() {
               <SlidersHorizontal className="size-4" />
               <span className="sr-only">Admin menu</span>
             </DropdownMenuTrigger>
-            <DropdownMenuContent align="end" className="w-56">
+            <DropdownMenuContent align="end" className="w-60">
               <DropdownMenuLabel
                 onClick={() => router.push("/profile")}
-                className="font-normal p-2 cursor-pointer hover:bg-muted/40 transition-colors rounded-xs"
+                className="font-normal p-2 cursor-pointer hover:bg-background transition-colors rounded-xs border-b border-border/40"
               >
                 <div className="flex flex-col space-y-1">
-                  <p className="text-sm font-medium leading-none text-foreground">Alexander S.</p>
+                  <p className="text-sm font-medium leading-none text-foreground">{profile.firstName} {profile.lastName}</p>
                   <p className="text-xs font-mono leading-none text-muted-foreground">
-                    alex@ncloth.studio • Merchandising
+                    {profile.email} • {profile.role}
                   </p>
                 </div>
               </DropdownMenuLabel>
-              <DropdownMenuSeparator />
               <DropdownMenuItem onClick={() => router.push("/profile")} className="text-sm py-2">
                 <SlidersHorizontal className="size-4 mr-2 text-muted-foreground" />
                 <span>My Profile & Security</span>
+              </DropdownMenuItem>
+              <DropdownMenuItem onClick={() => router.push("/inventory")} className="text-sm py-2">
+                <Layers className="size-4 mr-2 text-muted-foreground" />
+                <span>Global Stock Matrix</span>
+              </DropdownMenuItem>
+              <DropdownMenuItem onClick={() => router.push("/transfers")} className="text-sm py-2">
+                <Package className="size-4 mr-2 text-muted-foreground" />
+                <span>Stock Transfers</span>
               </DropdownMenuItem>
               <DropdownMenuItem onClick={() => router.push("/categories")} className="text-sm py-2">
                 <FolderTree className="size-4 mr-2 text-muted-foreground" />
                 <span>Categories & Hierarchy</span>
               </DropdownMenuItem>
-              <DropdownMenuItem onClick={() => router.push("/products/attributes")} className="text-sm py-2">
-                <Layers className="size-4 mr-2 text-muted-foreground" />
-                <span>Dynamic Attributes</span>
-              </DropdownMenuItem>
-              <DropdownMenuItem onClick={() => router.push("/products/brands")} className="text-sm py-2">
-                <Sparkles className="size-4 mr-2 text-muted-foreground" />
-                <span>Brand Houses</span>
-              </DropdownMenuItem>
               <DropdownMenuSeparator />
               <DropdownMenuItem
                 onClick={() => {
-                  toast.info("Signed Out", "You have been logged out of the studio session.");
+                  logout();
                   router.push("/login");
                 }}
                 className="text-destructive focus:text-destructive text-sm py-2 cursor-pointer"
@@ -380,7 +367,7 @@ export function AdminHeader() {
         <CommandInput placeholder="Type a category, product, or command..." className="text-sm" />
         <CommandList className="text-sm">
           <CommandEmpty className="text-sm p-4">No matching studio records found.</CommandEmpty>
-          <CommandGroup heading="Catalog & Hierarchy">
+          <CommandGroup heading="Catalog & Taxonomy">
             <CommandItem
               onSelect={() => {
                 setOpenCommand(false);
@@ -404,13 +391,25 @@ export function AdminHeader() {
             <CommandItem
               onSelect={() => {
                 setOpenCommand(false);
-                router.push("/collections");
+                router.push("/products/attributes");
+              }}
+              className="text-sm py-2"
+            >
+              <Layers className="size-4 mr-2" />
+              <span>Dynamic Attributes & Sets</span>
+            </CommandItem>
+            <CommandItem
+              onSelect={() => {
+                setOpenCommand(false);
+                router.push("/products/brands");
               }}
               className="text-sm py-2"
             >
               <Sparkles className="size-4 mr-2" />
-              <span>Runway & Lookbook Collections</span>
+              <span>Brand Houses & Ateliers</span>
             </CommandItem>
+          </CommandGroup>
+          <CommandGroup heading="Inventory & Logistics">
             <CommandItem
               onSelect={() => {
                 setOpenCommand(false);
@@ -419,19 +418,79 @@ export function AdminHeader() {
               className="text-sm py-2"
             >
               <Layers className="size-4 mr-2" />
-              <span>Inventory & Low Stock Matrix</span>
+              <span>Global Stock Matrix & Audit Ledger</span>
             </CommandItem>
-          </CommandGroup>
-          <CommandGroup heading="Operations">
             <CommandItem
               onSelect={() => {
                 setOpenCommand(false);
-                router.push("/orders");
+                router.push("/receiving");
+              }}
+              className="text-sm py-2"
+            >
+              <Package className="size-4 mr-2" />
+              <span>Inbound Inward Receiving Center</span>
+            </CommandItem>
+            <CommandItem
+              onSelect={() => {
+                setOpenCommand(false);
+                router.push("/transfers");
+              }}
+              className="text-sm py-2"
+            >
+              <Package className="size-4 mr-2" />
+              <span>Stock Transfers & Dispatch Pipeline</span>
+            </CommandItem>
+            <CommandItem
+              onSelect={() => {
+                setOpenCommand(false);
+                router.push("/warehouse/putaway");
+              }}
+              className="text-sm py-2"
+            >
+              <Layers className="size-4 mr-2" />
+              <span>Warehouse Putaway Operations</span>
+            </CommandItem>
+          </CommandGroup>
+          <CommandGroup heading="Procurement & Facilities">
+            <CommandItem
+              onSelect={() => {
+                setOpenCommand(false);
+                router.push("/purchases");
               }}
               className="text-sm py-2"
             >
               <ShoppingBag className="size-4 mr-2" />
-              <span>Client Orders & Fulfillments</span>
+              <span>Purchase Orders & Goods Receipts</span>
+            </CommandItem>
+            <CommandItem
+              onSelect={() => {
+                setOpenCommand(false);
+                router.push("/suppliers");
+              }}
+              className="text-sm py-2"
+            >
+              <ShoppingBag className="size-4 mr-2" />
+              <span>Fabric & Garment Suppliers</span>
+            </CommandItem>
+            <CommandItem
+              onSelect={() => {
+                setOpenCommand(false);
+                router.push("/warehouses");
+              }}
+              className="text-sm py-2"
+            >
+              <Package className="size-4 mr-2" />
+              <span>Central Warehouses & Shelves</span>
+            </CommandItem>
+            <CommandItem
+              onSelect={() => {
+                setOpenCommand(false);
+                router.push("/stores");
+              }}
+              className="text-sm py-2"
+            >
+              <ShoppingBag className="size-4 mr-2" />
+              <span>Retail Stores & Boutique Shelves</span>
             </CommandItem>
           </CommandGroup>
         </CommandList>

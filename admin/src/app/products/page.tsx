@@ -47,7 +47,7 @@ import {
   SlidersHorizontal,
   Sparkles,
   Layers,
-  DollarSign,
+  Coins,
   TrendingUp,
   Tag,
   Copy,
@@ -199,7 +199,7 @@ export default function ProductsPage() {
           <Card className="p-3.5 border border-border rounded-xs bg-background">
             <div className="flex items-center justify-between text-muted-foreground">
               <span className="text-xs font-medium uppercase tracking-wider">Catalog Valuation</span>
-              <DollarSign className="size-4" />
+              <Coins className="size-4" />
             </div>
             <div className="mt-2.5 flex items-baseline justify-between">
               <span className="text-2xl font-light font-mono tabular-nums text-foreground">

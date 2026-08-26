@@ -39,7 +39,7 @@ import {
   Layers,
   Sparkles,
   Grid,
-  DollarSign,
+  Coins,
   Image as ImageIcon,
   FileText,
   Save,
@@ -1125,7 +1125,7 @@ export function ProductForm({ initialData, mode = "create" }: ProductFormProps) 
         >
           <div className="space-y-0.5">
             <CardTitle className="text-sm font-medium flex items-center gap-2">
-              <DollarSign className="size-4 text-muted-foreground" />
+              <Coins className="size-4 text-muted-foreground" />
               <span>4. Master Pricing & Profit Margin Preview</span>
             </CardTitle>
             <CardDescription className="text-xs text-muted-foreground">

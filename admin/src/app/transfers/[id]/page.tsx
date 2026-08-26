@@ -2,6 +2,7 @@
 
 import * as React from "react";
 import { useParams, useRouter } from "next/navigation";
+import { AdminShell } from "@/components/layout/admin-shell";
 import { useTransfers } from "@/lib/stores/transfer-context";
 import { LocationBadge } from "@/components/inventory/location-badge";
 import { TransferDispatchDialog } from "@/components/transfers/transfer-dispatch-dialog";
@@ -65,7 +66,8 @@ export default function StockTransferDetailPage() {
   }
 
   return (
-    <div className="space-y-4 pb-16 w-full min-w-0">
+    <AdminShell>
+      <div className="space-y-4 pb-16 w-full min-w-0">
       {/* 1. Header Banner */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-border pb-3">
         <div className="space-y-1">
@@ -130,7 +132,7 @@ export default function StockTransferDetailPage() {
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4 items-center">
         {/* Source Facility */}
         <Card className="border border-border rounded-xs bg-background p-4 space-y-2">
-          <p className="text-[11px] font-mono uppercase tracking-wider text-muted-foreground">
+          <p className="text-xs font-mono uppercase tracking-wider text-muted-foreground">
             Origin Facility (Source)
           </p>
           <div className="flex items-center gap-2">
@@ -139,23 +141,23 @@ export default function StockTransferDetailPage() {
           </div>
           <LocationBadge type={transfer.sourceType} code={transfer.sourceLocationCode} />
           {transfer.dispatchedDate && (
-            <p className="text-[11px] text-muted-foreground font-mono pt-1 border-t border-border/40">
+            <p className="text-xs text-muted-foreground font-mono pt-1 border-t border-border/40">
               Dispatched: {new Date(transfer.dispatchedDate).toLocaleString()} by {transfer.dispatchedBy}
             </p>
           )}
         </Card>
 
         {/* Vector Arrow & Status */}
-        <div className="flex flex-col items-center justify-center p-3 text-center space-y-1 bg-muted/10 border border-border/40 rounded-xs">
+        <div className="flex flex-col items-center justify-center p-3 text-center space-y-1 bg-background border border-border/80 rounded-xs">
           <div className="flex items-center gap-2 text-xs font-mono font-bold text-foreground">
             <span>{transfer.totalRequestedQty} Units</span>
             <ArrowRight className="size-4 text-amber-400 animate-pulse" />
           </div>
-          <p className="text-[11px] font-mono text-muted-foreground">
+          <p className="text-xs font-mono text-muted-foreground">
             Valuation: ৳{transfer.totalValuationBDT.toLocaleString("en-BD")}
           </p>
           {transfer.driverName && (
-            <div className="text-[11px] text-muted-foreground font-mono pt-1">
+            <div className="text-xs text-muted-foreground font-mono pt-1">
               🚚 {transfer.driverName} ({transfer.vehicleNumber || "Fleet"})
             </div>
           )}
@@ -163,7 +165,7 @@ export default function StockTransferDetailPage() {
 
         {/* Destination Facility */}
         <Card className="border border-border rounded-xs bg-background p-4 space-y-2">
-          <p className="text-[11px] font-mono uppercase tracking-wider text-muted-foreground">
+          <p className="text-xs font-mono uppercase tracking-wider text-muted-foreground">
             Destination Facility (Target)
           </p>
           <div className="flex items-center gap-2">
@@ -172,11 +174,11 @@ export default function StockTransferDetailPage() {
           </div>
           <LocationBadge type={transfer.destinationType} code={transfer.destinationLocationCode} />
           {transfer.receivedDate ? (
-            <p className="text-[11px] text-emerald-400 font-mono pt-1 border-t border-border/40">
+            <p className="text-xs text-emerald-400 font-mono pt-1 border-t border-border/40">
               Received: {new Date(transfer.receivedDate).toLocaleString()} by {transfer.receivedBy}
             </p>
           ) : (
-            <p className="text-[11px] text-amber-400 font-mono pt-1 border-t border-border/40">
+            <p className="text-xs text-amber-400 font-mono pt-1 border-t border-border/40">
               Status: Awaiting Delivery Arrival
             </p>
           )}
@@ -215,10 +217,10 @@ export default function StockTransferDetailPage() {
                 const totalLineVal = (item.approvedQty || item.requestedQty) * item.unitCost;
 
                 return (
-                  <TableRow key={item.id} className="border-b border-border/60 hover:bg-muted/10">
+                  <TableRow key={item.id} className="border-b border-border/60 hover:bg-background">
                     <TableCell className="py-2.5">
                       <p className="text-xs font-semibold text-foreground">{item.productName}</p>
-                      <p className="text-[11px] text-muted-foreground font-mono">{item.variantName}</p>
+                      <p className="text-xs text-muted-foreground font-mono">{item.variantName}</p>
                     </TableCell>
 
                     <TableCell className="py-2.5 font-mono text-xs text-foreground">
@@ -258,7 +260,7 @@ export default function StockTransferDetailPage() {
 
       {/* Discrepancies if any */}
       {transfer.discrepancies && transfer.discrepancies.length > 0 && (
-        <Card className="border border-amber-500/40 bg-amber-500/10 rounded-xs p-4 space-y-2">
+        <Card className="border border-amber-500/40 bg-background rounded-xs p-4 space-y-2">
           <div className="flex items-center gap-2 text-amber-300 font-semibold text-xs">
             <AlertTriangle className="size-4 text-amber-400" />
             <span>Transit Discrepancies Recorded ({transfer.discrepancies.length})</span>
@@ -270,9 +272,9 @@ export default function StockTransferDetailPage() {
             >
               <div>
                 <strong className="text-foreground font-mono">[{disc.discrepancyType}]</strong> {disc.sku} • Difference: {disc.differenceQty} units.
-                <p className="text-[11px] text-muted-foreground">{disc.reason}</p>
+                <p className="text-xs text-muted-foreground">{disc.reason}</p>
               </div>
-              <Badge variant="outline" className="text-[10px] font-mono border-amber-500/50 text-amber-300">
+              <Badge variant="outline" className="text-xs font-mono border-amber-500/50 text-amber-300">
                 {disc.resolutionStatus}
               </Badge>
             </div>
@@ -293,5 +295,6 @@ export default function StockTransferDetailPage() {
         transfer={transfer}
       />
     </div>
+    </AdminShell>
   );
 }

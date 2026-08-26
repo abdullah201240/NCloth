@@ -2,6 +2,7 @@
 
 import * as React from "react";
 import { useRouter } from "next/navigation";
+import { AdminShell } from "@/components/layout/admin-shell";
 import { useForm, useFieldArray } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { stockRequestSchema, StockRequestFormValues } from "@/lib/validations/transfer";
@@ -101,7 +102,8 @@ export default function NewStockRequestPage() {
   };
 
   return (
-    <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4 pb-20 w-full min-w-0">
+    <AdminShell>
+      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4 pb-20 w-full min-w-0">
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-border pb-3">
         <div className="space-y-1">
           <div className="flex items-center gap-2.5">
@@ -257,7 +259,7 @@ export default function NewStockRequestPage() {
                   <TableRow key={field.id} className="border-b border-border/60">
                     <TableCell className="py-2.5">
                       <p className="text-xs font-semibold text-foreground">{field.productName}</p>
-                      <p className="text-[11px] text-muted-foreground font-mono">{field.variantName}</p>
+                      <p className="text-xs text-muted-foreground font-mono">{field.variantName}</p>
                     </TableCell>
                     <TableCell className="py-2.5 font-mono text-xs text-foreground">{field.sku}</TableCell>
                     <TableCell className="py-2.5 font-mono text-xs text-muted-foreground">
@@ -308,5 +310,6 @@ export default function NewStockRequestPage() {
         alreadySelectedVariantIds={watchedItems.map((i) => i.variantId)}
       />
     </form>
+    </AdminShell>
   );
 }

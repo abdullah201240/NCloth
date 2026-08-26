@@ -1,6 +1,7 @@
 "use client";
 
 import * as React from "react";
+import { AdminShell } from "@/components/layout/admin-shell";
 import { useInventory } from "@/lib/stores/inventory-context";
 import { LocationBadge } from "@/components/inventory/location-badge";
 import { StockStatusPill } from "@/components/inventory/stock-status-pill";
@@ -115,7 +116,8 @@ export default function GlobalInventoryPage() {
   const selectedBalance = balances.find((b) => b.id === selectedBalanceId);
 
   return (
-    <div className="space-y-4 pb-16 w-full min-w-0">
+    <AdminShell>
+      <div className="space-y-4 pb-16 w-full min-w-0">
       {/* 1. Header Banner */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-border pb-3">
         <div className="space-y-1">
@@ -160,63 +162,63 @@ export default function GlobalInventoryPage() {
       {/* 2. Top KPI Cards in BDT */}
       <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-3">
         <Card className="border border-border rounded-xs bg-background p-3">
-          <p className="text-[11px] font-mono uppercase tracking-wider text-muted-foreground">
+          <p className="text-xs font-mono uppercase tracking-wider text-muted-foreground">
             Total Valuation
           </p>
           <p className="text-lg font-bold font-mono text-foreground mt-1">
             ৳{stats.totalValuationBDT.toLocaleString("en-BD", { minimumFractionDigits: 0, maximumFractionDigits: 0 })}
           </p>
-          <span className="text-[10px] text-muted-foreground font-mono">Cost basis BDT</span>
+          <span className="text-xs text-muted-foreground font-mono">Cost basis BDT</span>
         </Card>
 
         <Card className="border border-border rounded-xs bg-background p-3">
-          <p className="text-[11px] font-mono uppercase tracking-wider text-muted-foreground">
+          <p className="text-xs font-mono uppercase tracking-wider text-muted-foreground">
             Total On Hand
           </p>
           <p className="text-lg font-bold font-mono text-foreground mt-1">
             {stats.totalOnHand.toLocaleString()}
           </p>
-          <span className="text-[10px] text-muted-foreground font-mono">Physical across all sites</span>
+          <span className="text-xs text-muted-foreground font-mono">Physical across all sites</span>
         </Card>
 
         <Card className="border border-border rounded-xs bg-background p-3">
-          <p className="text-[11px] font-mono uppercase tracking-wider text-muted-foreground">
+          <p className="text-xs font-mono uppercase tracking-wider text-muted-foreground">
             Available Stock
           </p>
           <p className="text-lg font-bold font-mono text-emerald-400 mt-1">
             {stats.totalAvailable.toLocaleString()}
           </p>
-          <span className="text-[10px] text-emerald-500/80 font-mono">Ready for sale / transfer</span>
+          <span className="text-xs text-emerald-500/80 font-mono">Ready for sale / transfer</span>
         </Card>
 
         <Card className="border border-border rounded-xs bg-background p-3">
-          <p className="text-[11px] font-mono uppercase tracking-wider text-muted-foreground">
+          <p className="text-xs font-mono uppercase tracking-wider text-muted-foreground">
             In-Transit Fleet
           </p>
           <p className="text-lg font-bold font-mono text-amber-400 mt-1">
             {stats.totalInTransit.toLocaleString()}
           </p>
-          <span className="text-[10px] text-amber-500/80 font-mono">Moving between hubs</span>
+          <span className="text-xs text-amber-500/80 font-mono">Moving between hubs</span>
         </Card>
 
         <Card className="border border-border rounded-xs bg-background p-3">
-          <p className="text-[11px] font-mono uppercase tracking-wider text-muted-foreground">
+          <p className="text-xs font-mono uppercase tracking-wider text-muted-foreground">
             Quarantine & QC
           </p>
           <p className="text-lg font-bold font-mono text-purple-400 mt-1">
             {stats.totalQuarantined.toLocaleString()}
           </p>
-          <span className="text-[10px] text-purple-400/80 font-mono">Pending QA inspection</span>
+          <span className="text-xs text-purple-400/80 font-mono">Pending QA inspection</span>
         </Card>
 
         <Card className="border border-border rounded-xs bg-background p-3">
-          <p className="text-[11px] font-mono uppercase tracking-wider text-muted-foreground">
+          <p className="text-xs font-mono uppercase tracking-wider text-muted-foreground">
             Defect & Damaged
           </p>
           <p className="text-lg font-bold font-mono text-destructive mt-1">
             {stats.totalDamaged.toLocaleString()}
           </p>
-          <span className="text-[10px] text-destructive/80 font-mono">Non-sellable items</span>
+          <span className="text-xs text-destructive/80 font-mono">Non-sellable items</span>
         </Card>
       </div>
 
@@ -287,7 +289,7 @@ export default function GlobalInventoryPage() {
                             <p className="text-xs font-semibold text-foreground line-clamp-1">
                               {bal.productName}
                             </p>
-                            <p className="text-[11px] text-muted-foreground font-mono">
+                            <p className="text-xs text-muted-foreground font-mono">
                               {bal.variantName} {bal.brandName ? `• ${bal.brandName}` : ""}
                             </p>
                           </div>
@@ -296,7 +298,7 @@ export default function GlobalInventoryPage() {
                         <TableCell className="py-2.5 font-mono text-xs">
                           <div className="text-foreground">{bal.sku}</div>
                           {bal.barcode && (
-                            <div className="text-[10px] text-muted-foreground">BC: {bal.barcode}</div>
+                            <div className="text-xs text-muted-foreground">BC: {bal.barcode}</div>
                           )}
                         </TableCell>
 
@@ -385,7 +387,7 @@ export default function GlobalInventoryPage() {
                     <TableCell className="py-2.5">
                       <Badge
                         variant="outline"
-                        className={`text-[10px] font-mono px-1.5 py-0 rounded-xs ${
+                        className={`text-xs font-mono px-2 py-0.5 rounded-xs ${
                           tx.type.includes("RECEIPT") || tx.type === "PUTAWAY"
                             ? "border-emerald-500/40 text-emerald-400 bg-emerald-500/10"
                             : tx.type.includes("DISPATCH")
@@ -401,7 +403,7 @@ export default function GlobalInventoryPage() {
 
                     <TableCell className="py-2.5">
                       <p className="text-xs font-semibold text-foreground line-clamp-1">{tx.productName}</p>
-                      <p className="text-[11px] text-muted-foreground font-mono">
+                      <p className="text-xs text-muted-foreground font-mono">
                         {tx.variantName} ({tx.sku})
                       </p>
                     </TableCell>
@@ -421,14 +423,14 @@ export default function GlobalInventoryPage() {
                     </TableCell>
 
                     <TableCell className="py-2.5 font-mono text-xs">
-                      <span className="bg-muted/40 px-1.5 py-0.5 rounded-xs border border-border/40 text-foreground">
+                      <span className="bg-background px-1.5 py-0.5 rounded-xs border border-border/80 text-foreground">
                         {tx.referenceNumber}
                       </span>
                     </TableCell>
 
                     <TableCell className="py-2.5 text-xs">
                       <p className="font-medium text-foreground">{tx.createdBy}</p>
-                      <p className="text-[11px] text-muted-foreground font-mono">
+                      <p className="text-xs text-muted-foreground font-mono">
                         {new Date(tx.createdAt).toLocaleString()}
                       </p>
                     </TableCell>
@@ -451,9 +453,9 @@ export default function GlobalInventoryPage() {
 
           {selectedBalance && (
             <div className="p-4 space-y-3">
-              <div className="p-2.5 rounded-xs border border-border/60 bg-muted/20 space-y-1">
+              <div className="p-2.5 rounded-xs border border-border bg-background space-y-1">
                 <p className="text-xs font-semibold text-foreground">{selectedBalance.productName}</p>
-                <div className="flex items-center gap-2 text-[11px] font-mono text-muted-foreground">
+                <div className="flex items-center gap-2 text-xs font-mono text-muted-foreground">
                   <span>{selectedBalance.sku}</span>
                   <span>•</span>
                   <span>{selectedBalance.locationName}</span>
@@ -530,5 +532,6 @@ export default function GlobalInventoryPage() {
         </DialogContent>
       </Dialog>
     </div>
+    </AdminShell>
   );
 }

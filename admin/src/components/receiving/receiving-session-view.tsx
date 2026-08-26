@@ -133,7 +133,7 @@ export function ReceivingSessionView({ session }: ReceivingSessionViewProps) {
       {/* Progress & Destination Overview */}
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
         <Card className="border border-border rounded-xs bg-background p-3">
-          <p className="text-[11px] font-mono uppercase tracking-wider text-muted-foreground">
+          <p className="text-xs font-mono uppercase tracking-wider text-muted-foreground">
             Receiving Destination
           </p>
           <div className="flex items-center gap-2 mt-1">
@@ -146,7 +146,7 @@ export function ReceivingSessionView({ session }: ReceivingSessionViewProps) {
               {session.destinationName}
             </span>
           </div>
-          <p className="text-[11px] text-muted-foreground mt-0.5">
+          <p className="text-xs text-muted-foreground mt-0.5">
             {session.destinationType === "WAREHOUSE"
               ? "Stock enters WH Receiving Dock -> Putaway"
               : "Stock directly becomes Available in Store"}
@@ -154,7 +154,7 @@ export function ReceivingSessionView({ session }: ReceivingSessionViewProps) {
         </Card>
 
         <Card className="border border-border rounded-xs bg-background p-3">
-          <p className="text-[11px] font-mono uppercase tracking-wider text-muted-foreground">
+          <p className="text-xs font-mono uppercase tracking-wider text-muted-foreground">
             Inbound Progress
           </p>
           <div className="flex items-center justify-between mt-1">
@@ -165,7 +165,7 @@ export function ReceivingSessionView({ session }: ReceivingSessionViewProps) {
               {progressPercent}%
             </span>
           </div>
-          <div className="w-full bg-muted/40 h-1.5 rounded-full overflow-hidden mt-1.5">
+          <div className="w-full bg-border h-1.5 rounded-xs overflow-hidden mt-1.5">
             <div
               className="bg-emerald-500 h-full transition-all duration-300"
               style={{ width: `${progressPercent}%` }}
@@ -174,7 +174,7 @@ export function ReceivingSessionView({ session }: ReceivingSessionViewProps) {
         </Card>
 
         <Card className="border border-border rounded-xs bg-background p-3">
-          <p className="text-[11px] font-mono uppercase tracking-wider text-muted-foreground">
+          <p className="text-xs font-mono uppercase tracking-wider text-muted-foreground">
             Quality Inspection Summary
           </p>
           <div className="flex items-center gap-3 mt-1 font-mono text-xs">
@@ -187,7 +187,7 @@ export function ReceivingSessionView({ session }: ReceivingSessionViewProps) {
               </span>
             )}
           </div>
-          <p className="text-[11px] text-muted-foreground mt-0.5 font-mono">
+          <p className="text-xs text-muted-foreground mt-0.5 font-mono">
             Started by {session.startedBy}
           </p>
         </Card>
@@ -239,12 +239,12 @@ export function ReceivingSessionView({ session }: ReceivingSessionViewProps) {
                 const isFulfilled = item.scannedQty >= item.orderedQty;
 
                 return (
-                  <TableRow key={item.id} className="border-b border-border/60 hover:bg-muted/10">
+                  <TableRow key={item.id} className="border-b border-border/60 hover:bg-background">
                     <TableCell className="py-2.5">
                       <p className="text-xs font-semibold text-foreground line-clamp-1">
                         {item.productName}
                       </p>
-                      <p className="text-[11px] text-muted-foreground font-mono">
+                      <p className="text-xs text-muted-foreground font-mono">
                         {item.variantName}
                       </p>
                     </TableCell>
@@ -252,7 +252,7 @@ export function ReceivingSessionView({ session }: ReceivingSessionViewProps) {
                     <TableCell className="py-2.5 font-mono text-xs">
                       <div>{item.sku}</div>
                       {item.barcode && (
-                        <div className="text-[10px] text-muted-foreground">BC: {item.barcode}</div>
+                        <div className="text-xs text-muted-foreground">BC: {item.barcode}</div>
                       )}
                     </TableCell>
 
@@ -277,7 +277,7 @@ export function ReceivingSessionView({ session }: ReceivingSessionViewProps) {
                     <TableCell className="py-2.5 text-center">
                       <Badge
                         variant="outline"
-                        className={`text-[10px] font-mono px-1.5 py-0 rounded-xs ${
+                        className={`text-xs font-mono px-2 py-0.5 rounded-xs ${
                           item.qcStatus === "PASSED"
                             ? "border-emerald-500/40 text-emerald-400 bg-emerald-500/10"
                             : item.qcStatus === "FAILED"
@@ -297,7 +297,7 @@ export function ReceivingSessionView({ session }: ReceivingSessionViewProps) {
                             variant="outline"
                             size="xs"
                             onClick={() => handleQuickAdd(item.variantId, 1)}
-                            className="h-6 text-[11px] px-2 border-border"
+                            className="h-6 text-xs px-2 border-border"
                           >
                             +1
                           </Button>
@@ -306,7 +306,7 @@ export function ReceivingSessionView({ session }: ReceivingSessionViewProps) {
                             variant="outline"
                             size="xs"
                             onClick={() => handleQuickAdd(item.variantId, 10)}
-                            className="h-6 text-[11px] px-2 border-border font-mono"
+                            className="h-6 text-xs px-2 border-border font-mono"
                           >
                             +10
                           </Button>
@@ -315,7 +315,7 @@ export function ReceivingSessionView({ session }: ReceivingSessionViewProps) {
                             variant="ghost"
                             size="xs"
                             onClick={() => handleLogDamaged(item.variantId)}
-                            className="h-6 text-[10px] px-1 text-destructive hover:bg-destructive/10"
+                            className="h-6 text-xs px-1 text-destructive hover:bg-destructive/10"
                           >
                             Dmg
                           </Button>

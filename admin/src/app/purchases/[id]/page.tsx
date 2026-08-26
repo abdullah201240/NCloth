@@ -40,7 +40,7 @@ import {
   CreditCard,
   FileText,
   Printer,
-  DollarSign,
+  Coins,
   AlertTriangle,
 } from "lucide-react";
 
@@ -430,7 +430,7 @@ export default function PurchaseDetailPage() {
             <Card className="border border-border rounded-xs bg-background">
               <CardHeader className="p-3.5 border-b border-border/60">
                 <CardTitle className="text-sm font-semibold flex items-center gap-2 text-foreground">
-                  <DollarSign className="size-4 text-muted-foreground" />
+                  <Coins className="size-4 text-muted-foreground" />
                   <span>Commercial & Invoicing</span>
                 </CardTitle>
               </CardHeader>

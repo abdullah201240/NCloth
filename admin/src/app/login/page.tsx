@@ -24,8 +24,11 @@ import {
   CheckCircle2,
 } from "lucide-react";
 
+import { useProfile } from "@/lib/stores/profile-context";
+
 export default function LoginPage() {
   const router = useRouter();
+  const { login } = useProfile();
   const [showPassword, setShowPassword] = React.useState(false);
   const [isLoading, setIsLoading] = React.useState(false);
   const [authSuccess, setAuthSuccess] = React.useState(false);
@@ -48,11 +51,9 @@ export default function LoginPage() {
 
   const onSubmit = async (data: LoginFormValues) => {
     setIsLoading(true);
-    if (typeof window !== "undefined") {
-      localStorage.setItem("ncloth_auth_user", data.email);
-    }
+    login(data.email);
     // Simulate secure authentication verification
-    await new Promise((resolve) => setTimeout(resolve, 800));
+    await new Promise((resolve) => setTimeout(resolve, 600));
     setIsLoading(false);
     setAuthSuccess(true);
     toast.success("Access Authorized", "Welcome back, Alexander S. (Studio Admin)");

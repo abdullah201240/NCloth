@@ -41,7 +41,7 @@ import {
   Package,
   Plus,
   Trash2,
-  DollarSign,
+  Coins,
   ChevronDown,
   ChevronUp,
   FileText,
@@ -527,7 +527,7 @@ export function PurchaseForm({ initialData, mode = "create" }: PurchaseFormProps
         >
           <div className="space-y-0.5">
             <CardTitle className="text-sm font-semibold flex items-center gap-2 text-foreground">
-              <DollarSign className="size-4 text-muted-foreground" />
+              <Coins className="size-4 text-muted-foreground" />
               <span>3. Financial & Payment Breakdown</span>
             </CardTitle>
             <p className="text-xs text-muted-foreground font-mono">

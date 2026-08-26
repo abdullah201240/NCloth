@@ -278,8 +278,8 @@ export default function BrandsPage() {
 
         {/* Content Area */}
         {filteredBrands.length === 0 ? (
-          <div className="border border-border rounded-xs p-8 text-center bg-background space-y-3">
-            <div className="size-10 rounded-full border border-border flex items-center justify-center mx-auto text-muted-foreground">
+          <div className="border border-border rounded-xs p-6 text-center bg-background space-y-3">
+            <div className="size-10 rounded-xs border border-border flex items-center justify-center mx-auto text-muted-foreground">
               <Award className="size-5" />
             </div>
             <div className="space-y-1">

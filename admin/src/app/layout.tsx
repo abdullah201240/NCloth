@@ -1,22 +1,6 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
-import { ThemeProvider } from "@/components/theme-provider";
-import { CategoryProvider } from "@/lib/stores/category-context";
-import { WarehouseProvider } from "@/lib/stores/warehouse-context";
-import { ShelfProvider } from "@/lib/stores/shelf-context";
-import { SupplierProvider } from "@/lib/stores/supplier-context";
-import { StoreProvider } from "@/lib/stores/store-context";
-import { StoreShelfProvider } from "@/lib/stores/store-shelf-context";
-import { AttributeProvider } from "@/lib/stores/attribute-context";
-import { BrandProvider } from "@/lib/stores/brand-context";
-import { ProductProvider } from "@/lib/stores/product-context";
-import { PurchaseProvider } from "@/lib/stores/purchase-context";
-import { InventoryProvider } from "@/lib/stores/inventory-context";
-import { TransferProvider } from "@/lib/stores/transfer-context";
-import { ReceivingProvider } from "@/lib/stores/receiving-context";
-import { ProfileProvider } from "@/lib/stores/profile-context";
-import { TooltipProvider } from "@/components/ui/tooltip";
-import { Toaster } from "@/components/ui/toast";
+import { AppProviders } from "@/components/providers/app-providers";
 import "./globals.css";
 
 const geistSans = Geist({
@@ -50,46 +34,7 @@ export default function RootLayout({
         suppressHydrationWarning
         className="min-h-full flex flex-col bg-background text-foreground selection:bg-foreground selection:text-background"
       >
-        <ThemeProvider
-          attribute="class"
-          defaultTheme="dark"
-          enableSystem
-          disableTransitionOnChange
-          scriptProps={{ async: true }}
-        >
-          <TooltipProvider delay={100}>
-            <CategoryProvider>
-              <WarehouseProvider>
-                <ShelfProvider>
-                  <SupplierProvider>
-                    <StoreProvider>
-                      <StoreShelfProvider>
-                        <AttributeProvider>
-                          <BrandProvider>
-                            <ProductProvider>
-                              <PurchaseProvider>
-                                <InventoryProvider>
-                                  <TransferProvider>
-                                    <ReceivingProvider>
-                                      <ProfileProvider>
-                                        {children}
-                                        <Toaster />
-                                      </ProfileProvider>
-                                    </ReceivingProvider>
-                                  </TransferProvider>
-                                </InventoryProvider>
-                              </PurchaseProvider>
-                            </ProductProvider>
-                          </BrandProvider>
-                        </AttributeProvider>
-                      </StoreShelfProvider>
-                    </StoreProvider>
-                  </SupplierProvider>
-                </ShelfProvider>
-              </WarehouseProvider>
-            </CategoryProvider>
-          </TooltipProvider>
-        </ThemeProvider>
+        <AppProviders>{children}</AppProviders>
       </body>
     </html>
   );

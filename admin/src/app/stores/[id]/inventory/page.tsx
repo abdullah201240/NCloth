@@ -2,8 +2,10 @@
 
 import * as React from "react";
 import { useParams, useRouter } from "next/navigation";
+import { AdminShell } from "@/components/layout/admin-shell";
 import { useInventory } from "@/lib/stores/inventory-context";
 import { useStores } from "@/lib/stores/store-context";
+import { formatBDT } from "@/lib/utils";
 import { LocationBadge } from "@/components/inventory/location-badge";
 import { StockStatusPill } from "@/components/inventory/stock-status-pill";
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
@@ -57,7 +59,8 @@ export default function StoreInventoryPage() {
   const totalValuation = storeBalances.reduce((acc, curr) => acc + curr.onHand * curr.retailPrice, 0);
 
   return (
-    <div className="space-y-4 pb-16 w-full min-w-0">
+    <AdminShell>
+      <div className="space-y-4 pb-16 w-full min-w-0">
       {/* Header Banner */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-border pb-3">
         <div className="space-y-1">
@@ -219,5 +222,6 @@ export default function StoreInventoryPage() {
         </CardContent>
       </Card>
     </div>
+    </AdminShell>
   );
 }

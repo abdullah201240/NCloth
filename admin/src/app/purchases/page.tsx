@@ -38,7 +38,7 @@ import {
   PackageCheck,
   Building2,
   Warehouse,
-  DollarSign,
+  Coins,
   AlertCircle,
   Eye,
   CreditCard,
@@ -223,7 +223,7 @@ export default function PurchasesPage() {
           <Card className="p-3.5 border border-border rounded-xs bg-background">
             <div className="flex items-center justify-between text-muted-foreground">
               <span className="text-xs font-medium uppercase tracking-wider">Procurement Spend</span>
-              <DollarSign className="size-4" />
+              <Coins className="size-4" />
             </div>
             <div className="mt-2.5 flex items-baseline justify-between">
               <span className="text-2xl font-light font-mono tabular-nums text-foreground">

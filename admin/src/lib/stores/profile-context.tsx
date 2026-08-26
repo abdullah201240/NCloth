@@ -9,6 +9,9 @@ interface ProfileContextType {
   profile: UserProfile;
   sessions: UserSession[];
   notifications: NotificationSettings;
+  isAuthenticated: boolean;
+  login: (email: string) => void;
+  logout: () => void;
   updateProfile: (data: ProfileDetailsFormValues) => void;
   changePassword: (data: PasswordChangeFormValues) => Promise<boolean>;
   toggleTwoFactor: () => void;
@@ -16,6 +19,7 @@ interface ProfileContextType {
   updateNotifications: (settings: Partial<NotificationSettings>) => void;
 }
 
+const AUTH_STORAGE_KEY = "ncloth_auth_user_v1";
 const PROFILE_STORAGE_KEY = "ncloth_studio_profile_v1";
 const SESSIONS_STORAGE_KEY = "ncloth_studio_sessions_v1";
 const NOTIFICATIONS_STORAGE_KEY = "ncloth_studio_notifications_v1";
@@ -90,12 +94,26 @@ const notificationsStore = createSyncedStore<NotificationSettings>(
   initialNotifications
 );
 
+const authStore = createSyncedStore<string | null>(AUTH_STORAGE_KEY, "alex@ncloth.studio");
+
 const ProfileContext = React.createContext<ProfileContextType | undefined>(undefined);
 
 export function ProfileProvider({ children }: { children: React.ReactNode }) {
   const [profile, setProfile] = profileStore.useStore();
   const [sessions, setSessions] = sessionsStore.useStore();
   const [notifications, setNotifications] = notificationsStore.useStore();
+  const [authUser, setAuthUser] = authStore.useStore();
+
+  const isAuthenticated = Boolean(authUser);
+
+  const login = React.useCallback((email: string) => {
+    setAuthUser(email);
+  }, [setAuthUser]);
+
+  const logout = React.useCallback(() => {
+    setAuthUser(null);
+    toast.info("Session Closed", "You have been signed out from the studio admin.");
+  }, [setAuthUser]);
 
   const updateProfile = React.useCallback((data: ProfileDetailsFormValues) => {
     setProfile((prev) => ({
@@ -167,6 +185,9 @@ export function ProfileProvider({ children }: { children: React.ReactNode }) {
         profile,
         sessions,
         notifications,
+        isAuthenticated,
+        login,
+        logout,
         updateProfile,
         changePassword,
         toggleTwoFactor,

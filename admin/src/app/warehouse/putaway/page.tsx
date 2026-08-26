@@ -2,6 +2,7 @@
 
 import * as React from "react";
 import { useRouter } from "next/navigation";
+import { AdminShell } from "@/components/layout/admin-shell";
 import { useReceiving } from "@/lib/stores/receiving-context";
 import { PutawayTask } from "@/lib/types/receiving";
 import { PutawayDialog } from "@/components/receiving/putaway-dialog";
@@ -45,7 +46,8 @@ export default function WarehousePutawayPage() {
   }, [putawayTasks, searchQuery]);
 
   return (
-    <div className="space-y-4 pb-16 w-full min-w-0">
+    <AdminShell>
+      <div className="space-y-4 pb-16 w-full min-w-0">
       {/* Header Banner */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-border pb-3">
         <div className="space-y-1">
@@ -132,7 +134,7 @@ export default function WarehousePutawayPage() {
                     <TableCell className="py-2.5 text-center">
                       <Badge
                         variant="outline"
-                        className={`text-[10px] font-mono px-2 py-0.5 rounded-xs ${
+                        className={`text-xs font-mono px-2 py-0.5 rounded-xs ${
                           t.status === "COMPLETED"
                             ? "border-emerald-500/40 text-emerald-400 bg-emerald-500/10"
                             : "border-amber-500/40 text-amber-400 bg-amber-500/10"
@@ -181,5 +183,6 @@ export default function WarehousePutawayPage() {
         />
       )}
     </div>
+    </AdminShell>
   );
 }
