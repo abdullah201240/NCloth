@@ -28,6 +28,8 @@ interface CategoryTreeViewProps {
     slug: string;
     code: string;
     description?: string;
+    imageUrl?: string;
+    bannerUrl?: string;
     displayOrder: number;
     status: EntityStatus;
   }) => void;
@@ -59,7 +61,7 @@ export function CategoryTreeView({
 
   if (data.length === 0) {
     return (
-      <div className="border border-border p-10 text-center rounded-xs space-y-3">
+      <div className="border border-border p-10 text-center rounded-xs space-y-3 bg-background">
         <FolderTree className="size-8 mx-auto text-muted-foreground stroke-1" />
         <p className="text-sm font-medium text-foreground">No Root Categories Found</p>
         <p className="text-xs text-muted-foreground">
@@ -83,11 +85,11 @@ export function CategoryTreeView({
         );
 
         return (
-          <Card key={root.id} className="border border-border rounded-xs overflow-hidden">
+          <Card key={root.id} className="border border-border rounded-xs overflow-hidden bg-background">
             {/* Root Header */}
             <CardHeader className="p-3 px-3.5 bg-background border-b border-border/80">
               <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2.5">
-                {/* Left: Collapse toggle, Icon, Title, Badges */}
+                {/* Left: Collapse toggle, Thumbnail, Icon, Title, Badges */}
                 <div className="flex items-center gap-2.5 min-w-0">
                   <Button
                     variant="ghost"
@@ -102,7 +104,19 @@ export function CategoryTreeView({
                     )}
                   </Button>
 
-                  <FolderTree className="size-4 text-foreground shrink-0" />
+                  {/* Root Thumbnail */}
+                  <div className="relative size-9 rounded-xs border border-border overflow-hidden bg-muted/20 shrink-0 flex items-center justify-center">
+                    {root.imageUrl ? (
+                      // eslint-disable-next-line @next/next/no-img-element
+                      <img
+                        src={root.imageUrl}
+                        alt={root.name}
+                        className="size-full object-cover"
+                      />
+                    ) : (
+                      <FolderTree className="size-4 text-muted-foreground stroke-1" />
+                    )}
+                  </div>
 
                   <div className="flex items-center gap-2 min-w-0 flex-wrap">
                     <CardTitle className="text-sm font-medium text-foreground truncate">
@@ -144,6 +158,8 @@ export function CategoryTreeView({
                           slug: root.slug,
                           code: root.code,
                           description: root.description,
+                          imageUrl: root.imageUrl,
+                          bannerUrl: root.bannerUrl,
                           displayOrder: root.displayOrder,
                           status: root.status,
                         })
@@ -185,7 +201,7 @@ export function CategoryTreeView({
               </div>
 
               {root.description && (
-                <p className="text-xs text-muted-foreground mt-1 pl-8">
+                <p className="text-xs text-muted-foreground mt-1 pl-12">
                   {root.description}
                 </p>
               )}
@@ -203,7 +219,7 @@ export function CategoryTreeView({
                       variant="outline"
                       size="sm"
                       onClick={() => onAddChild("category", root.id)}
-                      className="h-7 text-xs px-2.5"
+                      className="h-7 text-xs px-2.5 border-border"
                     >
                       <Plus className="size-3 mr-1" /> Add Category
                     </Button>
@@ -216,11 +232,11 @@ export function CategoryTreeView({
                     return (
                       <div
                         key={cat.id}
-                        className="border border-border/80 rounded-xs overflow-hidden ml-2 sm:ml-4"
+                        className="border border-border/80 rounded-xs overflow-hidden ml-2 sm:ml-4 bg-background"
                       >
                         {/* Tier 2 Category Header */}
                         <div className="flex flex-col sm:flex-row sm:items-center justify-between p-2 px-3 bg-background border-b border-border/60 gap-2">
-                          <div className="flex items-center gap-2 min-w-0">
+                          <div className="flex items-center gap-2.5 min-w-0">
                             <Button
                               variant="ghost"
                               size="icon-xs"
@@ -234,7 +250,19 @@ export function CategoryTreeView({
                               )}
                             </Button>
 
-                            <Folder className="size-4 text-foreground shrink-0" />
+                            {/* Category Thumbnail */}
+                            <div className="relative size-8 rounded-xs border border-border overflow-hidden bg-muted/20 shrink-0 flex items-center justify-center">
+                              {cat.imageUrl ? (
+                                // eslint-disable-next-line @next/next/no-img-element
+                                <img
+                                  src={cat.imageUrl}
+                                  alt={cat.name}
+                                  className="size-full object-cover"
+                                />
+                              ) : (
+                                <Folder className="size-3.5 text-muted-foreground stroke-1" />
+                              )}
+                            </div>
 
                             <span className="text-sm font-medium text-foreground truncate">
                               {cat.name}
@@ -276,6 +304,8 @@ export function CategoryTreeView({
                                   slug: cat.slug,
                                   code: cat.code,
                                   description: cat.description,
+                                  imageUrl: cat.imageUrl,
+                                  bannerUrl: cat.bannerUrl,
                                   displayOrder: cat.displayOrder,
                                   status: cat.status,
                                 })
@@ -328,22 +358,40 @@ export function CategoryTreeView({
                                       key={sub.id}
                                       className="border border-border/70 p-2.5 rounded-xs flex flex-col justify-between gap-2 hover:border-border transition-colors bg-background"
                                     >
-                                      <div className="flex items-start justify-between gap-2">
-                                        <div className="flex items-center gap-1.5 min-w-0">
-                                          <Tag className="size-3 text-muted-foreground shrink-0" />
-                                          <span className="text-sm font-medium text-foreground truncate">
-                                            {sub.name}
-                                          </span>
+                                      <div className="flex items-start gap-2.5">
+                                        {/* Subcategory Thumbnail */}
+                                        <div className="relative size-9 rounded-xs border border-border overflow-hidden bg-muted/20 shrink-0 flex items-center justify-center">
+                                          {sub.imageUrl ? (
+                                            // eslint-disable-next-line @next/next/no-img-element
+                                            <img
+                                              src={sub.imageUrl}
+                                              alt={sub.name}
+                                              className="size-full object-cover"
+                                            />
+                                          ) : (
+                                            <Tag className="size-3.5 text-muted-foreground stroke-1" />
+                                          )}
                                         </div>
-                                        <Badge
-                                          variant="outline"
-                                          className="text-xs font-mono shrink-0 border-border px-1.5 py-0"
-                                        >
-                                          {sub.code}
-                                        </Badge>
+
+                                        <div className="flex-1 min-w-0">
+                                          <div className="flex items-center justify-between gap-1">
+                                            <span className="text-sm font-medium text-foreground truncate">
+                                              {sub.name}
+                                            </span>
+                                            <Badge
+                                              variant="outline"
+                                              className="text-xs font-mono shrink-0 border-border px-1.5 py-0"
+                                            >
+                                              {sub.code}
+                                            </Badge>
+                                          </div>
+                                          <p className="text-xs font-mono text-muted-foreground truncate">
+                                            /{sub.slug}
+                                          </p>
+                                        </div>
                                       </div>
 
-                                      <div className="flex items-center justify-between text-xs font-mono text-muted-foreground pt-1.5 border-t border-border/40">
+                                      <div className="flex items-center justify-between text-xs font-mono text-muted-foreground pt-2 border-t border-border/40">
                                         <div className="flex items-center gap-1.5">
                                           <Package className="size-3.5 text-muted-foreground" />
                                           <span>{sub.productCount} SKUs</span>
@@ -363,11 +411,13 @@ export function CategoryTreeView({
                                                 slug: sub.slug,
                                                 code: sub.code,
                                                 description: sub.description,
+                                                imageUrl: sub.imageUrl,
+                                                bannerUrl: sub.bannerUrl,
                                                 displayOrder: sub.displayOrder,
                                                 status: sub.status,
                                               })
                                             }
-                                            className="size-5 p-0 hover:text-foreground"
+                                            className="size-6 p-0 hover:text-foreground"
                                             title="Edit Subcategory"
                                           >
                                             <Edit2 className="size-3" />

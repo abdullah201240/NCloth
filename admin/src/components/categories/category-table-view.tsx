@@ -21,7 +21,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { Search, Edit2, FolderTree, Folder, Tag, X } from "lucide-react";
+import { Search, Edit2, FolderTree, Folder, Tag, X, ImageIcon } from "lucide-react";
 
 interface CategoryTableViewProps {
   data: CategoryFlatItem[];
@@ -124,12 +124,12 @@ export function CategoryTableView({
       </div>
 
       {/* Table Component */}
-      <div className="border border-border rounded-xs overflow-hidden">
+      <div className="border border-border rounded-xs overflow-hidden bg-background">
         <Table>
           <TableHeader>
             <TableRow className="border-b border-border bg-background">
               <TableHead className="w-[120px] h-9 text-xs">Tier Level</TableHead>
-              <TableHead className="h-9 text-xs">Classification Name</TableHead>
+              <TableHead className="h-9 text-xs">Classification & Image</TableHead>
               <TableHead className="w-[100px] h-9 text-xs">SKU Code</TableHead>
               <TableHead className="w-[160px] h-9 text-xs">Parent Relation</TableHead>
               <TableHead className="w-[90px] text-right h-9 text-xs">Items</TableHead>
@@ -169,13 +169,27 @@ export function CategoryTableView({
                       </Badge>
                     </TableCell>
 
-                    {/* Name & Slug */}
+                    {/* Image & Classification Name */}
                     <TableCell className="py-2">
-                      <div className="flex flex-col">
-                        <span className="text-sm font-medium text-foreground">{item.name}</span>
-                        <span className="text-xs font-mono text-muted-foreground">
-                          /{item.slug}
-                        </span>
+                      <div className="flex items-center gap-2.5">
+                        <div className="relative size-8 rounded-xs border border-border overflow-hidden bg-muted/20 shrink-0 flex items-center justify-center">
+                          {item.imageUrl ? (
+                            // eslint-disable-next-line @next/next/no-img-element
+                            <img
+                              src={item.imageUrl}
+                              alt={item.name}
+                              className="size-full object-cover"
+                            />
+                          ) : (
+                            <ImageIcon className="size-3.5 text-muted-foreground stroke-1" />
+                          )}
+                        </div>
+                        <div className="flex flex-col min-w-0">
+                          <span className="text-sm font-medium text-foreground truncate">{item.name}</span>
+                          <span className="text-xs font-mono text-muted-foreground truncate">
+                            /{item.slug}
+                          </span>
+                        </div>
                       </div>
                     </TableCell>
 

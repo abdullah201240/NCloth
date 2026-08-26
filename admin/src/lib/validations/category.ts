@@ -24,7 +24,9 @@ export const unifiedCategoryFormSchema = z
       .min(2, "Code must be at least 2 characters")
       .max(8, "Code cannot exceed 8 characters")
       .regex(/^[A-Z0-9-]+$/, "Code must be uppercase alphanumeric (e.g. RTW, OTR, CSH)"),
-    description: z.string(),
+    description: z.string().max(500, "Description cannot exceed 500 characters").optional().or(z.literal("")),
+    imageUrl: z.string().trim().max(1000, "Image URL cannot exceed 1000 characters").optional().or(z.literal("")),
+    bannerUrl: z.string().trim().max(1000, "Banner URL cannot exceed 1000 characters").optional().or(z.literal("")),
     displayOrder: z.number().int().min(1, "Display order must be at least 1"),
     status: entityStatusSchema,
   })

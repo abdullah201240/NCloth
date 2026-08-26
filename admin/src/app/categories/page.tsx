@@ -47,6 +47,8 @@ export default function CategoriesPage() {
     slug: string;
     code: string;
     description?: string;
+    imageUrl?: string;
+    bannerUrl?: string;
     displayOrder: number;
     status: EntityStatus;
   } | null>(null);
@@ -109,6 +111,8 @@ export default function CategoriesPage() {
       slug: "",
       code: "",
       description: "",
+      imageUrl: "",
+      bannerUrl: "",
       displayOrder: 1,
       status: "active",
     });
@@ -125,6 +129,8 @@ export default function CategoriesPage() {
     slug: string;
     code: string;
     description?: string;
+    imageUrl?: string;
+    bannerUrl?: string;
     displayOrder: number;
     status: EntityStatus;
   }) => {
@@ -142,6 +148,9 @@ export default function CategoriesPage() {
       name: flatItem.name,
       slug: flatItem.slug,
       code: flatItem.code,
+      description: flatItem.description,
+      imageUrl: flatItem.imageUrl,
+      bannerUrl: flatItem.bannerUrl,
       displayOrder: flatItem.displayOrder,
       status: flatItem.status,
     });
@@ -211,6 +220,8 @@ export default function CategoriesPage() {
                   slug: data.slug,
                   code: data.code,
                   description: data.description,
+                  imageUrl: data.imageUrl,
+                  bannerUrl: data.bannerUrl,
                   displayOrder: data.displayOrder,
                   status: data.status,
                   updatedAt: now,
@@ -224,6 +235,8 @@ export default function CategoriesPage() {
             slug: data.slug,
             code: data.code,
             description: data.description,
+            imageUrl: data.imageUrl,
+            bannerUrl: data.bannerUrl,
             displayOrder: data.displayOrder,
             status: data.status,
             categories: [],
@@ -247,6 +260,8 @@ export default function CategoriesPage() {
                     slug: data.slug,
                     code: data.code,
                     description: data.description,
+                    imageUrl: data.imageUrl,
+                    bannerUrl: data.bannerUrl,
                     displayOrder: data.displayOrder,
                     status: data.status,
                     updatedAt: now,
@@ -262,6 +277,8 @@ export default function CategoriesPage() {
             slug: data.slug,
             code: data.code,
             description: data.description,
+            imageUrl: data.imageUrl,
+            bannerUrl: data.bannerUrl,
             displayOrder: data.displayOrder,
             status: data.status,
             subcategories: [],
@@ -291,6 +308,8 @@ export default function CategoriesPage() {
                       slug: data.slug,
                       code: data.code,
                       description: data.description,
+                      imageUrl: data.imageUrl,
+                      bannerUrl: data.bannerUrl,
                       displayOrder: data.displayOrder,
                       status: data.status,
                       updatedAt: now,
@@ -308,6 +327,8 @@ export default function CategoriesPage() {
             slug: data.slug,
             code: data.code,
             description: data.description,
+            imageUrl: data.imageUrl,
+            bannerUrl: data.bannerUrl,
             displayOrder: data.displayOrder,
             status: data.status,
             productCount: 0,
@@ -347,7 +368,7 @@ export default function CategoriesPage() {
               </Badge>
             </div>
             <p className="text-xs text-muted-foreground">
-              Define Root Classifications, Product Categories, and Subcategories with SKU prefix mappings.
+              Define Root Classifications, Product Categories, and Subcategories with editorial photography and SKU prefix mappings.
             </p>
           </div>
 
@@ -380,7 +401,7 @@ export default function CategoriesPage() {
 
         {/* Top Metric Cards */}
         <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
-          <Card className="p-3.5 border border-border rounded-xs">
+          <Card className="p-3.5 border border-border rounded-xs bg-background">
             <div className="flex items-center justify-between text-muted-foreground">
               <span className="text-xs font-medium uppercase tracking-wider">Tier 1 • Roots</span>
               <FolderTree className="size-4" />
@@ -395,7 +416,7 @@ export default function CategoriesPage() {
             </div>
           </Card>
 
-          <Card className="p-3.5 border border-border rounded-xs">
+          <Card className="p-3.5 border border-border rounded-xs bg-background">
             <div className="flex items-center justify-between text-muted-foreground">
               <span className="text-xs font-medium uppercase tracking-wider">Tier 2 • Categories</span>
               <Folder className="size-4" />
@@ -410,7 +431,7 @@ export default function CategoriesPage() {
             </div>
           </Card>
 
-          <Card className="p-3.5 border border-border rounded-xs">
+          <Card className="p-3.5 border border-border rounded-xs bg-background">
             <div className="flex items-center justify-between text-muted-foreground">
               <span className="text-xs font-medium uppercase tracking-wider">Tier 3 • Subcategories</span>
               <Tag className="size-4" />
@@ -425,7 +446,7 @@ export default function CategoriesPage() {
             </div>
           </Card>
 
-          <Card className="p-3.5 border border-border rounded-xs">
+          <Card className="p-3.5 border border-border rounded-xs bg-background">
             <div className="flex items-center justify-between text-muted-foreground">
               <span className="text-xs font-medium uppercase tracking-wider">Active SKUs Assigned</span>
               <Layers className="size-4" />

@@ -10,6 +10,8 @@ export interface Subcategory {
   slug: string;
   code: string; // e.g. "OVC", "TRN", "CSH"
   description?: string;
+  imageUrl?: string;
+  bannerUrl?: string;
   displayOrder: number;
   status: EntityStatus;
   productCount: number;
@@ -24,6 +26,8 @@ export interface Category {
   slug: string;
   code: string; // e.g. "OTR", "KNT", "TLS"
   description?: string;
+  imageUrl?: string;
+  bannerUrl?: string;
   displayOrder: number;
   status: EntityStatus;
   subcategories: Subcategory[];
@@ -37,6 +41,8 @@ export interface RootCategory {
   slug: string;
   code: string; // e.g. "RTW", "FTW", "ACC"
   description?: string;
+  imageUrl?: string;
+  bannerUrl?: string;
   displayOrder: number;
   status: EntityStatus;
   categories: Category[];
@@ -50,6 +56,9 @@ export interface CategoryFlatItem {
   slug: string;
   code: string;
   level: HierarchyLevel;
+  imageUrl?: string;
+  bannerUrl?: string;
+  description?: string;
   parentName?: string;
   parentId?: string;
   rootName?: string;
